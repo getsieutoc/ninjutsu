@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json.schemastore.org/prettierrc",
+  "overrides": [
+    {
+      "files": [
+        "*.yaml",
+        "*.json"
+      ],
+      "options": {
+        "singleQuote": false
+      }
+    },
+    {
+      "files": [
+        "*.ts",
+        "*.tsx",
+        "*.js",
+        "*.jsx"
+      ],
+      "options": {
+        "printWidth": 100,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    }
+  ]
+}
