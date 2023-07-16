@@ -1,0 +1,40 @@
+version: "3.8"
+name: nextjs-template
+
+services:
+  postgres:
+    container_name: nextjs-template-postgres
+    image: postgres:15-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready --dbname=postgres --username=postgres
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  redis:
+    container_name: nextjs-template-redis
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  mailpit:
+    container_name: nextjs-template-mailpit
+    image: axllent/mailpit:latest
+    restart: always
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  data:
