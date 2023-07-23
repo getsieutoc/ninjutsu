@@ -31,12 +31,6 @@ export const authOptions: NextAuthOptions = {
 
   secret: process.env.NEXTAUTH_SECRET,
 
-  pages: {
-    signIn: '/login',
-    verifyRequest: '/login',
-    error: '/login', // Error code passed in query string as ?error=
-  },
-
   cookies: {
     sessionToken: {
       name: SESSION_NAME,
@@ -47,6 +41,13 @@ export const authOptions: NextAuthOptions = {
         secure: IS_VERCEL,
         domain: COOKIE_DOMAIN,
       },
+    },
+  },
+
+  callbacks: {
+    async jwt({ token }) {
+      token.userRole = 'admin';
+      return token;
     },
   },
 };
