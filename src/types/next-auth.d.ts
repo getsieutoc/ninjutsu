@@ -1,12 +1,16 @@
 // eslint-disable-next-line
-import NextAuth from 'next-auth';
-import type { User } from '@prisma/client';
+import NextAuth, { DefaultSession } from 'next-auth';
+import type { User as PrismaUser, UserRole } from '@prisma/client';
 
-// These interfaces will be merged with existing interfaces from NextAuth
-declare module 'next-auth' {
+declare module 'next-auth/adapters' {
+  interface AdapterUser extends PrismaUser {}
+}
+
+declare module 'next-auth/core/types' {
   interface Session {
-    user: AuthUser;
+    user: DefaultSession['user'] & {
+      id: string;
+      role: UserRole;
+    };
   }
-
-  interface AuthUser extends User {}
 }

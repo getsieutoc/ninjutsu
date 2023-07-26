@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 
 export default function ServerSidePage() {
   const { data: session } = useSession();
+
   // As this page uses Server Side Rendering, the `session` will be already
   // populated on render without needing to go through a loading stage.
   return (
