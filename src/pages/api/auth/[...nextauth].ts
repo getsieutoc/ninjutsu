@@ -1,8 +1,7 @@
-import { COOKIE_DOMAIN, IS_VERCEL, SESSION_NAME } from '@/utils/constants';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import NextAuth, { type NextAuthOptions } from 'next-auth';
 import FacebookProvider from 'next-auth/providers/facebook';
 import GoogleProvider from 'next-auth/providers/google';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '@/utils/prisma';
 
 if (
@@ -31,23 +30,19 @@ export const authOptions: NextAuthOptions = {
 
   secret: process.env.NEXTAUTH_SECRET,
 
-  cookies: {
-    sessionToken: {
-      name: SESSION_NAME,
-      options: {
-        httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        secure: IS_VERCEL,
-        domain: COOKIE_DOMAIN,
-      },
-    },
-  },
-
   callbacks: {
-    async jwt({ token }) {
-      token.userRole = 'admin';
-      return token;
+    session: async ({ session, user }) => {
+      if (user) {
+        return {
+          ...session,
+          user: {
+            ...session.user,
+            ...user,
+          },
+        };
+      }
+
+      return session;
     },
   },
 };

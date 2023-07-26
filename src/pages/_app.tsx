@@ -3,6 +3,8 @@ import { SessionProvider } from 'next-auth/react';
 import type { Session } from 'next-auth';
 import type { AppProps } from 'next/app';
 import { theme } from '@/utils/theme';
+import { configs } from '@/utils/swr';
+import { SWRConfig } from 'swr';
 
 export default function App({
   Component,
@@ -11,7 +13,9 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
+        <SWRConfig value={configs}>
+          <Component {...pageProps} />
+        </SWRConfig>
       </ChakraProvider>
     </SessionProvider>
   );
