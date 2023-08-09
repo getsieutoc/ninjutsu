@@ -11,7 +11,6 @@ export default function SignIn({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
   const { callbackUrl = 'http://localhost:3000' } = router.query;
-  console.log('### callbackUrl: ', { callbackUrl });
 
   return (
     <GeneralLayout showNavbar={false} centerContent>
