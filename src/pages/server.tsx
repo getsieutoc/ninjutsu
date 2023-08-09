@@ -1,32 +1,37 @@
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './api/auth/[...nextauth]';
-import { Layout } from '@/components';
+import { GeneralLayout } from '@/components';
 
 import type { GetServerSidePropsContext } from 'next';
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@/hooks';
 
 export default function ServerSidePage() {
-  const { data: session } = useSession();
+  const { session } = useAuth();
 
   // As this page uses Server Side Rendering, the `session` will be already
   // populated on render without needing to go through a loading stage.
   return (
-    <Layout>
+    <GeneralLayout>
       <h1>Server Side Rendering</h1>
       <p>
         This page uses the <strong>getServerSession()</strong> method in{' '}
         <strong>getServerSideProps()</strong>.
       </p>
       <p>
-        Using <strong>getServerSession()</strong> in <strong>getServerSideProps()</strong> is the
-        recommended approach if you need to support Server Side Rendering with authentication.
+        Using <strong>getServerSession()</strong> in{' '}
+        <strong>getServerSideProps()</strong> is the recommended approach if you
+        need to support Server Side Rendering with authentication.
       </p>
       <p>
-        The advantage of Server Side Rendering is this page does not require client side JavaScript.
+        The advantage of Server Side Rendering is this page does not require
+        client side JavaScript.
       </p>
-      <p>The disadvantage of Server Side Rendering is that this page is slower to render.</p>
+      <p>
+        The disadvantage of Server Side Rendering is that this page is slower to
+        render.
+      </p>
       <pre>{JSON.stringify(session, null, 2)}</pre>
-    </Layout>
+    </GeneralLayout>
   );
 }
 

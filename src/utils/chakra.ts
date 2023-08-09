@@ -1,7 +1,15 @@
-import { extendTheme } from '@chakra-ui/react';
+import { extendTheme, UseToastOptions } from '@chakra-ui/react';
+
+export const toastOptions: UseToastOptions = {
+  position: 'top-right',
+  duration: 1000,
+  status: 'success',
+};
 
 const colorModeInLocalStorage =
-  typeof window !== 'undefined' ? window.localStorage.getItem('chakra-ui-color-mode') : 'system';
+  typeof window !== 'undefined'
+    ? window.localStorage.getItem('chakra-ui-color-mode')
+    : 'system';
 
 const config = {
   initialColorMode: 'system',

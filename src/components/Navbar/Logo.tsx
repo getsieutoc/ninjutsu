@@ -15,7 +15,7 @@ export const Logo = ({ size = 7, href = '/' }: LogoProps) => (
         alt="Logo"
         placeholder="empty"
         borderRadius="full"
-        src="/logo.png" // this is from /public folder
+        src="/next.svg" // this is from /public folder
         width={size}
       />
       <Box>

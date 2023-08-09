@@ -1,12 +1,12 @@
-import { useSession } from 'next-auth/react';
 import { GeneralLayout } from '@/components';
+import { useAuth } from '@/hooks';
 
 export default function MePage() {
-  const { data } = useSession();
+  const { session } = useAuth({ required: true });
 
   return (
     <GeneralLayout>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <pre>{JSON.stringify(session, null, 2)}</pre>
     </GeneralLayout>
   );
 }

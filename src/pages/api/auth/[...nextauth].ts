@@ -30,20 +30,23 @@ export const authOptions: NextAuthOptions = {
 
   secret: process.env.NEXTAUTH_SECRET,
 
-  callbacks: {
-    session: async ({ session, user }) => {
-      if (user) {
-        return {
-          ...session,
-          user: {
-            ...session.user,
-            id: user.id,
-            role: user.role,
-          },
-        };
-      }
+  pages: {
+    signIn: '/signin',
+  },
 
-      return session;
+  callbacks: {
+    // Due to the fact that we extend the next-auth's Session type in next-auth.d.ts
+    // the Session's User type here is actually the DefaultSession['user'] with basic properties
+    // like `name`, 'email' and 'image' only! That's why we have to add `id` and `role` here.
+    session: async ({ session, user }) => {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: user.id,
+          role: user.role,
+        },
+      };
     },
   },
 };

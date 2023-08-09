@@ -1,8 +1,8 @@
-import { Layout } from '@/components';
+import { GeneralLayout } from '@/components';
 
 export default function ClientPage() {
   return (
-    <Layout>
+    <GeneralLayout>
       <h1>Client Side Rendering</h1>
       <p>
         This page uses the <strong>useSession()</strong> React Hook in the{' '}
@@ -21,6 +21,6 @@ export default function ClientPage() {
         The disadvantage of <strong>useSession()</strong> is that it requires client side
         JavaScript.
       </p>
-    </Layout>
+    </GeneralLayout>
   );
 }

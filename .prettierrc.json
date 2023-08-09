@@ -2,23 +2,15 @@
   "$schema": "http://json.schemastore.org/prettierrc",
   "overrides": [
     {
-      "files": [
-        "*.yaml",
-        "*.json"
-      ],
+      "files": ["*.yaml", "*.json"],
       "options": {
         "singleQuote": false
       }
     },
     {
-      "files": [
-        "*.ts",
-        "*.tsx",
-        "*.js",
-        "*.jsx"
-      ],
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "options": {
-        "printWidth": 100,
+        "printWidth": 80,
         "singleQuote": true,
         "trailingComma": "es5"
       }
