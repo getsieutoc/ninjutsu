@@ -17,13 +17,27 @@ export const GeneralLayout = ({
 }: GeneralLayoutProps) => {
   return (
     <>
-      <CustomHead title="bookSAO" description="Connect with your dreams" />
+      <CustomHead
+        title="Nextjs Template"
+        description="Strong opinionated starter template"
+      />
 
       <Container maxW="1280px" centerContent={centerContent}>
-        <Flex direction="column" justifyContent="space-between" height="100vh" paddingTop="6">
+        <Flex
+          direction="column"
+          justifyContent="space-between"
+          height="100vh"
+          paddingTop="6"
+        >
           {showNavbar && <Navbar />}
 
-          <Flex direction="column" maxWidth="100vw" paddingTop={8} height="100%" as="main">
+          <Flex
+            direction="column"
+            maxWidth="100vw"
+            paddingTop={8}
+            height="100%"
+            as="main"
+          >
             {children}
           </Flex>
         </Flex>
