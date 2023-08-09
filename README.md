@@ -2,9 +2,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-NOTE: Search and replace `nextjs-template` with your project slug.
+First, search and replace `nextjs-template` with your project slug.
 
-First, run the development server:
+Then, run the development server:
 
 ```bash
 npm run dev
