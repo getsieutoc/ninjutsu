@@ -1,5 +1,21 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Features
+
+This template includes the following:
+
+- Next.js 13
+- TypeScript
+- ESLint
+- Prettier
+- Chakra UI
+- Prisma
+- Next-Auth
+- Docker compose with:
+    - PostgresQL
+    - Redis
+    - Mailpit
+
 ## Getting Started
 
 First, search and replace `nextjs-template` with your project slug.
