@@ -18,7 +18,33 @@ This template includes the following:
 
 ## Getting Started
 
-First, search and replace `nextjs-template` with your project slug.
+#### Clone the project
+
+You can either use this template by:
+
+- Click the **"Use this template"** button and follow the instruction
+- Or using the script below:
+
+```bash
+npx tiged sangdth/nextjs-template your-project
+```
+
+Then, search and replace `nextjs-template` with your project slug.
+
+#### Install dependencies
+
+```bash
+cd your-project
+npm install
+```
+
+#### Setup environment variables
+
+For the first time, you need some default environment variables:
+
+```bash
+cp .env.example .env
+```
 
 Then, run the development server:
 
