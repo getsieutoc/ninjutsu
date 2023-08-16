@@ -16,6 +16,11 @@ This template includes the following:
     - Redis
     - Mailpit
 
+## Demo
+
+https://nextjs-template-demo.vercel.app
+
+
 ## Getting Started
 
 #### Clone the project
