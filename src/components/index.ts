@@ -1,4 +1,5 @@
 export * from '@chakra-ui/react';
-export * from './NextLink';
-export * from './Layout';
 export * from './AccessDenied';
+export * from './Layout';
+export * from './NextLink';
+export * from './VirtualTable';
