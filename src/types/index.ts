@@ -11,3 +11,6 @@ export enum HttpMethod {
   PUT = 'PUT',
   TRACE = 'TRACE',
 }
+export enum UserRole {
+  ADMIN = 'ADMIN',
+}
