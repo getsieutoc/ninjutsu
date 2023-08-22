@@ -36,7 +36,18 @@ CREATE TABLE "User" (
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
+-- CreateTable
+CREATE TABLE "Post" (
+    "id" TEXT NOT NULL,
+    "title": TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "published" BOOLEAN,
+    "authorId" TEXT,
+    "content" TEXT,
 
+    CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
+);
 -- CreateTable
 CREATE TABLE "VerificationToken" (
     "identifier" TEXT NOT NULL,
