@@ -8,6 +8,7 @@ export default async function handler(
 ) {
   if (req.method === 'GET') {
     const posts = await prisma.post.findMany();
+
     res.status(200).json(posts);
   }
   if (req.method === 'POST') {

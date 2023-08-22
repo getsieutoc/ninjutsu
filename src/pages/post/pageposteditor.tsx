@@ -12,7 +12,7 @@ import dynamic from 'next/dynamic';
 import { PostList } from '@/components/Post';
 
 // import { PrismaClient } from '@prisma/client';
-const SunEditor = dynamic(() => import('../components/CustomSunEditor'), {
+const SunEditor = dynamic(() => import('../../components/CustomSunEditor'), {
   ssr: false,
 });
 

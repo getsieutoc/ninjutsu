@@ -1,8 +1,9 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Spinner } from '@chakra-ui/react';
 import { useSWR } from '@/hooks';
 import _ from 'lodash';
 import { VirtualTable } from '../VirtualTable';
 import { useMemo, useState } from 'react';
+import Router from 'next/router';
 import { ColumnDef } from '@tanstack/react-table';
 import { Post } from '@prisma/client';
 
@@ -42,26 +43,35 @@ const defaultColumns: ColumnDef<Post>[] = [
     },
   },
 ];
+const fetcher = async (url: string) => await fetch(url).then((r) => r.json());
 export const PostList = () => {
-  const fetcher = (url: string) => fetch(url).then((r) => r.json());
-  const { data, error } = useSWR('api/pages/posts', fetcher);
+  const { data, error, isLoading } = useSWR('/api/pages/posts', fetcher);
   const [columns] = useState(defaultColumns);
-  //   console.log('===>', data, error);
+
   const dataTable: Post[] = useMemo(() => {
     if (data?.length) {
       return _.cloneDeep(data);
     }
     return [];
   }, [data]);
-  //   console.log(dataTable);
-
+  if (isLoading)
+    return (
+      <Box textAlign="center">
+        <Spinner />
+      </Box>
+    );
+  if (error) return <>{JSON.stringify(error)}</>;
   return (
     <Box>
       <VirtualTable
         data={dataTable}
         columns={columns}
         height={'500px'}
-        onRowClick={(props) => console.log(props)}
+        onRowClick={(row) =>
+          Router.push({
+            pathname: '/post/' + row.item.id,
+          })
+        }
       />
     </Box>
   );
