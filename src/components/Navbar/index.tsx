@@ -14,11 +14,7 @@ export const Navbar = () => {
       <NextLink href="/server">Server</NextLink>
 
       <NextLink href="/admin">Admin</NextLink>
-<<<<<<< HEAD
-      <NextLink href="/pageposteditor">Pages</NextLink>
-=======
       <NextLink href="/post/pageposteditor">Pages</NextLink>
->>>>>>> phuc-dev
       <ProfileMenu />
     </Flex>
   );

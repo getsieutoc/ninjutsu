@@ -40,10 +40,6 @@
     "lodash": "^4.17.21",
     "prettier": "3.0.2",
     "prisma": "5.1.1",
-<<<<<<< HEAD
-=======
-    "react-virtuoso": "^4.5.0",
->>>>>>> phuc-dev
     "suneditor": "^2.45.1",
     "suneditor-react": "^3.4.1",
     "ts-node": "10.9.1",
