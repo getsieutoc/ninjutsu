@@ -1,8 +1,15 @@
 'use client';
 import { useState } from 'react';
-import { useSWR } from '@/hooks';
-import { Checkbox, Container, Heading, Input } from '@chakra-ui/react';
+import {
+  Checkbox,
+  Container,
+  Divider,
+  Heading,
+  Input,
+  useToast,
+} from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
+import { PostList } from '@/components/Post';
 
 // import { PrismaClient } from '@prisma/client';
 const SunEditor = dynamic(() => import('../components/CustomSunEditor'), {
@@ -10,15 +17,11 @@ const SunEditor = dynamic(() => import('../components/CustomSunEditor'), {
 });
 
 export default function PagePostEditor() {
-  const fetcher = (url: string) => fetch(url).then((r) => r.json());
-  const { data, error } = useSWR('api/pages/posts', fetcher);
-  console.log('===>', data, error);
+  const toast = useToast();
   const [title, setTitle] = useState('');
   const [published, setPublished] = useState(true);
 
   const handleSave = async (content: string) => {
-    console.log(content);
-    console.log(typeof content);
     const data = await fetch('/api/pages/posts', {
       method: 'POST',
       headers: {
@@ -31,7 +34,22 @@ export default function PagePostEditor() {
         authorId: 'test-123',
       }),
     });
-    console.log(data);
+    if (data.status === 200) {
+      toast({
+        status: 'success',
+        title: 'Successfully',
+        duration: 2000,
+        isClosable: true,
+        position: 'top-right',
+      });
+    } else {
+      toast({
+        status: 'error',
+        description: data.statusText,
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
   return (
     <Container maxW="container.lg">
@@ -47,6 +65,9 @@ export default function PagePostEditor() {
         {published ? 'Công khai' : 'Riêng tư'}
       </Checkbox>
       <SunEditor onSave={handleSave} />
+      <br />
+      <Divider />
+      <PostList />
     </Container>
   );
 }

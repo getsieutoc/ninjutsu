@@ -2,7 +2,6 @@
   "name": "nextjs-template",
   "version": "0.0.0",
   "private": true,
-  
   "scripts": {
     "postinstall": "prisma generate",
     "dev": "docker-compose up -d && next dev",
@@ -31,14 +30,18 @@
     "swr": "2.2.1"
   },
   "devDependencies": {
-    "@types/node": "20.5.2",
+    "@tanstack/react-table": "^8.9.3",
+    "@types/node": "20.5.1",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",
     "eslint-config-prettier": "9.0.0",
+    "jotai": "^2.3.1",
+    "lodash": "^4.17.21",
     "prettier": "3.0.2",
     "prisma": "5.1.1",
+    "react-virtuoso": "^4.5.0",
     "suneditor": "^2.45.1",
     "suneditor-react": "^3.4.1",
     "ts-node": "10.9.1",
