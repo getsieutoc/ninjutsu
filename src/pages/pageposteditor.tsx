@@ -61,7 +61,13 @@ export default function PagePostEditor() {
         size="sm"
         my={1}
       />
-      <Checkbox isChecked={published} size="lg" mt={1} ml={1}>
+      <Checkbox
+        onChange={(e) => setPublished(e.target.checked)}
+        isChecked={published}
+        size="lg"
+        mt={1}
+        ml={1}
+      >
         {published ? 'Công khai' : 'Riêng tư'}
       </Checkbox>
       <SunEditor onSave={handleSave} />

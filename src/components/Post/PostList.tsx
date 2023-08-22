@@ -53,7 +53,7 @@ export const PostList = () => {
     }
     return [];
   }, [data]);
-  console.log(dataTable);
+  //   console.log(dataTable);
 
   return (
     <Box>
