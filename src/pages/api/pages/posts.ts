@@ -1,10 +1,11 @@
 import { prisma } from '@/utils/prisma';
+import { Post } from '@prisma/client';
 // import { Post } from '@prisma/client';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<any>
+  res: NextApiResponse<Post[] | Post>
 ) {
   if (req.method === 'GET') {
     const posts = await prisma.post.findMany();
@@ -21,6 +22,6 @@ export default async function handler(
         content,
       },
     });
-    res.status(200).json({ newPost });
+    res.status(200).json(newPost);
   }
 }
