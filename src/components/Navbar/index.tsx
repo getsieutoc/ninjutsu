@@ -14,7 +14,7 @@ export const Navbar = () => {
       <NextLink href="/server">Server</NextLink>
 
       <NextLink href="/admin">Admin</NextLink>
-
+      <NextLink href="/post/pageposteditor">Pages</NextLink>
       <ProfileMenu />
     </Flex>
   );
