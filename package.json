@@ -42,6 +42,6 @@
     "suneditor": "^2.45.1",
     "suneditor-react": "^3.4.1",
     "ts-node": "10.9.1",
-    "typescript": "5.1.6"
+    "typescript": "5.2.2"
   }
 }
