@@ -8,13 +8,8 @@ import {
   Input,
   useToast,
 } from '@chakra-ui/react';
-import dynamic from 'next/dynamic';
 import { PostList } from '@/components/Post';
-
-// import { PrismaClient } from '@prisma/client';
-const SunEditor = dynamic(() => import('../../components/CustomSunEditor'), {
-  ssr: false,
-});
+import SSEditor from '@/components/SSEditor';
 
 export default function PagePostEditor() {
   const toast = useToast();
@@ -70,7 +65,7 @@ export default function PagePostEditor() {
       >
         {published ? 'Công khai' : 'Riêng tư'}
       </Checkbox>
-      <SunEditor onSave={handleSave} />
+      <SSEditor onSave={handleSave} />
       <br />
       <Divider />
       <PostList />
