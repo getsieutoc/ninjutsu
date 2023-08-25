@@ -11,13 +11,12 @@ datasource db {
 enum UserRole {
   USER
   ADMIN
-  CELEBRITY
+  AUTHOR
   MANAGER
 }
 
 model Account {
   id                String  @id @default(uuid())
-  userId            String
   type              String
   provider          String
   providerAccountId String
@@ -28,8 +27,8 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -51,7 +50,8 @@ model User {
   role          UserRole  @default(USER)
   accounts      Account[]
   sessions      Session[]
-  Post          Post[]
+  pages         Page[]
+  posts         Post[]
 }
 
 model VerificationToken {
@@ -62,13 +62,40 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model Page {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+  title       String    @db.VarChar(255)
+  slug        String    @db.VarChar(255)
+  content     String
+  components  Json      @default("{}")
+  locale      String
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  tags        Tag[]
+}
+
 model Post {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+  title       String    @db.VarChar(255)
+  slug        String    @db.VarChar(255)
+  content     String
+  locale      String
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  tags        Tag[]
+}
+
+model Tag {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  published Boolean  @default(false)
-  title     String   @db.VarChar(255)
-  content   String
-  authorId  String
-  author    User?    @relation(fields: [authorId], references: [id])
+  value     String   @db.VarChar(128)
+  posts     Post[]
+  pages     Page[]
 }
