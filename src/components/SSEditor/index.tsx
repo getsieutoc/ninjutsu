@@ -1,15 +1,19 @@
-import { useRef, type FC } from 'react';
+'use client';
+import { useRef, type FC, useEffect } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Editor as TinyMCEEditor } from 'tinymce';
 type PropTypes = {
   value?: string;
   onSave?: (value: string) => void;
 };
+
 const SSEditor: FC<PropTypes> = ({ value, onSave }) => {
   const editorRef = useRef<TinyMCEEditor | null>(null);
+
   return (
     <Editor
       onInit={(evt, editor) => (editorRef.current = editor)}
+      apiKey={process.env.NEXT_PUBLIC_API_KEY_TINYMCE}
       initialValue={value}
       init={{
         height: 500,
