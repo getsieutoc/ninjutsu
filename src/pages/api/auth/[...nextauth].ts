@@ -1,11 +1,11 @@
-import NextAuth, { type NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import NextAuth, { type NextAuthOptions } from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { JWT_MAX_AGE } from '@/utils/constants';
+import { exclude } from '@/utils/parsers';
 import { verify } from '@/utils/password';
 import { prisma } from '@/utils/prisma';
 import { UserRole } from '@/types';
-import { exclude } from '@/utils/parsers';
 
 if (!process.env.NEXTAUTH_SECRET) {
   throw new Error('NEXTAUTH_SECRET variable is not defined');

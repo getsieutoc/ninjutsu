@@ -107,8 +107,7 @@ export const updateUser = async (
 // TODO: implement rate limit on the next PR
 export const createUser = async (
   req: NextApiRequest,
-  res: NextApiResponse<Omit<User, 'password'>>,
-  _session: Session | null
+  res: NextApiResponse<Omit<User, 'password'>>
 ) => {
   try {
     const { name, email, password } = req.body as Pick<
