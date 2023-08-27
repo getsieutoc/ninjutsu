@@ -1,6 +1,5 @@
 import { prisma } from '@/utils/prisma';
-import { Post } from '@prisma/client';
-// import { Post } from '@prisma/client';
+import type { Post } from '@/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
@@ -13,14 +12,8 @@ export default async function handler(
     res.status(200).json(posts);
   }
   if (req.method === 'POST') {
-    const { title, published, authorId, content } = req.body;
     const newPost = await prisma.post.create({
-      data: {
-        title,
-        published,
-        authorId,
-        content,
-      },
+      data: JSON.parse(req.body),
     });
     res.status(200).json(newPost);
   }
