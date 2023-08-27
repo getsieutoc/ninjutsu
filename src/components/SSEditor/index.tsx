@@ -7,7 +7,7 @@ type PropTypes = {
   onSave?: (value: string) => void;
 };
 
-const SSEditor: FC<PropTypes> = ({ value, onSave }) => {
+const TextEditor: FC<PropTypes> = ({ value, onSave }) => {
   const editorRef = useRef<TinyMCEEditor | null>(null);
 
   return (
@@ -40,4 +40,4 @@ const SSEditor: FC<PropTypes> = ({ value, onSave }) => {
     />
   );
 };
-export default SSEditor;
+export default TextEditor;
