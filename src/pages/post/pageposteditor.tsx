@@ -9,7 +9,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { PostList } from '@/components/Post';
-import TextEditor from '@/components/SSEditor';
+import { TextEditor } from '@/components';
 
 export default function PagePostEditor() {
   const toast = useToast();
