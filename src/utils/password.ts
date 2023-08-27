@@ -16,20 +16,22 @@ export const hash = async (rawPassword: string): Promise<string | never> => {
     const secret = Buffer.from(argonSecret);
 
     return await argon2.hash(rawPassword, { ...defaultOptions, secret });
-  } catch (err) {
-    throw new Error('Failed to hash password');
+  } catch (error) {
+    throw new Error('Failed to hash password', { cause: error });
   }
 };
 
 export const verify = async (
-  hashed: string,
-  raw: string
+  raw: string,
+  hashed: string | null | undefined
 ): Promise<boolean | never> => {
   try {
+    if (!hashed) return false;
+
     const secret = Buffer.from(argonSecret);
 
     return await argon2.verify(hashed, raw, { ...defaultOptions, secret });
-  } catch (err) {
-    throw new Error('Failed to verify password');
+  } catch (error) {
+    throw new Error('Failed to verify password', { cause: error });
   }
 };

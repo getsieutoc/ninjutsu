@@ -63,9 +63,7 @@ export default function Login({
               width="100%"
               colorScheme="gray"
               onClick={() =>
-                signIn(provider.id, {
-                  callbackUrl: getCallbackUrl(),
-                })
+                signIn(provider.id, { callbackUrl: getCallbackUrl() })
               }
             >
               Sign in with {provider.name}
@@ -109,7 +107,7 @@ export default function Login({
           signIn('credentials', {
             ...credentials,
             redirect: true,
-            callbackUrl: '/',
+            callbackUrl: getCallbackUrl(),
           });
         }}
       >

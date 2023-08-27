@@ -24,7 +24,6 @@ export const getUser = async (
 
     return res.status(200).send(exclude(result, 'password'));
   } catch (error) {
-    console.error(error);
     return res.status(500).end(error);
   }
 };
@@ -72,7 +71,6 @@ export const queryUsers = async (
 
     return res.status(200).send(results.map((o) => exclude(o, 'password')));
   } catch (error) {
-    console.error(error);
     return res.status(500).end(error);
   }
 };
@@ -102,7 +100,6 @@ export const updateUser = async (
 
     return res.status(200).json(exclude(result, 'password'));
   } catch (error) {
-    console.error(error);
     return res.status(500).end(error);
   }
 };
@@ -141,7 +138,6 @@ export const createUser = async (
 
     return res.status(200).json(exclude(result, 'password'));
   } catch (error) {
-    console.error(error);
     return res.status(500).end(error);
   }
 };
