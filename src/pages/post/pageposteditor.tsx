@@ -9,7 +9,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { PostList } from '@/components/Post';
-import SSEditor from '@/components/SSEditor';
+import { TextEditor } from '@/components';
 
 export default function PagePostEditor() {
   const toast = useToast();
@@ -65,7 +65,7 @@ export default function PagePostEditor() {
       >
         {published ? 'Công khai' : 'Riêng tư'}
       </Checkbox>
-      <SSEditor onSave={handleSave} />
+      <TextEditor onSave={handleSave} />
       <br />
       <Divider />
       <PostList />
