@@ -29,12 +29,17 @@ export const ProfileMenu = () => {
   };
 
   if (!isAuthenticated) {
-    return <NextLink href="/signin">Join Today!</NextLink>;
+    return <NextLink href="/login">Join Today!</NextLink>;
   }
 
   return (
     <Menu>
-      <MenuButton size="sm" variant="ghost" as={Button} rightIcon={<ChevronDownIcon />}>
+      <MenuButton
+        size="sm"
+        variant="ghost"
+        as={Button}
+        rightIcon={<ChevronDownIcon />}
+      >
         <HStack>
           {session?.user && session.user.image && (
             <NextImage
@@ -51,7 +56,11 @@ export const ProfileMenu = () => {
       </MenuButton>
       <Portal>
         <MenuList zIndex={9}>
-          <MenuItem as={NextLink} href="/me" _hover={{ textDecoration: 'none' }}>
+          <MenuItem
+            as={NextLink}
+            href="/me"
+            _hover={{ textDecoration: 'none' }}
+          >
             My Profile
           </MenuItem>
           <MenuItem closeOnSelect={false} onClick={handleToggleDarkMode}>
@@ -60,7 +69,9 @@ export const ProfileMenu = () => {
               <Switch
                 colorScheme="purple"
                 isChecked={colorMode === 'dark'}
-                onChange={(e) => setColorMode(e.target.checked ? 'light' : 'dark')}
+                onChange={(e) =>
+                  setColorMode(e.target.checked ? 'light' : 'dark')
+                }
               />
             </Flex>
           </MenuItem>
