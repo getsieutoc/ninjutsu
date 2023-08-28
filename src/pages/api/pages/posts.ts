@@ -12,6 +12,7 @@ export default async function handler(
     res.status(200).json(posts);
   }
   if (req.method === 'POST') {
+    console.log(req.body);
     const newPost = await prisma.post.create({
       data: JSON.parse(req.body),
     });
