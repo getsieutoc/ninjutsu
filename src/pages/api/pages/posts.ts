@@ -6,13 +6,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Post[] | Post>
 ) {
+
+  console.log("===>",req.method)
   if (req.method === 'GET') {
     const posts = await prisma.post.findMany();
-
     res.status(200).json(posts);
   }
   if (req.method === 'POST') {
-    console.log(req.body);
+    // console.log(req.body);
     const newPost = await prisma.post.create({
       data: JSON.parse(req.body),
     });

@@ -5,6 +5,7 @@ import { Editor as TinyMCEEditor } from 'tinymce';
 type PropTypes = {
   value?: string;
   onChange?: (value: string) => void;
+  
 };
 
 export const TextEditor: FC<PropTypes> = ({ value, onChange }) => {
@@ -14,7 +15,7 @@ export const TextEditor: FC<PropTypes> = ({ value, onChange }) => {
     <Editor
       onInit={(evt, editor) => (editorRef.current = editor)}
       apiKey={process.env.NEXT_PUBLIC_API_KEY_TINYMCE}
-      onEditorChange={(text) => onChange && onChange(text)}
+      onEditorChange={(text) => onChange&&onChange(text)}
       initialValue={value}
       init={{
         height: 500,
