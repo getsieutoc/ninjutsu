@@ -1,32 +1,36 @@
 'use client';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import {
   Box,
-  Checkbox,
-  Container,
-  Divider,
-  HStack,
-  Heading,
-  Input,
-  useToast,
+  Flex,
+  Icon,
+  Stack,
   Card,
+  Input,
+  Button,
+  Divider,
+  Heading,
+  Spacer,
+  useToast,
+  Checkbox,
   CardBody,
   CardHeader,
+  CardFooter,
+  Container,
 } from '@chakra-ui/react';
 import { PostList } from '@/components/Post';
 import { TextEditor } from '@/components';
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 
 export default function PagePostEditor() {
   const toast = useToast();
   const [title, setTitle] = useState('');
+  const [slug, setSlug] = useState('');
   const [published, setPublished] = useState(true);
   const [content, setContent] = useState('');
+  const [showActionPost, setShowActionPost] = useState(true);
 
-  const handleSave = async (content: string) => {
-    console.log(content);
-    console.log(title);
-    console.log(published);
-    return;
+  const handleSave = async () => {
     const data = await fetch('/api/pages/posts', {
       method: 'POST',
       headers: {
@@ -36,6 +40,8 @@ export default function PagePostEditor() {
         title: title.trim(),
         content,
         published,
+        slug,
+        locale: '',
         authorId: 'test-123',
       }),
     });
@@ -57,27 +63,21 @@ export default function PagePostEditor() {
       });
     }
   };
+
   return (
     <Container maxW="container.xl">
-      <HStack>
+      <Heading size="lg">Tạo bài viết</Heading>
+      <Stack spacing={1} direction="row">
         <Box w="80%">
-          <Heading size="lg">Tạo bài viết</Heading>
           <Input
+            width="100%"
+            rounded={5}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Tiêu đề..."
-            w="50%"
             size="sm"
-            my={1}
+            marginY={1}
           />
-          <Checkbox
-            onChange={(e) => setPublished(e.target.checked)}
-            isChecked={published}
-            size="lg"
-            mt={1}
-            ml={1}
-          >
-            {published ? 'Công khai' : 'Riêng tư'}
-          </Checkbox>
+
           <TextEditor onChange={(text) => setContent(text)} />
           <br />
           <Divider />
@@ -85,12 +85,47 @@ export default function PagePostEditor() {
         </Box>
         <Box w="20%">
           <Card>
-            <CardHeader>Post</CardHeader>
-            <CardBody></CardBody>
+            <CardHeader borderBottom="1px solid #E2E8F0" p={2}>
+              <Flex>
+                <Box fontWeight={600}>Đăng</Box>
+                <Spacer />
+                <Box>
+                  <Button
+                    onClick={() => setShowActionPost(!showActionPost)}
+                    size="xs"
+                  >
+                    <Icon
+                      as={showActionPost ? ChevronDownIcon : ChevronUpIcon}
+                    />
+                  </Button>
+                </Box>
+              </Flex>
+            </CardHeader>
+            {showActionPost && (
+              <CardBody p={2}>
+                <Checkbox
+                  onChange={(e) => setPublished(e.target.checked)}
+                  isChecked={published}
+                >
+                  {published ? 'Công khai' : 'Riêng tư'}
+                </Checkbox>
+              </CardBody>
+            )}
+            {showActionPost && (
+              <CardFooter>
+                <Button
+                  onClick={handleSave}
+                  colorScheme="green"
+                  size="sm"
+                  width="100%"
+                >
+                  Save
+                </Button>
+              </CardFooter>
+            )}
           </Card>
-          
         </Box>
-      </HStack>
+      </Stack>
     </Container>
   );
 }
