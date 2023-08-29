@@ -7,7 +7,6 @@ export default async function handler(
   res: NextApiResponse<Post[] | Post>
 ) {
 
-  console.log("===>",req.method)
   if (req.method === 'GET') {
     const posts = await prisma.post.findMany();
     res.status(200).json(posts);

@@ -83,11 +83,12 @@ export default function PagePostEditor() {
           <Divider />
           <PostList />
         </Box>
-        <Box>
+        <Box w="20%">
           <Card>
             <CardHeader>Post</CardHeader>
             <CardBody></CardBody>
           </Card>
+          
         </Box>
       </HStack>
     </Container>
