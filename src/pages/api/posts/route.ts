@@ -3,7 +3,7 @@ import { Post } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
 export const POST = async (request: Post) => {
-  console.log(request);
+  console.log('===>', request);
   return NextResponse.json({ name: 'hello' });
   try {
     const body = await request;

@@ -4,31 +4,32 @@ import { Editor } from '@tinymce/tinymce-react';
 import { Editor as TinyMCEEditor } from 'tinymce';
 type PropTypes = {
   value?: string;
-  onSave?: (value: string) => void;
+  onChange?: (value: string) => void;
+  
 };
 
-export const TextEditor: FC<PropTypes> = ({ value, onSave }) => {
+export const TextEditor: FC<PropTypes> = ({ value, onChange }) => {
   const editorRef = useRef<TinyMCEEditor | null>(null);
 
   return (
     <Editor
       onInit={(evt, editor) => (editorRef.current = editor)}
       apiKey={process.env.NEXT_PUBLIC_API_KEY_TINYMCE}
+      onEditorChange={(text) => onChange&&onChange(text)}
       initialValue={value}
       init={{
         height: 500,
         menubar: true,
         branding: false,
         plugins: 'link image table',
-        setup: function (editor) {
-          editor.ui.registry.addButton('save', {
-            icon: 'save',
-            tooltip: 'Save',
-
-            onAction: () =>
-              onSave && onSave(editorRef.current?.getContent() ?? ''),
-          });
-        },
+        // setup: function (editor) {
+        //   editor.ui.registry.addButton('save', {
+        //     icon: 'save',
+        //     tooltip: 'Save',
+        //     onAction: () =>
+        //       onSave && onSave(editorRef.current?.getContent() ?? ''),
+        //   });
+        // },
         toolbar:
           'undo redo | formatselect ' +
           'bold italic backcolor | alignleft aligncenter ' +
