@@ -69,7 +69,7 @@ export const PostList = () => {
         height={'500px'}
         onRowClick={(row) =>
           Router.push({
-            pathname: '/post/' + row.item.id,
+            pathname: '/blog/' + row.item.id,
           })
         }
       />

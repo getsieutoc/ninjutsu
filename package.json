@@ -35,6 +35,7 @@
     "react-dom": "18.2.0",
     "react-icons": "4.10.1",
     "react-virtuoso": "4.5.0",
+    "slugify": "1.6.6",
     "swr": "2.2.1",
     "tinymce": "6.6.2"
   },

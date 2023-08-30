@@ -18,18 +18,20 @@ import {
   CardFooter,
   Container,
 } from '@chakra-ui/react';
+import slugify from 'slugify';
 import { PostList } from '@/components/Post';
 import { TextEditor } from '@/components';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { useAuth } from '@/hooks';
 
-export default function PagePostEditor() {
+export default function BlogEditor() {
   const toast = useToast();
   const { session } = useAuth();
 
   const [title, setTitle] = useState('');
-  const [slug, setSlug] = useState('');
-  const [published, setPublished] = useState(true);
+  const [publishedAt, setPublishedAt] = useState<string | null>(
+    new Date().toISOString()
+  );
   const [content, setContent] = useState('');
   const [showActionPost, setShowActionPost] = useState(true);
 
@@ -43,9 +45,9 @@ export default function PagePostEditor() {
       body: JSON.stringify({
         title: title.trim(),
         content,
-        slug,
-        publishedAt: new Date().toISOString(),
-        locale: '',
+        slug: slugify(title),
+        publishedAt,
+        locale: 'VI',
         authorId: userID,
       }),
     });
@@ -109,10 +111,15 @@ export default function PagePostEditor() {
             {showActionPost && (
               <CardBody p={2}>
                 <Checkbox
-                  onChange={(e) => setPublished(e.target.checked)}
-                  isChecked={published}
+                  onChange={(e) => {
+                    const isPublished = e.target.checked;
+                    setPublishedAt(
+                      isPublished ? new Date().toDateString() : null
+                    );
+                  }}
+                  isChecked={!!publishedAt}
                 >
-                  {published ? 'Công khai' : 'Riêng tư'}
+                  {!!publishedAt ? 'Công khai' : 'Riêng tư'}
                 </Checkbox>
               </CardBody>
             )}

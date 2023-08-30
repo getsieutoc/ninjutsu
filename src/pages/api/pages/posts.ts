@@ -17,3 +17,5 @@ export default async function handler(
     res.status(200).json(newPost);
   }
 }
+
+// home about-us blog edit-post
