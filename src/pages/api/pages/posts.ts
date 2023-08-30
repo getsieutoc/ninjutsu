@@ -7,12 +7,12 @@ export default async function handler(
   res: NextApiResponse<Post[] | Post>
 ) {
   if (req.method === 'GET') {
-    // const posts = await prisma.post.findMany();
-    res.status(200);
+    const posts = await prisma.post.findMany();
+    res.status(200).json(posts);
   }
   if (req.method === 'POST') {
     const newPost = await prisma.post.create({
-      data: JSON.parse(req.body),
+      data: req.body,
     });
     res.status(200).json(newPost);
   }

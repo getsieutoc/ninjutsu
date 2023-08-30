@@ -21,9 +21,12 @@ import {
 import { PostList } from '@/components/Post';
 import { TextEditor } from '@/components';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import { useAuth } from '@/hooks';
 
 export default function PagePostEditor() {
   const toast = useToast();
+  const { session } = useAuth();
+
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [published, setPublished] = useState(true);
@@ -31,6 +34,7 @@ export default function PagePostEditor() {
   const [showActionPost, setShowActionPost] = useState(true);
 
   const handleSave = async () => {
+    const userID = session?.user.id;
     const data = await fetch('/api/pages/posts', {
       method: 'POST',
       headers: {
@@ -39,10 +43,10 @@ export default function PagePostEditor() {
       body: JSON.stringify({
         title: title.trim(),
         content,
-        published,
         slug,
+        publishedAt: new Date().toISOString(),
         locale: '',
-        authorId: 'test-123',
+        authorId: userID,
       }),
     });
 
@@ -72,6 +76,7 @@ export default function PagePostEditor() {
           <Input
             width="100%"
             rounded={5}
+            autoFocus
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Tiêu đề..."
             size="sm"
