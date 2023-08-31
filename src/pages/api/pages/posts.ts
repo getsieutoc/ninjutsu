@@ -36,5 +36,9 @@ export default async function handler(
 }
 
 const getPosts = async () => {
-  return await prisma.post.findMany();
+  return await prisma.post.findMany({
+    where: {
+      deletedAt: null,
+    },
+  });
 };
