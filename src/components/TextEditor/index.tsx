@@ -5,7 +5,6 @@ import { Editor as TinyMCEEditor } from 'tinymce';
 type PropTypes = {
   value?: string;
   onChange?: (value: string) => void;
-  
 };
 
 export const TextEditor: FC<PropTypes> = ({ value, onChange }) => {
@@ -15,11 +14,11 @@ export const TextEditor: FC<PropTypes> = ({ value, onChange }) => {
     <Editor
       onInit={(evt, editor) => (editorRef.current = editor)}
       apiKey={process.env.NEXT_PUBLIC_API_KEY_TINYMCE}
-      onEditorChange={(text) => onChange&&onChange(text)}
+      onEditorChange={(text) => onChange && onChange(text)}
       initialValue={value}
       init={{
         height: 500,
-        menubar: true,
+        menubar: false,
         branding: false,
         plugins: 'link image table',
         // setup: function (editor) {
@@ -32,7 +31,7 @@ export const TextEditor: FC<PropTypes> = ({ value, onChange }) => {
         // },
         toolbar:
           'undo redo | formatselect ' +
-          'bold italic backcolor | alignleft aligncenter ' +
+          'bold italic | alignleft aligncenter ' +
           'alignright alignjustify | bullist numlist outdent indent | ' +
           'removeformat | help | save',
         content_style:

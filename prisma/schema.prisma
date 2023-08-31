@@ -88,9 +88,9 @@ model Post {
   slug        String    @db.VarChar(255)
   content     String
   locale      String
+  tags        Tag[]
   authorId    String
   author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  tags        Tag[]
 }
 
 model Tag {

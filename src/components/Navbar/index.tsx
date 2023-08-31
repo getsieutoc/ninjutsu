@@ -9,12 +9,12 @@ export const Navbar = () => {
     <Flex as="header" justify="space-between" align="center">
       <Logo />
 
-      <NextLink href="/protected">Protected</NextLink>
+      <NextLink href="/home">Home</NextLink>
 
-      <NextLink href="/server">Server</NextLink>
+      <NextLink href="/about-us">About us</NextLink>
 
-      <NextLink href="/admin">Admin</NextLink>
-      <NextLink href="/post/pageposteditor">Pages</NextLink>
+      <NextLink href="/blogs">Blogs</NextLink>
+      <NextLink href="/blog/blog-editor">Blog editor</NextLink>
       <ProfileMenu />
     </Flex>
   );
