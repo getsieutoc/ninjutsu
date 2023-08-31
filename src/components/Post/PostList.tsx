@@ -1,4 +1,4 @@
-import { Box, Spinner } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Spacer, Spinner } from '@chakra-ui/react';
 import { useSWR } from '@/hooks';
 import _ from 'lodash';
 import { VirtualTable } from '../VirtualTable';
@@ -20,7 +20,16 @@ const defaultColumns: ColumnDef<Post>[] = [
     header: 'id',
     size: 10,
     cell(props) {
-      return <>{props.row.original.id}</>;
+      return (
+        <Box
+          textOverflow="ellipsis"
+          overflow="hidden"
+          whiteSpace="nowrap"
+          maxW={100}
+        >
+          {props.row.original.id}
+        </Box>
+      );
     },
   },
   {
@@ -48,6 +57,43 @@ const defaultColumns: ColumnDef<Post>[] = [
     header: 'createdAt',
     cell(props) {
       return <>{props.row.original.createdAt}</>;
+    },
+  },
+  {
+    header: 'Action',
+    cell({ row }) {
+      return (
+        <HStack spacing={1}>
+          <Button
+            onClick={() =>
+              Router.push({
+                pathname: '/blog/blog-editor',
+                query: {
+                  postId: row.original.id,
+                },
+              })
+            }
+            size="sm"
+            colorScheme="orange"
+          >
+            Edit
+          </Button>
+          <Button size="sm" colorScheme="red">
+            Delete
+          </Button>
+          <Button
+            onClick={() =>
+              Router.push({
+                pathname: '/blog/' + row.original.id,
+              })
+            }
+            size="sm"
+            colorScheme="blue"
+          >
+            View
+          </Button>
+        </HStack>
+      );
     },
   },
 ];
@@ -80,21 +126,20 @@ export const PostList = () => {
 
   return (
     <Box>
-      <Pagination
-        count={data?.count ?? 0}
-        limit={limit}
-        pageIndex={pageIndex}
-        setPageIndex={setPageIndex}
-      />
+      <Flex>
+        <Spacer />
+        <Pagination
+          count={data?.count ?? 0}
+          limit={limit}
+          pageIndex={pageIndex}
+          setPageIndex={setPageIndex}
+        />
+      </Flex>
       <VirtualTable
         data={dataTable}
         columns={columns}
         height={'500px'}
-        onRowClick={(row) =>
-          Router.push({
-            pathname: '/blog/' + row.item.id,
-          })
-        }
+        // onRowClick={(row) => console.log(row.item[row?.context?.column?.id])}
       />
     </Box>
   );

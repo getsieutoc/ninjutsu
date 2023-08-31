@@ -19,10 +19,10 @@ import {
   Container,
 } from '@chakra-ui/react';
 import slugify from 'slugify';
-import { PostList } from '@/components/Post';
+import { useRouter } from 'next/router';
 import { TextEditor } from '@/components';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
-import { useAuth } from '@/hooks';
+import { useAuth, usePostById } from '@/hooks';
 
 type RequireInputType = {
   [key: string]: string;
@@ -30,6 +30,9 @@ type RequireInputType = {
 export default function BlogEditor() {
   const toast = useToast();
   const { session } = useAuth();
+  const route = useRouter();
+  const { postId } = route.query;
+  const { data } = usePostById(postId?.toString() ?? '');
 
   const [title, setTitle] = useState('');
   const [publishedAt, setPublishedAt] = useState<string | null>(
@@ -121,9 +124,6 @@ export default function BlogEditor() {
           />
 
           <TextEditor onChange={(text) => setContent(text)} value={content} />
-          <br />
-          <Divider />
-          <PostList />
         </Box>
         <Box w="20%">
           <Card>

@@ -4,3 +4,4 @@ export { useRouter } from 'next/router';
 export { default as useSWR } from 'swr';
 
 export * from './useAuth';
+export * from './usePostById';
