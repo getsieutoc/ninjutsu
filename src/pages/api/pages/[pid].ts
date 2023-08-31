@@ -8,8 +8,8 @@ export default async function handler(
 ) {
   const { pid } = req.query;
   const id = pid?.toString() ?? '';
-  const method = req.method;
-
+  const method = await req.method;
+  const body = await req.body;
   switch (method) {
     case 'GET': {
       try {
@@ -29,45 +29,35 @@ export default async function handler(
     }
     case 'PATCH': {
       try {
-        const body = await req.body;
-        const { title, content } = body;
-
         const updatePost = await prisma.post.update({
           where: {
             id,
           },
           data: {
-            title,
-            content,
+            ...body,
           },
         });
         if (!updatePost) {
-          return NextResponse.json(
-            { message: 'Post not found' },
-            { status: 404 }
-          );
+          return res.status(404).json({ message: 'Post not found' });
         }
-        return NextResponse.json(updatePost);
+        return res.status(200).json(updatePost);
       } catch (error) {
-        return NextResponse.json(
-          { message: 'Update Error', error },
-          { status: 500 }
-        );
+        res.status(500).json({ message: 'Update Error', error });
       }
     }
     case 'DELETE': {
       try {
-        await prisma.post.delete({
+        await prisma.post.update({
           where: {
             id,
           },
+          data: {
+            deletedAt: body.deletedAt,
+          },
         });
-        return NextResponse.json('Post has been deleted');
+        return res.status(200).json('Post has been deleted');
       } catch (error) {
-        return NextResponse.json(
-          { message: 'GET Error', error },
-          { status: 500 }
-        );
+        return res.status(500).json({ message: 'GET Error', error });
       }
     }
     default:

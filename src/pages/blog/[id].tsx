@@ -1,6 +1,7 @@
 import { Box, Heading, Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { usePostById } from '@/hooks';
+import { GeneralLayout } from '@/components';
 
 const PagePost = () => {
   const route = useRouter();
@@ -14,13 +15,13 @@ const PagePost = () => {
     );
   if (error) return <Box>{JSON.stringify(error)}</Box>;
   return (
-    <Box>
+    <GeneralLayout>
       <Heading>{data?.title}</Heading>
       <Box fontSize={12} color="gray.500">
         {data?.createdAt?.toString()}
       </Box>
       <Box as="div" dangerouslySetInnerHTML={{ __html: data?.content ?? '' }} />
-    </Box>
+    </GeneralLayout>
   );
 };
 export default PagePost;
