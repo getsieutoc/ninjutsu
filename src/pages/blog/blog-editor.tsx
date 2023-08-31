@@ -24,6 +24,9 @@ import { TextEditor } from '@/components';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { useAuth } from '@/hooks';
 
+type RequireInputType = {
+  [key: string]: string;
+};
 export default function BlogEditor() {
   const toast = useToast();
   const { session } = useAuth();
@@ -37,6 +40,8 @@ export default function BlogEditor() {
 
   const handleSave = async () => {
     const userID = session?.user.id;
+    const isOk = requiredInput({ title, content });
+    if (!isOk) return;
     const data = await fetch('/api/pages/posts', {
       method: 'POST',
       headers: {
@@ -70,6 +75,30 @@ export default function BlogEditor() {
     }
   };
 
+  const requiredInput = (req: RequireInputType) => {
+    let pass = true;
+    Object.keys(req)?.map((key) => {
+      const value = req[key].trim();
+      if (!value) {
+        pass = false;
+        toast({
+          status: 'warning',
+          title: 'Input request',
+          description: (
+            <>
+              <Box as="b" mr={1} textTransform="capitalize">
+                {key}
+              </Box>
+              can not be empty
+            </>
+          ),
+          duration: 4000,
+          isClosable: true,
+        });
+      }
+    });
+    return pass;
+  };
   return (
     <Container maxW="container.xl">
       <Heading size="lg">Tạo bài viết</Heading>
