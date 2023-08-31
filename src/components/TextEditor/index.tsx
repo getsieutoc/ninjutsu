@@ -15,7 +15,7 @@ export const TextEditor: FC<PropTypes> = ({ value, onChange }) => {
       onInit={(evt, editor) => (editorRef.current = editor)}
       apiKey={process.env.NEXT_PUBLIC_API_KEY_TINYMCE}
       onEditorChange={(text) => onChange && onChange(text)}
-      initialValue={value}
+      value={value}
       init={{
         height: 500,
         menubar: false,

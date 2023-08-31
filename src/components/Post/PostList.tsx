@@ -1,4 +1,4 @@
-import { Box, Spinner } from '@chakra-ui/react';
+import { Box, Button, Spinner } from '@chakra-ui/react';
 import { useSWR } from '@/hooks';
 import _ from 'lodash';
 import { VirtualTable } from '../VirtualTable';
@@ -8,6 +8,13 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Post } from '@prisma/client';
 
 const defaultColumns: ColumnDef<Post>[] = [
+  {
+    header: '#',
+    size: 10,
+    cell({ row }) {
+      return row.index + 1;
+    },
+  },
   {
     header: 'id',
     size: 10,
@@ -43,17 +50,25 @@ const defaultColumns: ColumnDef<Post>[] = [
     },
   },
 ];
+
 const fetcher = async (url: string) => await fetch(url).then((r) => r.json());
 export const PostList = () => {
-  const { data, error, isLoading } = useSWR('/api/pages/posts', fetcher);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [limit] = useState(25);
+  const { data, error, isLoading } = useSWR<{ count: number; posts: Post[] }>(
+    `/api/pages/posts?page=${pageIndex}&limit=${limit}`,
+    fetcher
+  );
+
   const [columns] = useState(defaultColumns);
 
   const dataTable: Post[] = useMemo(() => {
-    if (data?.length) {
-      return _.cloneDeep(data);
+    if (data?.posts?.length) {
+      return _.cloneDeep(data.posts);
     }
     return [];
-  }, [data]);
+  }, [data?.posts]);
+
   if (isLoading)
     return (
       <Box textAlign="center">
@@ -63,6 +78,12 @@ export const PostList = () => {
   if (error) return <>{JSON.stringify(error)}</>;
   return (
     <Box>
+      <Button
+        onClick={() => setPageIndex((prev) => (prev > 0 ? pageIndex - 1 : 0))}
+      >
+        Previous
+      </Button>
+      <Button onClick={() => setPageIndex(pageIndex + 1)}>Next</Button>
       <VirtualTable
         data={dataTable}
         columns={columns}

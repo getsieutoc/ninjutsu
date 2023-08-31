@@ -65,6 +65,7 @@ export default function BlogEditor() {
         isClosable: true,
         position: 'top-right',
       });
+      resetState();
     } else {
       toast({
         status: 'error',
@@ -74,7 +75,11 @@ export default function BlogEditor() {
       });
     }
   };
-
+  const resetState = () => {
+    setTitle('');
+    setContent('');
+    setPublishedAt(new Date().toISOString());
+  };
   const requiredInput = (req: RequireInputType) => {
     let pass = true;
     Object.keys(req)?.map((key) => {
@@ -108,13 +113,14 @@ export default function BlogEditor() {
             width="100%"
             rounded={5}
             autoFocus
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Tiêu đề..."
             size="sm"
             marginY={1}
           />
 
-          <TextEditor onChange={(text) => setContent(text)} />
+          <TextEditor onChange={(text) => setContent(text)} value={content} />
           <br />
           <Divider />
           <PostList />
