@@ -1,4 +1,4 @@
-import { Box, Button, Spinner } from '@chakra-ui/react';
+import { Box, Spinner } from '@chakra-ui/react';
 import { useSWR } from '@/hooks';
 import _ from 'lodash';
 import { VirtualTable } from '../VirtualTable';
@@ -6,6 +6,7 @@ import { useMemo, useState } from 'react';
 import Router from 'next/router';
 import { ColumnDef } from '@tanstack/react-table';
 import { Post } from '@prisma/client';
+import { Pagination } from '../Pagination';
 
 const defaultColumns: ColumnDef<Post>[] = [
   {
@@ -76,14 +77,15 @@ export const PostList = () => {
       </Box>
     );
   if (error) return <>{JSON.stringify(error)}</>;
+
   return (
     <Box>
-      <Button
-        onClick={() => setPageIndex((prev) => (prev > 0 ? pageIndex - 1 : 0))}
-      >
-        Previous
-      </Button>
-      <Button onClick={() => setPageIndex(pageIndex + 1)}>Next</Button>
+      <Pagination
+        count={data?.count ?? 0}
+        limit={limit}
+        pageIndex={pageIndex}
+        setPageIndex={setPageIndex}
+      />
       <VirtualTable
         data={dataTable}
         columns={columns}
