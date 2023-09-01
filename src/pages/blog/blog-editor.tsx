@@ -18,19 +18,25 @@ import {
 } from '@chakra-ui/react';
 import slugify from 'slugify';
 import { useRouter } from 'next/router';
+import { useSWR } from '@/hooks';
 import { GeneralLayout, TextEditor } from '@/components';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
-import { useAuth, usePostById } from '@/hooks';
+import { useAuth } from '@/hooks';
+import { Post } from '@prisma/client';
 
 type RequireInputType = {
   [key: string]: string;
 };
+const fetcher = async (url: string) => await fetch(url).then((r) => r.json());
 export default function BlogEditor() {
   const toast = useToast();
   const { session } = useAuth();
   const route = useRouter();
   const { postId } = route.query;
-  const { data } = usePostById(postId?.toString() ?? '');
+  const { data } = useSWR<Post>(
+    '/api/pages/' + postId?.toString() ?? null,
+    fetcher
+  );
   const [title, setTitle] = useState('');
   const [publishedAt, setPublishedAt] = useState<Date | null>(new Date());
   const [content, setContent] = useState('');
