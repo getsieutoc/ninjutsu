@@ -33,9 +33,7 @@ export default async function handler(
           where: {
             id,
           },
-          data: {
-            ...body,
-          },
+          data: body,
         });
         if (!updatePost) {
           return res.status(404).json({ message: 'Post not found' });
@@ -47,12 +45,9 @@ export default async function handler(
     }
     case 'DELETE': {
       try {
-        await prisma.post.update({
+        await prisma.post.delete({
           where: {
             id,
-          },
-          data: {
-            deletedAt: body.deletedAt,
           },
         });
         return res.status(200).json('Post has been deleted');

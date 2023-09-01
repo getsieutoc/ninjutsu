@@ -91,7 +91,7 @@ model Post {
   tags        Tag[]
   authorId    String
   author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  deletedAt   DateTime?
+  // deletedAt   DateTime?
   // totalLike   Int       @default(0)
 }
 

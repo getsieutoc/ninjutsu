@@ -1,5 +1,5 @@
-import { type FC, useState, useEffect, ReactNode } from 'react';
-import { Box, Button, HStack, Icon } from '@chakra-ui/react';
+import { type FC, useState } from 'react';
+import { Box, Button, HStack, Icon, Input, Select } from '@chakra-ui/react';
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -10,43 +10,20 @@ import {
 type PropTypes = {
   size?: 'md' | 'sm' | 'xs';
   pageIndex: number;
-  limit: number;
+  take?: number;
   count: number;
+  setTake?: (take: number) => void;
   setPageIndex: (index: number) => void;
 };
 export const Pagination: FC<PropTypes> = ({
   count,
-  limit,
+  take = 25,
   pageIndex,
   setPageIndex,
+  setTake,
   size = 'sm',
 }) => {
-  const [items, setItems] = useState<ReactNode[]>([]);
-  const [sumPages] = useState(Math.ceil(count / limit));
-
-  useEffect(() => {
-    if (pageIndex >= 0) {
-      const itemTemp: ReactNode[] = [];
-      for (let currentPage = 0; currentPage < sumPages; currentPage++) {
-        itemTemp.push(
-          <Button
-            size={size}
-            key={currentPage}
-            isDisabled={pageIndex === currentPage}
-            onClick={() => setPageIndex(currentPage)}
-            display={
-              pageIndex > currentPage + 2 || pageIndex < currentPage - 2
-                ? 'none'
-                : ''
-            }
-          >
-            {currentPage + 1}
-          </Button>
-        );
-      }
-      setItems([...itemTemp]);
-    }
-  }, [pageIndex]);
+  const [sumPages] = useState(Math.ceil(count / take));
 
   const goToLastPage = () => {
     setPageIndex(sumPages - 1);
@@ -57,44 +34,62 @@ export const Pagination: FC<PropTypes> = ({
         <Button
           onClick={() => setPageIndex(0)}
           size={size}
-          isDisabled={!pageIndex}
+          isDisabled={pageIndex <= 1}
         >
           <Icon as={ArrowLeftIcon} boxSize={3} />
         </Button>
         <Button
           onClick={() => setPageIndex(pageIndex > 1 ? pageIndex - 1 : 0)}
-          isDisabled={!pageIndex}
+          isDisabled={pageIndex <= 1}
           size={size}
         >
           <Icon as={ChevronLeftIcon} boxSize={4} />
         </Button>
-        {/* <Button display={pageIndex < 5 ? 'none' : ''} size={size} isDisabled>
-          ...
-        </Button> */}
-        {items}
-        {/* <Button
-          display={pageIndex === sumPages ? 'none' : ''}
+        <Input
+          min={1}
+          type="number"
+          max={sumPages}
+          value={pageIndex}
           size={size}
-          isDisabled
-        >
-          ...
-        </Button> */}
+          textAlign="center"
+          width={20}
+          onChange={(e) => setPageIndex(Number(e.target.value))}
+          placeholder="Go to page:"
+        />
         <Button
           onClick={() =>
             setPageIndex(sumPages > pageIndex ? pageIndex + 1 : sumPages)
           }
           size={size}
-          isDisabled={pageIndex >= sumPages - 1}
+          isDisabled={pageIndex >= sumPages}
         >
           <Icon as={ChevronRightIcon} boxSize={4} />
         </Button>
         <Button
           onClick={goToLastPage}
           size={size}
-          isDisabled={pageIndex >= sumPages - 1}
+          isDisabled={pageIndex >= sumPages}
         >
           <Icon as={ArrowRightIcon} boxSize={3} />
         </Button>
+        <Box>
+          Page{' '}
+          <Box as="b">
+            {pageIndex} of {sumPages}
+          </Box>
+        </Box>
+        <Box>
+          <Select
+            onChange={(e) => setTake && setTake(Number(e.target.value))}
+            placeholder={'show ' + take.toString()}
+            size={size}
+          >
+            <option value="5">5</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </Select>
+        </Box>
       </HStack>
     </Box>
   );

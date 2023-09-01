@@ -11,10 +11,9 @@ export default async function handler(
 
   switch (method) {
     case 'GET': {
-      const page = Number(req.query.page) ?? 0;
-      const limit = Number(req.query.limit) ?? 25;
-      const data = await getPosts(page, limit);
-
+      const pageIndex = Number(req.query.pageIndex) ?? 0;
+      const take = Number(req.query.take) ?? 25;
+      const data = await getPosts(pageIndex, take);
       res.status(200).json(data);
       break;
     }
@@ -42,23 +41,18 @@ type OrderByType = {
   [field: string]: Prisma.SortOrder;
 };
 const getPosts = async (
-  skip: number = 0,
+  pageIndex: number = 0,
   take: number = 25,
   orderBy: OrderByType = { createdAt: 'desc' }
 ) => {
-  const countPost = await prisma.post.count();
+  const count = await prisma.post.count();
   const posts = await prisma.post.findMany({
-    skip: skip > 0 ? skip * take : skip,
+    skip: pageIndex > 0 ? (pageIndex - 1) * take : pageIndex,
     take,
-    where: {
-      deletedAt: null,
-    },
-    orderBy: {
-      ...orderBy,
-    },
+    orderBy: orderBy,
   });
   return {
-    count: countPost,
+    count,
     posts,
   };
 };

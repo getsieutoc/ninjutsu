@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   HStack,
+  Icon,
   Spacer,
   Spinner,
   useToast,
@@ -15,16 +16,18 @@ import Router from 'next/router';
 import { ColumnDef } from '@tanstack/react-table';
 import { Post } from '@prisma/client';
 import { Pagination } from '../Pagination';
+import { DeleteIcon, ViewIcon } from '@chakra-ui/icons';
+import { BiEdit } from 'react-icons/bi';
 
 const fetcher = async (url: string) => await fetch(url).then((r) => r.json());
 export const PostList = () => {
   const toast = useToast();
-  const [pageIndex, setPageIndex] = useState(0);
-  const [limit] = useState(25);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [take, setTake] = useState(25);
   const { data, error, isLoading, mutate } = useSWR<{
     count: number;
     posts: Post[];
-  }>(`/api/pages/posts?page=${pageIndex}&limit=${limit}`, fetcher);
+  }>(`/api/pages/posts?pageIndex=${pageIndex}&take=${take}`, fetcher);
   const deletePost = async (id: string) => {
     if (window.confirm(`Are you sure you want to delete this post?`)) {
       const { status, statusText } = await fetch(`/api/pages/${id}`, {
@@ -122,17 +125,17 @@ export const PostList = () => {
                     },
                   })
                 }
+                variant="outline"
                 size="sm"
-                colorScheme="orange"
               >
-                Edit
+                <Icon as={BiEdit} color="orange.400" />
               </Button>
               <Button
                 onClick={() => deletePost(row.original.id)}
                 size="sm"
-                colorScheme="red"
+                variant="outline"
               >
-                Delete
+                <Icon as={DeleteIcon} color="red.400" />
               </Button>
               <Button
                 onClick={() =>
@@ -141,9 +144,9 @@ export const PostList = () => {
                   })
                 }
                 size="sm"
-                colorScheme="blue"
+                variant="outline"
               >
-                View
+                <Icon as={ViewIcon} />
               </Button>
             </HStack>
           );
@@ -173,9 +176,10 @@ export const PostList = () => {
         <Spacer />
         <Pagination
           count={data?.count ?? 0}
-          limit={limit}
+          take={take}
           pageIndex={pageIndex}
           setPageIndex={setPageIndex}
+          setTake={setTake}
         />
       </Flex>
       <VirtualTable
