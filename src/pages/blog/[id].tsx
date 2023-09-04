@@ -1,9 +1,10 @@
 import { Box, Heading, Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useSWR } from '@/hooks';
+import { GeneralLayout } from '@/components';
 import { Post } from '@prisma/client';
-const fetcher = async (url: string) => await fetch(url).then((r) => r.json());
 
+const fetcher = async (url: string) => await fetch(url).then((r) => r.json());
 const PagePost = () => {
   const route = useRouter();
   const { id } = route.query;
@@ -16,13 +17,13 @@ const PagePost = () => {
     );
   if (error) return <Box>{JSON.stringify(error)}</Box>;
   return (
-    <Box>
+    <GeneralLayout>
       <Heading>{data?.title}</Heading>
       <Box fontSize={12} color="gray.500">
         {data?.createdAt?.toString()}
       </Box>
       <Box as="div" dangerouslySetInnerHTML={{ __html: data?.content ?? '' }} />
-    </Box>
+    </GeneralLayout>
   );
 };
 export default PagePost;

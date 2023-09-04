@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Flex,
@@ -8,7 +8,6 @@ import {
   Card,
   Input,
   Button,
-  Divider,
   Heading,
   Spacer,
   useToast,
@@ -16,28 +15,48 @@ import {
   CardBody,
   CardHeader,
   CardFooter,
-  Container,
 } from '@chakra-ui/react';
 import slugify from 'slugify';
-import { PostList } from '@/components/Post';
-import { TextEditor } from '@/components';
+import { useRouter } from 'next/router';
+import { useSWR } from '@/hooks';
+import { GeneralLayout, TextEditor } from '@/components';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { useAuth } from '@/hooks';
+import { Post } from '@prisma/client';
 
+type RequireInputType = {
+  [key: string]: string;
+};
+const fetcher = async (url: string) => await fetch(url).then((r) => r.json());
 export default function BlogEditor() {
   const toast = useToast();
   const { session } = useAuth();
-
-  const [title, setTitle] = useState('');
-  const [publishedAt, setPublishedAt] = useState<string | null>(
-    new Date().toISOString()
+  const route = useRouter();
+  const { postId } = route.query;
+  const { data } = useSWR<Post>(
+    '/api/pages/' + postId?.toString() ?? null,
+    fetcher
   );
+  const [title, setTitle] = useState('');
+  const [publishedAt, setPublishedAt] = useState<Date | null>(new Date());
   const [content, setContent] = useState('');
   const [showActionPost, setShowActionPost] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (data?.id) {
+      setTitle(data.title);
+      setContent(data.content);
+      setPublishedAt(data?.publishedAt ?? null);
+    }
+  }, [data?.id]);
 
   const handleSave = async () => {
     const userID = session?.user.id;
-    const data = await fetch('/api/pages/posts', {
+    const isOk = requiredInput({ title, content });
+    if (!isOk) return;
+    setIsLoading(true);
+    const { status, statusText } = await fetch('/api/pages/posts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -52,7 +71,7 @@ export default function BlogEditor() {
       }),
     });
 
-    if (data.status === 200) {
+    if (status === 200) {
       toast({
         status: 'success',
         title: 'Successfully',
@@ -60,35 +79,116 @@ export default function BlogEditor() {
         isClosable: true,
         position: 'top-right',
       });
+      resetState();
     } else {
       toast({
         status: 'error',
-        description: data.statusText,
+        description: statusText,
         duration: 3000,
         isClosable: true,
       });
     }
+    setIsLoading(false);
   };
+  const handleUpdate = async () => {
+    const userID = session?.user.id;
+    const isOk = requiredInput({ title, content });
+    if (!isOk) return;
+    setIsLoading(true);
+    const { status, statusText } = await fetch(`/api/pages/${data?.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: title.trim(),
+        content,
+        slug: slugify(title),
+        publishedAt,
+        locale: 'VI',
+        authorId: userID,
+      }),
+    });
 
+    if (status === 200) {
+      toast({
+        status: 'success',
+        title: 'Update Successfully',
+        duration: 2000,
+        isClosable: true,
+        position: 'top-right',
+      });
+    } else {
+      toast({
+        status: 'error',
+        description: statusText,
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    setIsLoading(false);
+  };
+  const resetState = () => {
+    setTitle('');
+    setContent('');
+    setPublishedAt(new Date());
+  };
+  const requiredInput = (req: RequireInputType) => {
+    let pass = true;
+    Object.keys(req)?.map((key) => {
+      const value = req[key].trim();
+      if (!value) {
+        pass = false;
+        toast({
+          status: 'warning',
+          title: 'Input request',
+          description: (
+            <>
+              <Box as="b" mr={1} textTransform="capitalize">
+                {key}
+              </Box>
+              can not be empty
+            </>
+          ),
+          duration: 4000,
+          isClosable: true,
+        });
+      }
+    });
+    return pass;
+  };
   return (
-    <Container maxW="container.xl">
-      <Heading size="lg">Tạo bài viết</Heading>
+    <GeneralLayout>
+      <Heading size="lg" fontWeight={400} pb={2}>
+        {data?.id ? 'Update ' : 'Create '} article{' '}
+        {data?.id && (
+          <Button
+            onClick={() => {
+              resetState();
+              route.push({ pathname: '/blog/blog-editor' });
+            }}
+            size="xs"
+            variant="outline"
+            colorScheme="blue"
+          >
+            Create new
+          </Button>
+        )}
+      </Heading>
       <Stack spacing={1} direction="row">
         <Box w="80%">
           <Input
             width="100%"
             rounded={5}
             autoFocus
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Tiêu đề..."
             size="sm"
             marginY={1}
           />
 
-          <TextEditor onChange={(text) => setContent(text)} />
-          <br />
-          <Divider />
-          <PostList />
+          <TextEditor onChange={(text) => setContent(text)} value={content} />
         </Box>
         <Box w="20%">
           <Card>
@@ -113,9 +213,7 @@ export default function BlogEditor() {
                 <Checkbox
                   onChange={(e) => {
                     const isPublished = e.target.checked;
-                    setPublishedAt(
-                      isPublished ? new Date().toDateString() : null
-                    );
+                    setPublishedAt(isPublished ? new Date() : null);
                   }}
                   isChecked={!!publishedAt}
                 >
@@ -124,20 +222,21 @@ export default function BlogEditor() {
               </CardBody>
             )}
             {showActionPost && (
-              <CardFooter>
+              <CardFooter p={2}>
                 <Button
-                  onClick={handleSave}
-                  colorScheme="green"
+                  onClick={data?.id ? handleUpdate : handleSave}
+                  colorScheme={data?.id ? 'orange' : 'green'}
                   size="sm"
                   width="100%"
+                  isLoading={isLoading}
                 >
-                  Save
+                  {data?.id ? `Update` : `Save`}
                 </Button>
               </CardFooter>
             )}
           </Card>
         </Box>
       </Stack>
-    </Container>
+    </GeneralLayout>
   );
 }
