@@ -1,40 +1,37 @@
-import type {
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-} from 'next';
+// 'use client';
+import { headers } from 'next/headers';
 import {
-  Button,
-  Divider,
-  FormControl,
-  FormLabel,
-  Heading,
   Input,
   VStack,
   Stack,
+  Divider,
+  Button,
+  Heading,
   NextLink,
+  FormLabel,
+  FormControl,
 } from '@/components';
 import { getProviders, signIn } from 'next-auth/react';
-import { useRouter, useState } from '@/hooks';
+import { useMemo, useRouter, useState } from '@/hooks';
 
-export default function Login({
-  providers,
-  referer,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Login() {
   const router = useRouter();
-
+  const providers = useMemo(async () => await getProviders(), []);
+  const headersList = headers();
+  const referer = headersList.get('referer');
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
   });
 
-  const getCallbackUrl = () => {
+  const getCallbackUrl = (): string | undefined => {
     const { callbackUrl } = router.query;
 
     if (typeof callbackUrl === 'string') {
       return callbackUrl;
     }
 
-    return referer;
+    return referer ?? undefined;
   };
 
   const validEmail = credentials.email.length > 3;
@@ -119,16 +116,4 @@ export default function Login({
       </Button>
     </Stack>
   );
-}
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const providers = await getProviders();
-  const { referer } = context.req.headers;
-
-  return {
-    props: {
-      providers: providers ?? [],
-      referer,
-    },
-  };
 }

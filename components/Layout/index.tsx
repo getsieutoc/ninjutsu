@@ -1,8 +1,8 @@
-import { Container, Flex } from '@chakra-ui/react';
+'use client';
 import type { ReactNode } from 'react';
-
 import { CustomHead } from '../CustomHead';
 import { Navbar } from '../Navbar';
+import { Container, Flex } from '@chakra-ui/react';
 
 export type GeneralLayoutProps = {
   centerContent?: boolean;
@@ -21,8 +21,7 @@ export const GeneralLayout = ({
         title="Nextjs Template"
         description="Strong opinionated starter template"
       />
-
-      <Container maxW="1280px" centerContent={centerContent}>
+      <Container maxW="container.xl" centerContent={centerContent}>
         <Flex
           direction="column"
           justifyContent="space-between"

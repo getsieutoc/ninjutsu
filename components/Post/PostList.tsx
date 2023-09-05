@@ -1,3 +1,4 @@
+'use client';
 import {
   Box,
   Button,
@@ -28,6 +29,7 @@ export const PostList = () => {
     count: number;
     posts: Post[];
   }>(`/api/pages/posts?pageIndex=${pageIndex}&take=${take}`, fetcher);
+
   const deletePost = async (id: string) => {
     if (window.confirm(`Are you sure you want to delete this post?`)) {
       const { status, statusText } = await fetch(`/api/pages/${id}`, {
@@ -153,7 +155,7 @@ export const PostList = () => {
         },
       },
     ],
-    []
+    [deletePost]
   );
   const dataTable: Post[] = useMemo(() => {
     if (data?.posts?.length) {
@@ -168,7 +170,6 @@ export const PostList = () => {
         <Spinner />
       </Box>
     );
-  if (error) return <>{JSON.stringify(error)}</>;
 
   return (
     <Box>

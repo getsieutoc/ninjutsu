@@ -1,3 +1,4 @@
+'use client';
 import { TableVirtuoso, type TableComponents } from 'react-virtuoso';
 import { useState, type CSSProperties } from 'react';
 import {

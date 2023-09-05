@@ -1,3 +1,4 @@
+'use client';
 import { type FC, useState } from 'react';
 import { Box, Button, HStack, Icon, Input, Select } from '@chakra-ui/react';
 import {
