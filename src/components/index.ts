@@ -5,3 +5,4 @@ export * from './NextLink';
 // export * from './CustomSunEditor';
 export * from './VirtualTable';
 export * from './TextEditor';
+export * from './Pagination';
