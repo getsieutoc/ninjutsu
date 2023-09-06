@@ -1,14 +1,12 @@
-'use client';
+import { getServerSession } from 'next-auth/next';
 import { GeneralLayout, AccessDenied } from '@/components';
-import { useAuth } from '@/hooks';
+import { authOptions } from '@/lib/auth';
 
-export default function ProtectedPage() {
-  const { isAuthenticated } = useAuth();
-
-  // If session exists, display content
+export default async function ProtectedPage() {
+  const session = await getServerSession(authOptions);
   return (
     <GeneralLayout>
-      {isAuthenticated ? <h1>Protected Page</h1> : <AccessDenied />}
+      {session?.user?.id ? <h1>Protected Page</h1> : <AccessDenied />}
     </GeneralLayout>
   );
 }

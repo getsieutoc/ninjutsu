@@ -1,9 +1,8 @@
-'use client';
+import { getServerSession } from 'next-auth/next';
 import { GeneralLayout } from '@/components';
-import { useAuth } from '@/hooks';
-
-export default function MePage() {
-  const { session } = useAuth({ required: true });
+import { authOptions } from '@/lib/auth';
+export default async function MePage() {
+  const session = await getServerSession(authOptions);
 
   return (
     <GeneralLayout>

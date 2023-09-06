@@ -1,48 +1,48 @@
 'use client';
 import {
   Button,
-  Checkbox,
-  FormErrorMessage,
-  FormControl,
-  FormLabel,
   Input,
   NextLink,
+  Checkbox,
+  FormLabel,
+  FormControl,
+  FormErrorMessage,
 } from '@/components';
 import { MIN_PASSWORD_LENGTH } from '@/utils/constants';
 import { httpClient } from '@/utils/httpClient';
-import { useRouter, useState } from '@/hooks';
+import { useEffect, useRouter, useState } from '@/hooks';
+import type { Session } from 'next-auth';
 
-export default function SignUpForm() {
+type PropTypes = {
+  session?: Session | null;
+};
+export default function SignUpForm({ session }: PropTypes) {
   const router = useRouter();
-
   const [isLoading, setLoading] = useState(false);
-
   const [agreed, setAgreed] = useState(false);
-
   const [credentials, setCredentials] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
-
-  const handleSignUp = async () => {
-    setLoading(true);
-
-    await httpClient.post('/api/users', credentials);
-
-    setLoading(false);
-
-    await router.push('/login');
-  };
-
   const validEmail = credentials.email.length > 3;
   const isPasswordStrong = credentials.password.length >= MIN_PASSWORD_LENGTH;
   const isConfirmMatched = credentials.password === credentials.confirmPassword;
   const validForm = validEmail && isPasswordStrong && isConfirmMatched;
-
   const colorScheme = validForm ? 'brand' : 'gray';
+  useEffect(() => {
+    if (session?.user?.id) {
+      router.push('/protected');
+    }
+  }, [session?.user?.id]);
 
+  const handleSignUp = async () => {
+    setLoading(true);
+    await httpClient.post('/api/users', credentials);
+    setLoading(false);
+    await router.push('/login');
+  };
   return (
     <>
       <FormControl>
