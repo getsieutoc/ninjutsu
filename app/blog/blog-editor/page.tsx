@@ -18,11 +18,10 @@ import {
 } from '@chakra-ui/react';
 import slugify from 'slugify';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useSWR } from '@/hooks';
+import { useSWR, useAuth } from '@/hooks';
 import { GeneralLayout, TextEditor } from '@/components';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
-import { useAuth } from '@/hooks';
-import { Post } from '@prisma/client';
+import type { Post } from '@/types';
 
 type RequireInputType = {
   [key: string]: string;
@@ -190,7 +189,7 @@ export default function BlogEditor() {
             marginY={1}
           />
 
-          <TextEditor onChange={(text) => setContent(text)} value={content} />
+          {/* <TextEditor onChange={(text) => setContent(text)} value={content} /> */}
         </Box>
         <Box w="20%">
           <Card>

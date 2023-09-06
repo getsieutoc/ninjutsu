@@ -1,23 +1,21 @@
-'use client';
-import { Box, Heading, Spinner } from '@chakra-ui/react';
-import { usePathname } from 'next/navigation';
-import { useSWR } from '@/hooks';
-import { GeneralLayout } from '@/components';
-import { Post } from '@prisma/client';
+import { type FC } from 'react';
+import { headers } from 'next/headers';
+import { GeneralLayout, Box, Heading } from '@/components';
+import type { Post } from '@/types';
 
+type PropTypes = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 const fetcher = async (url: string) => await fetch(url).then((r) => r.json());
-const PagePost = () => {
-  const pathname = usePathname();
-  const pathUrl = pathname.split('/');
-  const id = pathUrl[pathUrl.length - 1];
-  const { data, error, isLoading } = useSWR<Post>('/api/pages/' + id, fetcher);
-  if (isLoading)
-    return (
-      <Box textAlign="center">
-        <Spinner />
-      </Box>
-    );
-  if (error) return <Box>{JSON.stringify(error)}</Box>;
+const PagePost: FC<PropTypes> = async ({ params }) => {
+  const { id } = params;
+  const headersList = headers();
+  const host = headersList.get('host');
+  const protocol = headersList.get('referer')?.split('://')[0];
+  const res = await fetch(protocol + '://' + host + '/api/pages/' + id);
+  if (!res.ok) return <>{new Error(res.statusText)}</>;
+  const data: Post = await res.json();
   return (
     <GeneralLayout>
       <Heading>{data?.title}</Heading>

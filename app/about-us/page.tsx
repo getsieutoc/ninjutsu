@@ -1,6 +1,4 @@
-'use client';
-import { Box, Button, Heading } from '@chakra-ui/react';
-import { GeneralLayout } from '@/components';
+import { GeneralLayout, Box, Button, Heading } from '@/components';
 export default function AboutUsPage() {
   return (
     <GeneralLayout>

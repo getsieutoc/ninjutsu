@@ -1,4 +1,3 @@
-'use client';
 import type { ReactNode } from 'react';
 import { CustomHead } from '../CustomHead';
 import { Navbar } from '../Navbar';
