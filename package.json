@@ -8,7 +8,7 @@
     "migrate:dev": "prisma migrate dev",
     "postinstall": "npm run db:generate",
     "dev": "docker-compose up -d && next dev",
-    "lint": "eslint ./src --ext .ts,.tsx",
+    "lint": "eslint ./ --ext .ts,.tsx",
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit"
