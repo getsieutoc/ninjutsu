@@ -1,4 +1,3 @@
-'use client';
 export * from '@prisma/client';
 
 export enum HttpMethod {
