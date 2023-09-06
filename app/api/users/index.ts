@@ -3,7 +3,7 @@ import { createUser, queryUsers } from '@/services/users';
 import { getServerSession } from 'next-auth/next';
 import { HttpMethod } from '@/types';
 
-import { authOptions } from '../auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 import { withRateLimit } from '@/utils/rateLimit';
 
 export default withRateLimit(async function handler(
