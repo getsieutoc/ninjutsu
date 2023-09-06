@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth/next';
 import { Heading, Stack } from '@/components';
-import SignUpForm from './signUpForm';
+import SignUpForm from './SignUpForm';
 import { authOptions } from '@/lib/auth';
 
 export default async function SignUp() {
