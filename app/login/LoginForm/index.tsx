@@ -21,7 +21,7 @@ export default function LoginForm() {
   });
 
   const getCallbackUrl = () => {
-    return '/';
+    return router.back();
   };
 
   const validEmail = credentials.email.length > 3;
@@ -30,8 +30,8 @@ export default function LoginForm() {
   const colorScheme = validEmail && hasPassword ? 'brand' : 'gray';
 
   useEffect(() => {
-    if (isAuthenticated) {
-      router.push('/protected');
+    if (isAuthenticated && router) {
+      router.back();
     }
   }, [isAuthenticated, router]);
   return (

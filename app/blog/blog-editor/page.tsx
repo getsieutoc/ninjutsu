@@ -21,6 +21,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useSWR, useAuth } from '@/hooks';
 import { GeneralLayout, TextEditor } from '@/components';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import Login from '../../login/page';
 import type { Post } from '@/types';
 
 type RequireInputType = {
@@ -32,7 +33,7 @@ export default function BlogEditor() {
   const postId = searchParams.get('postId');
   const route = useRouter();
   const toast = useToast();
-  const { session } = useAuth();
+  const { session, isAuthenticated } = useAuth();
 
   const { data } = useSWR<Post>(
     '/api/pages/' + postId?.toString() ?? null,
@@ -158,6 +159,7 @@ export default function BlogEditor() {
     });
     return pass;
   };
+  if (!isAuthenticated) return <Login />;
   return (
     <GeneralLayout>
       <Heading size="lg" fontWeight={400} pb={2}>
@@ -189,7 +191,7 @@ export default function BlogEditor() {
             marginY={1}
           />
 
-          {/* <TextEditor onChange={(text) => setContent(text)} value={content} /> */}
+          <TextEditor onChange={(text) => setContent(text)} value={content} />
         </Box>
         <Box w="20%">
           <Card>
