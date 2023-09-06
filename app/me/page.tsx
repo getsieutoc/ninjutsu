@@ -1,8 +1,7 @@
-import { getServerSession } from 'next-auth/next';
+import { getSession } from '@/utils/auth';
 import { GeneralLayout } from '@/components';
-import { authOptions } from '@/lib/auth';
 export default async function MePage() {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
 
   return (
     <GeneralLayout>

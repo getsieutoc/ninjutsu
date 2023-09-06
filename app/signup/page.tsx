@@ -1,10 +1,9 @@
-import { getServerSession } from 'next-auth/next';
 import { Heading, Stack } from '@/components';
 import SignUpForm from './SignUpForm';
-import { authOptions } from '@/lib/auth';
+import { getSession } from '@/utils/auth';
 
 export default async function SignUp() {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
 
   return (
     <Stack gap={4} maxWidth="sm" marginX="auto" marginTop="10vh">
