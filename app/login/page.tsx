@@ -1,5 +1,5 @@
 import { Stack, Heading } from '@/components';
-import LoginForm from './LoginForm2';
+import LoginForm from './LoginForm';
 
 export default function Login() {
   return (
