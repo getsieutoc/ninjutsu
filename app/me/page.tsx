@@ -1,3 +1,4 @@
+'use client';
 import { GeneralLayout } from '@/components';
 import { useAuth } from '@/hooks';
 

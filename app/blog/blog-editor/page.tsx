@@ -17,7 +17,7 @@ import {
   CardFooter,
 } from '@chakra-ui/react';
 import slugify from 'slugify';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useSWR } from '@/hooks';
 import { GeneralLayout, TextEditor } from '@/components';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
@@ -29,10 +29,12 @@ type RequireInputType = {
 };
 const fetcher = async (url: string) => await fetch(url).then((r) => r.json());
 export default function BlogEditor() {
+  const searchParams = useSearchParams();
+  const postId = searchParams.get('postId');
+  const route = useRouter();
   const toast = useToast();
   const { session } = useAuth();
-  const route = useRouter();
-  const { postId } = route.query;
+
   const { data } = useSWR<Post>(
     '/api/pages/' + postId?.toString() ?? null,
     fetcher
@@ -56,7 +58,7 @@ export default function BlogEditor() {
     const isOk = requiredInput({ title, content });
     if (!isOk) return;
     setIsLoading(true);
-    const { status, statusText } = await fetch('/api/pages/posts', {
+    const { status, statusText } = await fetch('/api/pages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -165,7 +167,7 @@ export default function BlogEditor() {
           <Button
             onClick={() => {
               resetState();
-              route.push({ pathname: '/blog/blog-editor' });
+              route.push('/blog/blog-editor');
             }}
             size="xs"
             variant="outline"

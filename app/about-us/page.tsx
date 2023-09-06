@@ -12,9 +12,9 @@ export default function AboutUsPage() {
         width="100%"
         height="100%"
       >
-        <Box marginTop={50} marginLeft={100} maxWidth="520px">
+        <Box marginTop={50} marginLeft={10} maxWidth="450px">
           <Heading fontWeight={800}>ABOUT US</Heading>
-          <Box border="1.5px solid black" w="120px" />
+          <Box border="1.5px solid black" width="120px" />
 
           <Box
             marginY={10}

@@ -26,14 +26,11 @@ export const Pagination: FC<PropTypes> = ({
 }) => {
   const [sumPages] = useState(Math.ceil(count / take));
 
-  const goToLastPage = () => {
-    setPageIndex(sumPages - 1);
-  };
   return (
     <Box>
       <HStack spacing={1}>
         <Button
-          onClick={() => setPageIndex(0)}
+          onClick={() => setPageIndex(1)}
           size={size}
           isDisabled={pageIndex <= 1}
         >
@@ -67,7 +64,7 @@ export const Pagination: FC<PropTypes> = ({
           <Icon as={ChevronRightIcon} boxSize={4} />
         </Button>
         <Button
-          onClick={goToLastPage}
+          onClick={() => setPageIndex(sumPages)}
           size={size}
           isDisabled={pageIndex >= sumPages}
         >

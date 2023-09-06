@@ -6,6 +6,8 @@ export default function ProtectedPage() {
 
   // If session exists, display content
   return (
-    <GeneralLayout>{isAuthenticated ? <h1>Protected Page</h1> : <AccessDenied />}</GeneralLayout>
+    <GeneralLayout>
+      {isAuthenticated ? <h1>Protected Page</h1> : <AccessDenied />}
+    </GeneralLayout>
   );
 }

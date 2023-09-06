@@ -1,5 +1,4 @@
-// 'use client';
-import { headers } from 'next/headers';
+'use client';
 import {
   Input,
   VStack,
@@ -12,33 +11,26 @@ import {
   FormControl,
 } from '@/components';
 import { getProviders, signIn } from 'next-auth/react';
-import { useMemo, useRouter, useState } from '@/hooks';
+import { useAuth, useMemo, useState } from '@/hooks';
+import ProtectedPage from '../protected/page';
 
 export default function Login() {
-  const router = useRouter();
   const providers = useMemo(async () => await getProviders(), []);
-  const headersList = headers();
-  const referer = headersList.get('referer');
+  const { isAuthenticated } = useAuth();
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
   });
 
-  const getCallbackUrl = (): string | undefined => {
-    const { callbackUrl } = router.query;
-
-    if (typeof callbackUrl === 'string') {
-      return callbackUrl;
-    }
-
-    return referer ?? undefined;
+  const getCallbackUrl = () => {
+    return '/';
   };
 
   const validEmail = credentials.email.length > 3;
   const hasPassword = credentials.password.length > 8;
 
   const colorScheme = validEmail && hasPassword ? 'brand' : 'gray';
-
+  if (isAuthenticated) return <ProtectedPage />;
   return (
     <Stack
       gap={4}
@@ -99,7 +91,7 @@ export default function Login() {
         size="lg"
         marginTop={2}
         colorScheme={colorScheme}
-        isLoading={!!router.query.callback}
+        // isLoading={!!router.query.callback}
         onClick={() => {
           signIn('credentials', {
             ...credentials,

@@ -13,7 +13,7 @@ import { useSWR } from '@/hooks';
 import _ from 'lodash';
 import { VirtualTable } from '../VirtualTable';
 import { useMemo, useState } from 'react';
-import Router from 'next/router';
+import { useRouter } from 'next/navigation';
 import { ColumnDef } from '@tanstack/react-table';
 import { Post } from '@prisma/client';
 import { Pagination } from '../Pagination';
@@ -23,12 +23,13 @@ import { BiEdit } from 'react-icons/bi';
 const fetcher = async (url: string) => await fetch(url).then((r) => r.json());
 export const PostList = () => {
   const toast = useToast();
+  const router = useRouter();
   const [pageIndex, setPageIndex] = useState(1);
   const [take, setTake] = useState(25);
   const { data, error, isLoading, mutate } = useSWR<{
     count: number;
     posts: Post[];
-  }>(`/api/pages/posts?pageIndex=${pageIndex}&take=${take}`, fetcher);
+  }>(`/api/pages?pageIndex=${pageIndex}&take=${take}`, fetcher);
 
   const deletePost = async (id: string) => {
     if (window.confirm(`Are you sure you want to delete this post?`)) {
@@ -120,12 +121,7 @@ export const PostList = () => {
             <HStack spacing={1}>
               <Button
                 onClick={() =>
-                  Router.push({
-                    pathname: '/blog/blog-editor',
-                    query: {
-                      postId: row.original.id,
-                    },
-                  })
+                  router.push('/blog/blog-editor?postId=' + row.original.id)
                 }
                 variant="outline"
                 size="sm"
@@ -140,11 +136,7 @@ export const PostList = () => {
                 <Icon as={DeleteIcon} color="red.400" />
               </Button>
               <Button
-                onClick={() =>
-                  Router.push({
-                    pathname: '/blog/' + row.original.id,
-                  })
-                }
+                onClick={() => router.push('/blog/' + row.original.id)}
                 size="sm"
                 variant="outline"
               >

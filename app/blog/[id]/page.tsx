@@ -1,13 +1,15 @@
+'use client';
 import { Box, Heading, Spinner } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { useSWR } from '@/hooks';
 import { GeneralLayout } from '@/components';
 import { Post } from '@prisma/client';
 
 const fetcher = async (url: string) => await fetch(url).then((r) => r.json());
 const PagePost = () => {
-  const route = useRouter();
-  const { id } = route.query;
+  const pathname = usePathname();
+  const pathUrl = pathname.split('/');
+  const id = pathUrl[pathUrl.length - 1];
   const { data, error, isLoading } = useSWR<Post>('/api/pages/' + id, fetcher);
   if (isLoading)
     return (

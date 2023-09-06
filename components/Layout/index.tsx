@@ -21,7 +21,7 @@ export const GeneralLayout = ({
         title="Nextjs Template"
         description="Strong opinionated starter template"
       />
-      <Container maxW="container.xl" centerContent={centerContent}>
+      <Container maxW="container.lg" centerContent={centerContent}>
         <Flex
           direction="column"
           justifyContent="space-between"
