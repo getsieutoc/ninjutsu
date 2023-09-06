@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 import { exclude, parseQuery } from '@/utils/parsers';
 import { type User, UserRole } from '@prisma/client';
 import { type Session } from 'next-auth';
@@ -13,7 +14,7 @@ export const getUser = async (
 ) => {
   try {
     if (!session) {
-      return res.status(403).end();
+      return NextResponse.json({ status: 403 });
     }
 
     const { id } = req.query;
@@ -22,14 +23,17 @@ export const getUser = async (
       where: { id: id as string },
     });
 
-    return res.status(200).send(exclude(result, 'password'));
+    return NextResponse.json({
+      status: 200,
+      result: exclude(result, 'password'),
+    });
   } catch (error) {
     return res.status(500).end(error);
   }
 };
 
 export const queryUsers = async (
-  req: NextApiRequest,
+  req: Request,
   res: NextApiResponse<Omit<User, 'password'>[]>,
   session: Session | null
 ) => {
@@ -39,11 +43,11 @@ export const queryUsers = async (
     }
 
     const role = session.user.role;
-    const { skip, take, s = '' } = req.query;
+    const { skip, take, s = '' } = await req.json();
 
     // Most likely this is blocked from frontend, but just in case...
     if (role === UserRole.USER || role === UserRole.AUTHOR) {
-      return res.status(200).send([]);
+      return NextResponse.json({ status: 200, results: [] });
     }
 
     const managerFilters = () => {
@@ -69,9 +73,12 @@ export const queryUsers = async (
       },
     });
 
-    return res.status(200).send(results.map((o) => exclude(o, 'password')));
+    return NextResponse.json({
+      status: 200,
+      results: results.map((o) => exclude(o, 'password')),
+    });
   } catch (error) {
-    return res.status(500).end(error);
+    return NextResponse.json({ status: 500, error });
   }
 };
 
@@ -82,7 +89,7 @@ export const updateUser = async (
 ) => {
   try {
     if (!session) {
-      return res.status(403).end();
+      return NextResponse.json({ status: 403 });
     }
 
     const role = session.user.role;
@@ -98,19 +105,22 @@ export const updateUser = async (
       data: JSON.parse(req.body),
     });
 
-    return res.status(200).json(exclude(result, 'password'));
+    return NextResponse.json({
+      status: 200,
+      result: exclude(result, 'password'),
+    });
   } catch (error) {
-    return res.status(500).end(error);
+    return NextResponse.json({ status: 500 });
   }
 };
 
 // TODO: implement rate limit on the next PR
 export const createUser = async (
-  req: NextApiRequest,
+  req: Request,
   res: NextApiResponse<Omit<User, 'password'>>
 ) => {
   try {
-    const { name, email, password } = req.body as Pick<
+    const { name, email, password } = (await req.json()) as Pick<
       User,
       'name' | 'email' | 'password'
     >;
@@ -135,9 +145,12 @@ export const createUser = async (
       },
     });
 
-    return res.status(200).json(exclude(result, 'password'));
+    return NextResponse.json({
+      status: 200,
+      result: exclude(result, 'password'),
+    });
   } catch (error) {
-    return res.status(500).end(error);
+    return NextResponse.json({ status: 500, error });
   }
 };
 
@@ -146,5 +159,5 @@ export const deleteUser = (
   res: NextApiResponse,
   session: Session
 ) => {
-  return res.status(200).json({});
+  return NextResponse.json({ status: 200 });
 };

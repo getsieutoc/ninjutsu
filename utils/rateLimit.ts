@@ -1,12 +1,12 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiResponse } from 'next';
 import { Ratelimit } from '@upstash/ratelimit';
 import { kv } from '@vercel/kv';
 import { IS_VERCEL } from './constants';
 
 export const withRateLimit = (
-  handler: (req: NextApiRequest, res: NextApiResponse) => Promise<any>
+  handler: (req: Request, res: NextApiResponse) => Promise<any>
 ) => {
-  return async (req: NextApiRequest, res: NextApiResponse) => {
+  return async (req: Request, res: NextApiResponse) => {
     if (
       IS_VERCEL &&
       process.env.KV_REST_API_URL &&
@@ -17,7 +17,7 @@ export const withRateLimit = (
         limiter: Ratelimit.slidingWindow(10, '60s'), // rate limit to num requests per 60 seconds
       });
 
-      const ip = req.headers['x-forwarded-for'];
+      const ip = req.headers.get('x-forwarded-for');
 
       const {
         success,
