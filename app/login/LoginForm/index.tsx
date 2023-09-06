@@ -21,7 +21,7 @@ export default function LoginForm() {
   });
 
   const getCallbackUrl = () => {
-    return router.back();
+    return '/';
   };
 
   const validEmail = credentials.email.length > 3;
