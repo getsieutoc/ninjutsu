@@ -35,7 +35,7 @@ export default function SignUpForm({ session }: PropTypes) {
     if (session?.user?.id) {
       router.push('/protected');
     }
-  }, [session?.user?.id]);
+  }, [session?.user?.id, router]);
 
   const handleSignUp = async () => {
     setLoading(true);
