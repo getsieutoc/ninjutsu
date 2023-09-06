@@ -51,7 +51,7 @@ export default function BlogEditor() {
       setContent(data.content);
       setPublishedAt(data?.publishedAt ?? null);
     }
-  }, [data?.id]);
+  }, [data?.id, data?.content, data?.publishedAt, data?.title]);
 
   const handleSave = async () => {
     const userID = session?.user.id;

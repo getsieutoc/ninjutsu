@@ -12,7 +12,7 @@ import {
 import { useSWR } from '@/hooks';
 import _ from 'lodash';
 import { VirtualTable } from '../VirtualTable';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ColumnDef } from '@tanstack/react-table';
 import { Post } from '@prisma/client';
@@ -31,37 +31,40 @@ export const PostList = () => {
     posts: Post[];
   }>(`/api/pages?pageIndex=${pageIndex}&take=${take}`, fetcher);
 
-  const deletePost = async (id: string) => {
-    if (window.confirm(`Are you sure you want to delete this post?`)) {
-      const { status, statusText } = await fetch(`/api/pages/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          deletedAt: new Date(),
-        }),
-      });
+  const deletePost = useCallback(
+    async (id: string) => {
+      if (window.confirm(`Are you sure you want to delete this post?`)) {
+        const { status, statusText } = await fetch(`/api/pages/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            deletedAt: new Date(),
+          }),
+        });
 
-      if (status === 200) {
-        toast({
-          status: 'success',
-          title: 'Delete Successfully',
-          duration: 2000,
-          isClosable: true,
-          position: 'top-right',
-        });
-      } else {
-        toast({
-          status: 'error',
-          description: statusText,
-          duration: 3000,
-          isClosable: true,
-        });
+        if (status === 200) {
+          toast({
+            status: 'success',
+            title: 'Delete Successfully',
+            duration: 2000,
+            isClosable: true,
+            position: 'top-right',
+          });
+        } else {
+          toast({
+            status: 'error',
+            description: statusText,
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+        mutate();
       }
-      mutate();
-    }
-  };
+    },
+    [mutate, toast]
+  );
   const columns: ColumnDef<Post>[] = useMemo(
     () => [
       {
@@ -147,7 +150,7 @@ export const PostList = () => {
         },
       },
     ],
-    [deletePost]
+    [deletePost, router]
   );
   const dataTable: Post[] = useMemo(() => {
     if (data?.posts?.length) {
