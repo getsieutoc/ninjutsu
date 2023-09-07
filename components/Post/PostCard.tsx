@@ -1,16 +1,15 @@
 import type { FC, Post } from '@/types';
 import {
-  Avatar,
-  AvatarGroup,
+  Flex,
   Box,
-  Button,
   Card,
+  Spacer,
+  Avatar,
+  Button,
+  Heading,
   CardBody,
   CardFooter,
-  Flex,
-  Heading,
-  Spacer,
-  WrapItem,
+  AvatarGroup,
 } from '@/components';
 import moment from 'moment';
 
