@@ -23,11 +23,11 @@ import { GeneralLayout, TextEditor } from '@/components';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import Login from '../../login/page';
 import type { Post } from '@/types';
+import { PostList } from '@/components/Post';
 
 type RequireInputType = {
   [key: string]: string;
 };
-const fetcher = async (url: string) => await fetch(url).then((r) => r.json());
 export default function BlogEditor() {
   const searchParams = useSearchParams();
   const postId = searchParams.get('postId');
@@ -35,10 +35,7 @@ export default function BlogEditor() {
   const toast = useToast();
   const { session, isAuthenticated } = useAuth();
 
-  const { data } = useSWR<Post>(
-    '/api/pages/' + postId?.toString() ?? null,
-    fetcher
-  );
+  const { data } = useSWR<Post>('/api/pages/' + postId?.toString() ?? null);
   const [title, setTitle] = useState('');
   const [publishedAt, setPublishedAt] = useState<Date | null>(new Date());
   const [content, setContent] = useState('');
@@ -81,6 +78,7 @@ export default function BlogEditor() {
         isClosable: true,
         position: 'top-right',
       });
+      route.refresh();
       resetState();
     } else {
       toast({
@@ -240,6 +238,8 @@ export default function BlogEditor() {
           </Card>
         </Box>
       </Stack>
+      <Box as="br" />
+      <PostList />
     </GeneralLayout>
   );
 }

@@ -22,7 +22,6 @@ export async function POST(
   res: NextApiResponse<{ posts: Post[]; count: number } | Post>
 ) {
   const data = await req.json();
-
   try {
     const newPost = await prisma.post.create({ data });
     return NextResponse.json(newPost); //res.status(200).json(newPost);
