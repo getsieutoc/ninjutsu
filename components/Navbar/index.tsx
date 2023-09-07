@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex } from '@/components';
 import { ProfileMenu } from './ProfileMenu';
 import { Logo } from './Logo';
 

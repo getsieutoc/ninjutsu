@@ -18,8 +18,7 @@ export async function GET(req: Request, res: NextApiResponse) {
     }
     return NextResponse.json(post);
   } catch (error) {
-    return NextResponse.json({ error }); //res.status(400).json(error);
-    return NextResponse.json({ message: '404s' });
+    return NextResponse.json({ error });
   }
 }
 export async function PATCH(req: Request, res: NextApiResponse) {
@@ -35,11 +34,11 @@ export async function PATCH(req: Request, res: NextApiResponse) {
       data,
     });
     if (!updatePost) {
-      return NextResponse.json({ message: 'Post not found' }); // res.status(404).json({ message: 'Post not found' });
+      return NextResponse.json({ message: 'Post not found' });
     }
     return res.status(200).json(updatePost);
   } catch (error) {
-    return NextResponse.json({ message: 'Update Error', error }); // res.status(500).json({ message: 'Update Error', error });
+    return NextResponse.json({ message: 'Update Error', error });
   }
 }
 export async function DELETE(req: Request, res: NextApiResponse) {
