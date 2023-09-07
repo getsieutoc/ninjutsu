@@ -163,7 +163,6 @@ export const VirtualTable = <TData extends RowData, TValue = unknown>({
     ...defaultComponents,
     ...components,
   };
-
   return (
     <Box flexGrow="1">
       <TableVirtuoso

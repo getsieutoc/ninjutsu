@@ -37,7 +37,7 @@ export default function BlogEditor({ params }: PropTypes) {
   const route = useRouter();
   const toast = useToast();
   const { session, isAuthenticated } = useAuth();
-  const { data } = useSWR<Post>('/api/pages/' + slug);
+  const { data } = useSWR<Post>('/api/post/' + slug);
   const [title, setTitle] = useState('');
   const [publishedAt, setPublishedAt] = useState<Date | null>(new Date());
   const [content, setContent] = useState('');
@@ -57,7 +57,7 @@ export default function BlogEditor({ params }: PropTypes) {
     const isOk = requiredInput({ title, content });
     if (!isOk) return;
     setIsLoading(true);
-    const { status, statusText } = await fetch('/api/pages', {
+    const { status, statusText } = await fetch('/api/post', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
