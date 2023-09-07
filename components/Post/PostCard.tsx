@@ -7,6 +7,7 @@ import {
   Avatar,
   Button,
   Heading,
+  NextLink,
   CardBody,
   CardFooter,
   AvatarGroup,
@@ -19,8 +20,8 @@ type PropTypes = {
 export const PostCard: FC<PropTypes> = ({ post }) => {
   return (
     <Box>
-      <Card>
-        <CardBody padding={3} maxHeight={300}>
+      <Card height={400}>
+        <CardBody padding={3}>
           <Flex>
             <Box fontSize="sm" color="gray.400">
               {moment(post.createdAt).format('LL')}
@@ -60,13 +61,16 @@ export const PostCard: FC<PropTypes> = ({ post }) => {
               WebkitBoxOrient: 'vertical',
             }}
             as="div"
+            maxHeight={300}
             dangerouslySetInnerHTML={{ __html: post?.content ?? '' }}
           />
         </CardBody>
         <CardFooter padding={2}>
-          <Button width="100%" size="sm">
-            Read More
-          </Button>
+          <NextLink href={`/blog/${post.id}`} w="100%">
+            <Button width="100%" size="sm">
+              Read More
+            </Button>
+          </NextLink>
         </CardFooter>
       </Card>
     </Box>
