@@ -1,12 +1,5 @@
 import { prisma } from '@/utils/prisma';
-import {
-  Box,
-  GeneralLayout,
-  Heading,
-  SimpleGrid,
-  Spinner,
-  Wrap,
-} from '@/components';
+import { Box, GeneralLayout, Heading, SimpleGrid, Spinner } from '@/components';
 import { PostCard } from '@/components/Post';
 
 export default async function BlogsPage() {
