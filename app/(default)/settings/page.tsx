@@ -1,7 +1,7 @@
 import { getSession } from '@/utils/auth';
 import { GeneralLayout } from '@/components';
 
-export default async function MePage() {
+export default async function SettingsPage() {
   const session = await getSession();
 
   return (

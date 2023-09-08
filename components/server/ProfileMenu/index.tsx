@@ -50,10 +50,18 @@ export const ProfileMenu = async () => {
         <MenuList zIndex={9}>
           <MenuItem
             as={NextLink}
-            href="/me"
+            href="/dashboard"
             _hover={{ textDecoration: 'none' }}
           >
-            My Profile
+            Dashboard
+          </MenuItem>
+
+          <MenuItem
+            as={NextLink}
+            href="/settings"
+            _hover={{ textDecoration: 'none' }}
+          >
+            Settings
           </MenuItem>
 
           <SetColorMode />
