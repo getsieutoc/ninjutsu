@@ -8,7 +8,7 @@ export type LogoProps = {
   href?: string;
 };
 
-export const Logo = ({ size = 7, href = '/' }: LogoProps) => (
+export const Logo = ({ size = 12, href = '/' }: LogoProps) => (
   <NextLink href={href}>
     <HStack width={`${size * 4 * 4}px`} height={`${size * 4}px`}>
       <NextImage
@@ -21,10 +21,10 @@ export const Logo = ({ size = 7, href = '/' }: LogoProps) => (
       />
       <Box>
         <Text as="span" fontWeight="thin">
-          Nextjs
+          Template
         </Text>
         <Text as="span" fontWeight="bold">
-          Template
+          Demo
         </Text>
       </Box>
     </HStack>
