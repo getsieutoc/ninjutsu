@@ -1,4 +1,5 @@
 'use client';
+
 import { useCallback, useMemo, useState } from 'react';
 import {
   Box,
@@ -9,7 +10,7 @@ import {
   Spacer,
   Spinner,
   useToast,
-} from '@chakra-ui/react';
+} from '@/components/chakra';
 import { useSWR } from '@/hooks';
 import _ from 'lodash';
 import { VirtualTable } from '../VirtualTable';
@@ -25,7 +26,7 @@ export const PostList = () => {
   const router = useRouter();
   const [pageIndex, setPageIndex] = useState(1);
   const [take, setTake] = useState(25);
-  const { data, error, isLoading, mutate } = useSWR<{
+  const { data, isLoading, mutate } = useSWR<{
     count: number;
     posts: Post[];
   }>(`/api/pages?pageIndex=${pageIndex}&take=${take}`);

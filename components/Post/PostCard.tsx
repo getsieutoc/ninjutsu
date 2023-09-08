@@ -9,11 +9,11 @@ import {
   Avatar,
   Button,
   Heading,
-  NextLink,
   CardBody,
   CardFooter,
   AvatarGroup,
-} from '@/components';
+} from '@/components/chakra';
+import { NextLink } from '../NextLink';
 
 type PropTypes = {
   post: Post;

@@ -1,6 +1,7 @@
 'use client';
+
 import OriginalNextLink, { type LinkProps as NextLinkProps } from 'next/link';
-import { chakra } from '@chakra-ui/react';
+import { chakra } from '@/components/chakra';
 
 export const NextLink = chakra<typeof OriginalNextLink, NextLinkProps>(
   OriginalNextLink,
