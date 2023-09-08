@@ -137,11 +137,14 @@ export const createUser = async (
       throw new Error('Email already in use');
     }
 
+    const totalUser = await prisma.user.count();
+
     const result = await prisma.user.create({
       data: {
         name,
         email,
         password: await hash(password),
+        role: totalUser === 0 ? UserRole.ADMIN : UserRole.USER,
       },
     });
 

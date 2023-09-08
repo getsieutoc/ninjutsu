@@ -1,4 +1,5 @@
 'use client';
+
 import {
   Button,
   Input,
@@ -41,7 +42,7 @@ export default function SignUpForm({ session }: PropTypes) {
     setLoading(true);
     await httpClient.post('/api/users', credentials);
     setLoading(false);
-    await router.push('/login');
+    router.push('/login');
   };
   return (
     <>
