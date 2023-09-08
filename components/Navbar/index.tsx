@@ -13,8 +13,7 @@ export const Navbar = () => {
 
       <NextLink href="/about-us">About us</NextLink>
 
-      <NextLink href="/blogs">Blogs</NextLink>
-      <NextLink href="/blog/blog-editor">Blog editor</NextLink>
+      <NextLink href="/blog">Blogs</NextLink>
       <ProfileMenu />
     </Flex>
   );

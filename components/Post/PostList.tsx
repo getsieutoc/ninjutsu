@@ -20,7 +20,6 @@ import { Pagination } from '../Pagination';
 import { DeleteIcon, ViewIcon } from '@chakra-ui/icons';
 import { BiEdit } from 'react-icons/bi';
 
-const fetcher = async (url: string) => await fetch(url).then((r) => r.json());
 export const PostList = () => {
   const toast = useToast();
   const router = useRouter();
@@ -29,7 +28,7 @@ export const PostList = () => {
   const { data, error, isLoading, mutate } = useSWR<{
     count: number;
     posts: Post[];
-  }>(`/api/pages?pageIndex=${pageIndex}&take=${take}`, fetcher);
+  }>(`/api/pages?pageIndex=${pageIndex}&take=${take}`);
 
   const deletePost = useCallback(
     async (id: string) => {
@@ -124,7 +123,7 @@ export const PostList = () => {
             <HStack spacing={1}>
               <Button
                 onClick={() =>
-                  router.push('/blog/blog-editor?postId=' + row.original.id)
+                  router.push('/blog/post-management?postId=' + row.original.id)
                 }
                 variant="outline"
                 size="sm"

@@ -1,5 +1,5 @@
 export * from '@prisma/client';
-
+export type { FC } from 'react';
 export enum HttpMethod {
   CONNECT = 'CONNECT',
   DELETE = 'DELETE',
