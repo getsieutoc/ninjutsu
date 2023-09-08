@@ -74,23 +74,28 @@ model Page {
   content     String
   components  Json      @default("{}")
   locale      String
+  isBlog      Boolean?
+  meta        Json?     @default("[{}]")
   authorId    String
   author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   tags        Tag[]
 }
 
 model Post {
-  id          String    @id @default(uuid())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  publishedAt DateTime?
-  title       String    @db.VarChar(255)
-  slug        String    @db.VarChar(255)
-  content     String
-  locale      String
-  tags        Tag[]
-  authorId    String
-  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id              String    @id @default(uuid())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  publishedAt     DateTime?
+  title           String    @db.VarChar(255)
+  slug            String    @db.VarChar(255)
+  content         String
+  originalId      String
+  originalPost    Post?     @relation("OriginalTranslated", fields: [originalId], references: [id])
+  translatedPosts Post[]    @relation("OriginalTranslated")
+  locale          String
+  tags            Tag[]
+  authorId        String
+  author          User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
 
 model Tag {

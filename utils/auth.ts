@@ -1,8 +1,5 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
-import {
-  getServerSession as nextAuthGetServerSession,
-  type NextAuthOptions,
-} from 'next-auth';
+import { getServerSession, type NextAuthOptions } from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { JWT_MAX_AGE } from '@/utils/constants';
 import { exclude } from '@/utils/parsers';
@@ -106,6 +103,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
+
 export function getSession() {
-  return nextAuthGetServerSession(authOptions);
+  return getServerSession(authOptions);
 }
