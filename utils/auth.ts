@@ -104,6 +104,6 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-export function getSession() {
-  return getServerSession(authOptions);
+export async function getSession() {
+  return await getServerSession(authOptions);
 }
