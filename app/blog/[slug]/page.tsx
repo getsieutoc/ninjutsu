@@ -9,10 +9,6 @@ const PagePost: FC<PropTypes> = async ({ params }) => {
   const { slug } = params;
   const data = await prisma?.post.findUnique({ where: { id: slug } });
   if (!data) return <>Post not found!</>;
-<<<<<<< HEAD
-=======
-
->>>>>>> 1da05ff (init commit)
   return (
     <GeneralLayout>
       <Heading>{data?.title}</Heading>
