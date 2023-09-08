@@ -1,11 +1,13 @@
+'use client';
+
 import { Flex } from '@/components/chakra';
+import { ReactNode } from '@/types';
 
 import { NextLink } from '../../NextLink';
-import { ProfileMenu } from '../ProfileMenu';
 
 import { Logo } from './Logo';
 
-export const Navbar = () => {
+export const Navbar = ({ children }: { children: ReactNode }) => {
   return (
     <Flex as="header" justify="space-between" align="center">
       <Logo />
@@ -16,7 +18,7 @@ export const Navbar = () => {
 
       <NextLink href="/blog">Blogs</NextLink>
 
-      <ProfileMenu />
+      {children}
     </Flex>
   );
 };

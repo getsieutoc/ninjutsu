@@ -57,6 +57,7 @@ export const ProfileMenu = async () => {
           </MenuItem>
 
           <SetColorMode />
+
           <MenuDivider />
           <LogoutButton />
         </MenuList>

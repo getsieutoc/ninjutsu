@@ -1,3 +1,5 @@
+'use client';
+
 import { MenuItem } from '@/components/chakra';
 import { signOut } from 'next-auth/react';
 
