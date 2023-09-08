@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 import type { FC, Post } from '@/types';
 import {
   Flex,
@@ -12,7 +14,6 @@ import {
   CardFooter,
   AvatarGroup,
 } from '@/components';
-import moment from 'moment';
 
 type PropTypes = {
   post: Post;
@@ -24,7 +25,7 @@ export const PostCard: FC<PropTypes> = ({ post }) => {
         <CardBody padding={3}>
           <Flex>
             <Box fontSize="sm" color="gray.400">
-              {moment(post.createdAt).format('LL')}
+              {format(post.createdAt, 'PPP')}
             </Box>
             <Spacer />
             <Box>
