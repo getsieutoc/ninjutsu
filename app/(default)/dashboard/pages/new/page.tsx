@@ -1,11 +1,16 @@
 import { GoBackButton } from '@/components/client';
-import { Flex } from '@/components/chakra';
+import { Flex, Heading, Stack } from '@/components/chakra';
 
 export default function AddNewPage() {
   return (
-    <Flex align="center">
-      <GoBackButton />
-      add new page here
+    <Flex direction="column">
+      <Stack direction="row" align="center">
+        <GoBackButton />
+
+        <Heading as="h3" size="lg" alignItems="center" color="gray">
+          Add New Page
+        </Heading>
+      </Stack>
     </Flex>
   );
 }
