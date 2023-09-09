@@ -1,14 +1,14 @@
 'use client';
 
-import { useParams, useSelectedLayoutSegments } from 'next/navigation';
+import { useSelectedLayoutSegments } from 'next/navigation';
 import { type ReactNode, useMemo } from 'react';
 import {
   BarChartIcon,
   DashboardIcon,
+  EditIcon,
   GlobeIcon,
-  InsertChartIcon,
-  LinkIcon,
-  PaletteIcon,
+  ImageIcon,
+  SitemapIcon,
 } from '@/icons';
 import { IS_PRODUCTION } from '@/utils/constants';
 import {
@@ -24,36 +24,33 @@ import { Logo } from '../Logo';
 
 export const Sidebar = ({ children }: { children: ReactNode }) => {
   const segments = useSelectedLayoutSegments();
-  const { id } = useParams() as { id?: string };
 
   const tabs = useMemo(() => {
-    if (segments[0] === 'sites' && id) {
+    if (segments[0] === 'dashboard') {
       return [
         {
-          name: 'Posts',
-          href: '/posts',
+          name: 'Overview',
+          href: '/dashboard',
           icon: <DashboardIcon boxSize={4} />,
-          isActive: !segments[2],
+          isActive: !segments[1],
         },
         {
-          name: 'Domains',
-          href: `/sites/${id}/domains`,
-          icon: <LinkIcon boxSize={4} />,
-          isActive: segments.includes('domains'),
+          name: 'Pages',
+          href: '/dashboard/pages',
+          icon: <SitemapIcon boxSize={4} />,
+          isActive: segments.includes('pages'),
         },
         {
-          name: 'Appearance',
-          href: `/sites/${id}/appearance`,
-          icon: <PaletteIcon boxSize={4} />,
-          isActive: segments.includes('appearance'),
-          isDisabled: true, // DEVELOPMENT
+          name: 'Posts',
+          href: '/dashboard/posts',
+          icon: <EditIcon boxSize={4} />,
+          isActive: segments.includes('posts'),
         },
         {
-          name: 'Analytics',
-          href: `/sites/${id}/analytics`,
-          icon: <InsertChartIcon boxSize={4} />,
-          isActive: segments.includes('analytics'),
-          isDisabled: true, // DEVELOPMENT
+          name: 'Files',
+          href: '/dashboard/files',
+          icon: <ImageIcon boxSize={4} />,
+          isActive: segments.includes('files'),
         },
       ];
     }
@@ -72,7 +69,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
         icon: <GlobeIcon boxSize={4} />,
       },
     ];
-  }, [segments, id]);
+  }, [segments]);
 
   const backgroundColor = useColorModeValue('gray.100', 'gray.900');
 
@@ -89,23 +86,21 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
         <Logo />
 
         <Stack marginTop={6} spacing={1}>
-          {tabs
-            .filter(({ isDisabled }) => (IS_PRODUCTION ? !isDisabled : true))
-            .map(({ name, href, icon, isActive }) => (
-              <Button
-                key={name}
-                colorScheme={isActive ? 'green' : 'gray'}
-                variant={isActive ? 'solid' : 'ghost'}
-                justifyContent="start"
-                leftIcon={icon}
-                width="100%"
-                as={NextLink}
-                href={href}
-                size="sm"
-              >
-                {name}
-              </Button>
-            ))}
+          {tabs.map(({ name, href, icon, isActive }) => (
+            <Button
+              key={name}
+              colorScheme={isActive ? 'green' : 'gray'}
+              variant={isActive ? 'solid' : 'ghost'}
+              justifyContent="start"
+              leftIcon={icon}
+              width="100%"
+              as={NextLink}
+              href={href}
+              size="sm"
+            >
+              {name}
+            </Button>
+          ))}
         </Stack>
       </Box>
 
