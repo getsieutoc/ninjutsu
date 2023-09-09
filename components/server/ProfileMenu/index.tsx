@@ -9,13 +9,12 @@ import {
   Portal,
   Text,
 } from '@/components/chakra';
-import { ChevronDownIcon } from '@/icons';
-
 import { NextImage, NextLink } from '@/components/client';
+import { ChevronDownIcon } from '@/icons';
+import { getSession } from '@/utils/auth';
 
 import { LogoutButton } from './LogoutButton';
 import { SetColorMode } from './SetColorMode';
-import { getSession } from '@/utils/auth';
 
 export const ProfileMenu = async () => {
   const session = await getSession();
@@ -47,21 +46,13 @@ export const ProfileMenu = async () => {
       </MenuButton>
       <Portal>
         <MenuList zIndex={9}>
-          <MenuItem
-            as={NextLink}
-            href="/dashboard"
-            _hover={{ textDecoration: 'none' }}
-          >
-            Dashboard
-          </MenuItem>
+          <NextLink href="/dashboard">
+            <MenuItem>Dashboard</MenuItem>
+          </NextLink>
 
-          <MenuItem
-            as={NextLink}
-            href="/settings"
-            _hover={{ textDecoration: 'none' }}
-          >
-            Settings
-          </MenuItem>
+          <NextLink href="/settings">
+            <MenuItem>Settings</MenuItem>
+          </NextLink>
 
           <SetColorMode />
 
