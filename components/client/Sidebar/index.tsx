@@ -20,7 +20,7 @@ import {
 } from '@/components/chakra';
 
 import { NextLink } from '../NextLink';
-import { NextImage } from '../NextImage';
+import { Logo } from '../Logo';
 
 export const Sidebar = ({ children }: { children: ReactNode }) => {
   const segments = useSelectedLayoutSegments();
@@ -86,9 +86,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
       padding={4}
     >
       <Box>
-        <NextLink href="/">
-          <NextImage src="/logo.png" width={12} height={12} alt="Logo" />
-        </NextLink>
+        <Logo />
 
         <Stack marginTop={6} spacing={1}>
           {tabs

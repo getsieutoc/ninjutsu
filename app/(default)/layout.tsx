@@ -5,7 +5,7 @@ import type { ReactNode } from '@/types';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <Flex direction="column">
+    <Flex>
       <Sidebar>
         <ProfileMenu />
       </Sidebar>
