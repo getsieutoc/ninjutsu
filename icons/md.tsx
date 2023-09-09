@@ -1,4 +1,4 @@
-import { Icon, type IconProps as P } from '@/components';
+import { Icon, type IconProps as P } from '@/components/chakra';
 import {
   MdLogout,
   MdPalette,

@@ -8,7 +8,7 @@
     "migrate:dev": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
     "postinstall": "pnpm db:generate",
-    "clean": "rimraf node_modules .next dist",
+    "clean": "rimraf node_modules .next dist && pnpm i",
     "dev": "docker-compose up -d && next dev",
     "lint": "eslint ./ --ext .ts,.tsx",
     "build": "next build",

@@ -11,19 +11,18 @@ import {
   Button,
   Heading,
   Spacer,
-  useToast,
   Checkbox,
   CardBody,
   CardHeader,
   CardFooter,
-} from '@chakra-ui/react';
+} from '@/components/chakra';
 import slugify from 'slugify';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useSWR, useAuth } from '@/hooks';
+import { useSWR, useAuth, useToast } from '@/hooks';
 import { GeneralLayout, TextEditor } from '@/components';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
-import type { Post } from '@/types';
 import { PostList } from '@/components/Post';
+import type { Post } from '@/types';
 
 type RequireInputType = {
   [key: string]: string;
