@@ -1,5 +1,5 @@
 import { Box } from '@/components/chakra';
-import { AccessDenied } from '@/components';
+import { AccessDenied } from '@/components/client';
 import { getSession } from '@/utils/auth';
 
 export default async function ProtectedPage() {

@@ -19,9 +19,8 @@ import {
 import slugify from 'slugify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSWR, useAuth, useToast } from '@/hooks';
-import { GeneralLayout, TextEditor } from '@/components';
-import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
-import { PostList } from '@/components/Post';
+import { ChevronDownIcon, ChevronUpIcon } from '@/icons';
+import { PostList, TextEditor } from '@/components/client';
 import type { Post } from '@/types';
 
 type RequireInputType = {
@@ -162,7 +161,7 @@ export default function BlogEditor() {
   }
 
   return (
-    <GeneralLayout>
+    <>
       <Heading size="lg" fontWeight={400} pb={2}>
         {data?.id ? 'Update ' : 'Create '} article{' '}
         {data?.id && (
@@ -243,6 +242,6 @@ export default function BlogEditor() {
       </Stack>
       <Box as="br" />
       <PostList />
-    </GeneralLayout>
+    </>
   );
 }

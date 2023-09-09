@@ -2,10 +2,8 @@
 
 import { Flex, Stack, useColorModeValue } from '@/components/chakra';
 import { ReactNode } from '@/types';
-
-import { NextLink } from '../../NextLink';
-
-import { Logo } from './Logo';
+import { NextLink } from '../NextLink';
+import { Logo } from '../Logo';
 
 export const Navbar = ({ children }: { children: ReactNode }) => {
   const backgroundColor = useColorModeValue('gray.100', 'gray.700');

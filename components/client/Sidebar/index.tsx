@@ -19,8 +19,8 @@ import {
   useColorModeValue,
 } from '@/components/chakra';
 
-import { NextLink } from '../../NextLink';
-import { NextImage } from '../../NextImage';
+import { NextLink } from '../NextLink';
+import { NextImage } from '../NextImage';
 
 export const Sidebar = ({ children }: { children: ReactNode }) => {
   const segments = useSelectedLayoutSegments();

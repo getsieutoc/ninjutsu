@@ -1,5 +1,5 @@
 import { Box, Stack, Heading } from '@/components/chakra';
-import { PostList } from '@/components/Post';
+import { PostList } from '@/components/client';
 import { redirect } from 'next/navigation';
 import { getSession } from '@/utils/auth';
 import { prisma } from '@/utils/prisma';

@@ -1,5 +1,5 @@
 import { Box, Heading, SimpleGrid, Spinner } from '@/components/chakra';
-import { PostCard } from '@/components/Post';
+import { PostCard } from '@/components/client';
 import { prisma } from '@/utils/prisma';
 
 export default async function BlogsPage() {
