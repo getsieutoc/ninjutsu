@@ -1,7 +1,7 @@
 'use client';
 
 import { TableVirtuoso, type TableComponents } from 'react-virtuoso';
-import { useState, type CSSProperties } from 'react';
+import { forwardRef, useState, type CSSProperties } from 'react';
 import {
   getFilteredRowModel,
   getSortedRowModel,
@@ -38,9 +38,9 @@ const defaultComponents: TableComponents = {
     const background = useColorModeValue('blackAlpha.100', 'whiteAlpha.100');
     return <Tr _hover={{ cursor, background }} {...props} />;
   },
-  TableHead: (props) => <Thead {...props} />,
-  TableBody: (props) => <Tbody {...props} />,
-  TableFoot: (props) => <Tfoot {...props} />,
+  TableHead: forwardRef((props, ref) => <Thead {...props} ref={ref} />),
+  TableBody: forwardRef((props, ref) => <Tbody {...props} ref={ref} />),
+  TableFoot: forwardRef((props, ref) => <Tfoot {...props} ref={ref} />),
 };
 
 type RowClickParams<TData extends RowData> = {
