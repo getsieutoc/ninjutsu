@@ -3,14 +3,12 @@
 import { useSelectedLayoutSegments } from 'next/navigation';
 import { type ReactNode, useMemo } from 'react';
 import {
-  BarChartIcon,
+  ArrowBackIcon,
   DashboardIcon,
   EditIcon,
-  GlobeIcon,
   ImageIcon,
   SitemapIcon,
 } from '@/icons';
-import { IS_PRODUCTION } from '@/utils/constants';
 import {
   Box,
   Button,
@@ -57,16 +55,16 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
 
     return [
       {
-        name: 'Overview',
+        name: 'Back to Home page',
         href: '/',
-        isActive: segments.length === 0,
-        icon: <BarChartIcon boxSize={4} />,
+        icon: <ArrowBackIcon boxSize={4} />,
+        isActive: false,
       },
       {
-        name: 'Sites',
-        href: '/sites',
-        isActive: segments[0] === 'sites',
-        icon: <GlobeIcon boxSize={4} />,
+        name: 'Dashboard',
+        href: '/dashboard',
+        icon: <DashboardIcon boxSize={4} />,
+        isActive: false,
       },
     ];
   }, [segments]);
