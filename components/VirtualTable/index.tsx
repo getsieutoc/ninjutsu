@@ -1,4 +1,5 @@
 'use client';
+
 import { TableVirtuoso, type TableComponents } from 'react-virtuoso';
 import { useState, type CSSProperties } from 'react';
 import {
@@ -24,7 +25,7 @@ import {
   Thead,
   Tr,
   useColorModeValue,
-} from '@chakra-ui/react';
+} from '@/components/chakra';
 import { globalFilterAtom, useAtom } from '@/atoms';
 import { ROW_HEIGHT } from '@/utils/constants';
 

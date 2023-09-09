@@ -8,6 +8,7 @@
     "migrate:dev": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
     "postinstall": "pnpm db:generate",
+    "clean": "rimraf node_modules .next dist && pnpm i",
     "dev": "docker-compose up -d && next dev",
     "lint": "eslint ./ --ext .ts,.tsx",
     "build": "next build",
@@ -52,6 +53,7 @@
     "eslint-config-prettier": "9.0.0",
     "prettier": "3.0.2",
     "prisma": "5.2.0",
+    "rimraf": "5.0.1",
     "ts-node": "10.9.1",
     "typescript": "5.2.2"
   }

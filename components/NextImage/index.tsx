@@ -1,7 +1,14 @@
-import OriginalNextImage, { type ImageProps as NextImageProps } from 'next/image';
-import { chakra } from '@chakra-ui/react';
+'use client';
 
-export const NextImage = chakra<typeof OriginalNextImage, NextImageProps>(OriginalNextImage, {
-  shouldForwardProp: (prop) =>
-    ['height', 'width', 'quality', 'src', 'alt', 'priority'].includes(prop),
-});
+import OriginalNextImage, {
+  type ImageProps as NextImageProps,
+} from 'next/image';
+import { chakra } from '@/components/chakra';
+
+export const NextImage = chakra<typeof OriginalNextImage, NextImageProps>(
+  OriginalNextImage,
+  {
+    shouldForwardProp: (prop) =>
+      ['height', 'width', 'quality', 'src', 'alt', 'priority'].includes(prop),
+  }
+);

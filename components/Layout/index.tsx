@@ -1,7 +1,7 @@
+import { Container, Flex } from '@/components/chakra';
 import type { ReactNode } from 'react';
+
 import { CustomHead } from '../CustomHead';
-import { Navbar } from '../Navbar';
-import { Container, Flex } from '@chakra-ui/react';
 
 export type GeneralLayoutProps = {
   centerContent?: boolean;
@@ -27,8 +27,6 @@ export const GeneralLayout = ({
           height="100vh"
           paddingTop="6"
         >
-          {showNavbar && <Navbar />}
-
           <Flex
             direction="column"
             maxWidth="100vw"

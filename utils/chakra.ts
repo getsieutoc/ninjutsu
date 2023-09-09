@@ -1,4 +1,4 @@
-import { extendTheme, UseToastOptions } from '@chakra-ui/react';
+import { extendTheme, type UseToastOptions } from '@chakra-ui/react';
 
 export const toastOptions: UseToastOptions = {
   position: 'top-right',
@@ -58,6 +58,9 @@ const styles = {
 
 const components = {
   Input: {
+    defaultProps: {
+      size: 'lg',
+    },
     variants: {
       expanding: () => ({
         field: {
