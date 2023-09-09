@@ -11,8 +11,7 @@ import {
 } from '@/components/chakra';
 import { ChevronDownIcon } from '@/icons';
 
-import { NextImage } from '../../NextImage';
-import { NextLink } from '../../NextLink';
+import { NextImage, NextLink } from '@/components/client';
 
 import { LogoutButton } from './LogoutButton';
 import { SetColorMode } from './SetColorMode';
