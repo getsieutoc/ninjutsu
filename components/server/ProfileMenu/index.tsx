@@ -12,7 +12,6 @@ import {
 import { ChevronDownIcon } from '@/icons';
 
 import { NextImage, NextLink } from '@/components/client';
-
 import { LogoutButton } from './LogoutButton';
 import { SetColorMode } from './SetColorMode';
 import { getSession } from '@/utils/auth';
@@ -72,3 +71,4 @@ export const ProfileMenu = async () => {
     </Menu>
   );
 };
+export { LocaleSwitcher } from './LocaleSwitcher';
