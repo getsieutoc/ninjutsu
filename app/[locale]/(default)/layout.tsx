@@ -2,6 +2,7 @@ import { Sidebar } from '@/components/client';
 import { Box, Flex } from '@/components/chakra';
 import { ProfileMenu } from '@/components/server';
 import type { ReactNode } from '@/types';
+import type { Locale } from '@/configs/i18n.config';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
