@@ -8,12 +8,12 @@ import {
   CardFooter,
   Heading,
 } from '@/components/chakra';
-import { GeneralLayout } from '@/components';
+// import { GeneralLayout } from '@/components';
 import { Business, DataExploration, OutlineDesignServices } from '@/icons';
 
 export default function HomePage() {
   return (
-    <GeneralLayout>
+    <Box>
       <HStack width="100%" spacing={30}>
         <Card rounded={30} background="#9ccbf7" width="50%">
           <CardBody padding={10}>
@@ -76,6 +76,6 @@ export default function HomePage() {
           </HStack>
         </VStack>
       </HStack>
-    </GeneralLayout>
+    </Box>
   );
 }
