@@ -1,8 +1,6 @@
 import { Box, Flex, Heading, Spacer, Text } from '@/components/chakra';
-import { VirtualTable } from '@/components/client';
+import { AddNewButton, VirtualTable } from '@/components/client';
 import { prisma } from '@/utils/prisma';
-
-import { AddPageButton } from './AddPageButton';
 
 export default async function PagesDashboard() {
   const pages = await prisma.page.findMany({});
@@ -14,7 +12,7 @@ export default async function PagesDashboard() {
           Pages
         </Heading>
 
-        <AddPageButton />
+        <AddNewButton title="Add New Page" />
       </Flex>
 
       <Spacer />
