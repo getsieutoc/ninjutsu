@@ -12,7 +12,7 @@ import { MIN_PASSWORD_LENGTH } from '@/utils/constants';
 import { httpClient } from '@/utils/httpClient';
 import { useEffect, useRouter, useState } from '@/hooks';
 import type { Session } from 'next-auth';
-import { NextLink } from '@/components';
+import { NextLink } from '@/components/client';
 
 type PropTypes = {
   session?: Session | null;

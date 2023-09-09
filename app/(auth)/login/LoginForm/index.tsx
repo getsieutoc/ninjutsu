@@ -9,7 +9,7 @@ import {
 } from '@/components/chakra';
 import { useAuth, useEffect, useMemo, useState, useRouter } from '@/hooks';
 import { getProviders, signIn } from 'next-auth/react';
-import { NextLink } from '@/components';
+import { NextLink } from '@/components/client';
 
 export default function LoginForm() {
   const router = useRouter();

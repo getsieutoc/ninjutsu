@@ -1,9 +1,10 @@
 'use client';
 
-import OriginalNextLink, { type LinkProps as NextLinkProps } from 'next/link';
+import OriginalNextLink, { type LinkProps } from 'next/link';
 import { chakra } from '@/components/chakra';
+import { ComponentProps } from 'react';
 
-export const NextLink = chakra<typeof OriginalNextLink, NextLinkProps>(
+export const NextLink = chakra<typeof OriginalNextLink, LinkProps>(
   OriginalNextLink,
   {
     shouldForwardProp: (prop) =>
@@ -21,3 +22,5 @@ export const NextLink = chakra<typeof OriginalNextLink, NextLinkProps>(
       ].includes(prop),
   }
 );
+
+export type NextLinkProps = ComponentProps<typeof NextLink>;

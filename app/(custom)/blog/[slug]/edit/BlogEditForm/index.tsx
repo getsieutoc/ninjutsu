@@ -15,7 +15,7 @@ import {
 } from '@/components/chakra';
 import { useAuth, useEffect, useRouter, useState, useToast } from '@/hooks';
 import { ChevronDownIcon, ChevronUpIcon } from '@/icons';
-import { TextEditor } from '@/components';
+import { TextEditor } from '@/components/client';
 import type { Post } from '@/types';
 import slugify from 'slugify';
 
