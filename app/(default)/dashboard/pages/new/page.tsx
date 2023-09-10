@@ -1,5 +1,6 @@
 import { GoBackButton } from '@/components/client';
 import { Flex, Heading, Stack } from '@/components/chakra';
+import { PageForm } from '../PageForm';
 
 export default function AddNewPage() {
   return (
@@ -11,6 +12,8 @@ export default function AddNewPage() {
           Add New Page
         </Heading>
       </Stack>
+
+      <PageForm />
     </Flex>
   );
 }
