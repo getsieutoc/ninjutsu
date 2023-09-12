@@ -17,6 +17,7 @@ import { RepeatIcon } from '@/icons';
 import { createPage, updatePage } from '@/services/pages';
 import { Page } from '@/types';
 import slugify from 'slugify';
+import { PageDeleteSection } from '../PageDeleteSection';
 
 export type PageFormProps = {
   data?: Page;
@@ -145,10 +146,12 @@ export const PageForm = ({ data: propsData }: PageFormProps) => {
           </FormControl>
         </Stack>
 
-        <Stack spacing={3} width="280px">
+        <Stack spacing={3} width="280px" justify="space-between">
           <Button colorScheme="blue" isLoading={isLoading} type="submit">
             {propsData ? 'Update' : 'Publish'}
           </Button>
+
+          {propsData && <PageDeleteSection page={propsData} />}
         </Stack>
       </Flex>
     </FormWrapper>

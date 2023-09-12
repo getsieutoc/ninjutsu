@@ -43,3 +43,17 @@ export const updatePage = async (id: string, formData: FormData) => {
 
   return result;
 };
+
+export const deletePage = async (id: string) => {
+  const session = await getSession();
+
+  if (!session) {
+    throw new Error('Unauthorized request');
+  }
+
+  const result = await prisma.page.delete({
+    where: { id, authorId: session.user.id },
+  });
+
+  return result;
+};
