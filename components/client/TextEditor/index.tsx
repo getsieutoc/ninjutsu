@@ -1,34 +1,30 @@
 'use client';
-import { useRef, type FC, useEffect } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
-import { Editor as TinyMCEEditor } from 'tinymce';
-type PropTypes = {
-  value?: string;
-  onChange?: (value: string) => void;
-};
 
-export const TextEditor: FC<PropTypes> = ({ value, onChange }) => {
-  const editorRef = useRef<TinyMCEEditor | null>(null);
+import { Editor, type IAllProps } from '@tinymce/tinymce-react';
+import type { Editor as EditorInterface } from 'tinymce';
+import { useRef, useId } from '@/hooks';
+
+export type TextEditorProps = {
+  name?: string;
+  onChange?: (value: string) => void;
+} & Omit<IAllProps, 'onChange'>;
+
+export const TextEditor = ({ name, onChange, ...rest }: TextEditorProps) => {
+  const id = useId();
+  const editorRef = useRef<EditorInterface | null>(null);
 
   return (
     <Editor
-      onInit={(evt, editor) => (editorRef.current = editor)}
+      id={id}
+      textareaName={name}
+      onInit={(_evt, editor) => (editorRef.current = editor)}
       apiKey={process.env.NEXT_PUBLIC_API_KEY_TINYMCE}
       onEditorChange={(text) => onChange && onChange(text)}
-      value={value}
       init={{
         height: 500,
         menubar: false,
         branding: false,
         plugins: 'link image table',
-        // setup: function (editor) {
-        //   editor.ui.registry.addButton('save', {
-        //     icon: 'save',
-        //     tooltip: 'Save',
-        //     onAction: () =>
-        //       onSave && onSave(editorRef.current?.getContent() ?? ''),
-        //   });
-        // },
         toolbar:
           'undo redo | formatselect ' +
           'bold italic | alignleft aligncenter ' +
@@ -37,6 +33,7 @@ export const TextEditor: FC<PropTypes> = ({ value, onChange }) => {
         content_style:
           'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
       }}
+      {...rest}
     />
   );
 };
