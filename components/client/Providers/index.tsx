@@ -2,6 +2,7 @@
 
 import { CacheProvider } from '@chakra-ui/next-js';
 import { SessionProvider } from 'next-auth/react';
+import { Provider as JotaiProvider } from 'jotai';
 import { SWRConfig } from 'swr';
 
 import { ChakraProvider } from '@/components/chakra';
@@ -12,14 +13,16 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SWRConfig value={configs}>
       <SessionProvider>
-        <CacheProvider>
-          <ChakraProvider
-            theme={theme}
-            toastOptions={{ defaultOptions: toastOptions }}
-          >
-            {children}
-          </ChakraProvider>
-        </CacheProvider>
+        <JotaiProvider>
+          <CacheProvider>
+            <ChakraProvider
+              theme={theme}
+              toastOptions={{ defaultOptions: toastOptions }}
+            >
+              {children}
+            </ChakraProvider>
+          </CacheProvider>
+        </JotaiProvider>
       </SessionProvider>
     </SWRConfig>
   );
