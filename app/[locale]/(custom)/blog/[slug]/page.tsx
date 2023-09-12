@@ -1,4 +1,5 @@
 import { Box, Heading } from '@/components/chakra';
+import { prisma } from '@/utils/prisma';
 
 type PagePostProps = {
   params: { slug: string };
@@ -7,7 +8,7 @@ type PagePostProps = {
 
 export default async function PagePost({ params }: PagePostProps) {
   const { slug } = params;
-  const data = await prisma?.post.findUnique({ where: { id: slug } });
+  const data = await prisma.post.findUnique({ where: { id: slug } });
   if (!data) return <>Post not found!</>;
   return (
     <Box>
