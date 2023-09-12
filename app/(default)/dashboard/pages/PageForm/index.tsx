@@ -14,6 +14,7 @@ import {
 import { CustomEditable } from '@/components/client';
 import { useEffect, useState } from '@/hooks';
 import { RepeatIcon } from '@/icons';
+import { createPage } from '@/services/pages';
 import { Page } from '@/types';
 import slugify from 'slugify';
 
@@ -21,13 +22,13 @@ export type PageFormProps = {
   data?: Partial<Page>;
 };
 
-export const PageForm = ({ data }: PageFormProps) => {
+export const PageForm = ({ data: propsData }: PageFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const [inputData, setInputData] = useState({
-    title: data?.title ?? '',
-    content: data?.content ?? '',
-    slug: data?.slug ?? '',
+  const [data, setInputData] = useState({
+    title: propsData?.title ?? '',
+    content: propsData?.content ?? '',
+    slug: propsData?.slug ?? '',
   });
 
   const [isCustomEdited, setIsCustomEdited] = useState(false);
@@ -39,23 +40,11 @@ export const PageForm = ({ data }: PageFormProps) => {
         slug: slugify(prev.title),
       }));
     }
-  }, [inputData.title, isCustomEdited]);
+  }, [data.title, isCustomEdited]);
 
   const handleSubmit = async () => {
-    setIsLoading(true);
-
-    const res = await fetch('/api/pages', {
-      method: 'POST',
-      body: JSON.stringify(inputData),
-    });
-
-    const data = await res.json();
-
-    setIsLoading(false);
-
-    if (res.status === 200) {
-      // router.push('/dashboard/pages');
-    }
+    const res = await createPage({ ...data, locale: 'vi' });
+    console.log('### res: ', { res });
   };
 
   return (
@@ -65,23 +54,23 @@ export const PageForm = ({ data }: PageFormProps) => {
           <FormLabel>Title</FormLabel>
           <Input
             placeholder="Page title"
-            value={inputData?.title}
+            value={data?.title}
             onChange={(event) =>
-              setInputData({ ...inputData, title: event.target.value })
+              setInputData({ ...data, title: event.target.value })
             }
           />
 
-          {inputData.slug && (
+          {data.slug && (
             <Flex marginTop={2} align="center" gap={2} color="gray">
               <Heading as="h4" fontSize="sm">
                 Slug:
               </Heading>
 
               <CustomEditable
-                value={inputData.slug}
+                value={data.slug}
                 onChange={(newValue) => {
                   setIsCustomEdited(true);
-                  setInputData({ ...inputData, slug: newValue });
+                  setInputData({ ...data, slug: newValue });
                 }}
               />
 
@@ -93,8 +82,8 @@ export const PageForm = ({ data }: PageFormProps) => {
                   onClick={() => {
                     setIsCustomEdited(false);
                     setInputData({
-                      ...inputData,
-                      slug: slugify(inputData.title),
+                      ...data,
+                      slug: slugify(data.title),
                     });
                   }}
                 />
@@ -107,9 +96,9 @@ export const PageForm = ({ data }: PageFormProps) => {
           <FormLabel>Title</FormLabel>
           <Textarea
             placeholder="Page title"
-            value={inputData?.content}
+            value={data?.content}
             onChange={(event) =>
-              setInputData({ ...inputData, content: event.target.value })
+              setInputData({ ...data, content: event.target.value })
             }
           />
         </FormControl>

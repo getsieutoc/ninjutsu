@@ -6,14 +6,18 @@ import { AddIcon } from '@/icons';
 
 export type AddNewButtonProps = {
   title: string;
+  pathname?: string;
 };
 
-export const AddNewButton = ({ title = 'Add New' }: AddNewButtonProps) => {
+export const AddNewButton = ({
+  title = 'Add New',
+  pathname: customPath,
+}: AddNewButtonProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
   const handleClick = () => {
-    const newPath = `${pathname}/new`;
+    const newPath = customPath ?? `${pathname}/new`;
     router.push(newPath);
   };
 
