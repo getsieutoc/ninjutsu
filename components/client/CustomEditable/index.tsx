@@ -8,6 +8,7 @@ import {
   Input,
   useEditableControls,
   type EditableProps,
+  InputProps,
 } from '@/components/chakra';
 import { CheckIcon, SmallCloseIcon, EditIcon } from '@/icons';
 
@@ -46,9 +47,14 @@ function EditableControls() {
   );
 }
 
-export type CustomEditableProps = EditableProps;
+export type CustomEditableProps = EditableProps &
+  Pick<InputProps, 'name' | 'value'>;
 
-export const CustomEditable = (props: CustomEditableProps) => {
+export const CustomEditable = ({
+  name,
+  value,
+  ...rest
+}: CustomEditableProps) => {
   return (
     <Editable
       gap={2}
@@ -56,11 +62,12 @@ export const CustomEditable = (props: CustomEditableProps) => {
       align="center"
       isPreviewFocusable={false}
       width="100%"
-      {...props}
+      value={value}
+      {...rest}
     >
-      <EditablePreview />
-      <Input as={EditableInput} size="sm" />
-      {props.value && <EditableControls />}
+      <EditablePreview fontSize="sm" />
+      <Input as={EditableInput} size="sm" name={name} />
+      {value && <EditableControls />}
     </Editable>
   );
 };

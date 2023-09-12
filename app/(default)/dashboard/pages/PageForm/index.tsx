@@ -8,27 +8,30 @@ import {
   Heading,
   IconButton,
   Input,
+  Select,
   Stack,
-  Textarea,
 } from '@/components/chakra';
-import { CustomEditable } from '@/components/client';
-import { useEffect, useState } from '@/hooks';
+import { CustomEditable, FormWrapper, TextEditor } from '@/components/client';
+import { useEffect, useRouter, useState } from '@/hooks';
 import { RepeatIcon } from '@/icons';
 import { createPage } from '@/services/pages';
 import { Page } from '@/types';
 import slugify from 'slugify';
 
 export type PageFormProps = {
-  data?: Partial<Page>;
+  data?: Page;
 };
 
 export const PageForm = ({ data: propsData }: PageFormProps) => {
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [data, setInputData] = useState({
     title: propsData?.title ?? '',
     content: propsData?.content ?? '',
     slug: propsData?.slug ?? '',
+    locale: propsData?.locale ?? 'vi',
   });
 
   const [isCustomEdited, setIsCustomEdited] = useState(false);
@@ -42,37 +45,48 @@ export const PageForm = ({ data: propsData }: PageFormProps) => {
     }
   }, [data.title, isCustomEdited]);
 
-  const handleSubmit = async () => {
-    const res = await createPage({ ...data, locale: 'vi' });
-    console.log('### res: ', { res });
+  const handleSubmit = async (formData: FormData) => {
+    setIsLoading(true);
+
+    const response = await createPage(formData);
+
+    if (response) {
+      setIsLoading(false);
+      router.refresh();
+      router.push(`/dashboard/pages/${response.id}`);
+    }
   };
 
   return (
-    <Flex gap={6}>
-      <Stack spacing={3} flex={1}>
-        <FormControl isDisabled={isLoading}>
-          <FormLabel>Title</FormLabel>
-          <Input
-            placeholder="Page title"
-            value={data?.title}
-            onChange={(event) =>
-              setInputData({ ...data, title: event.target.value })
-            }
-          />
+    <FormWrapper action={handleSubmit}>
+      <Flex gap={6}>
+        <Stack spacing={3} flex={1}>
+          <FormControl isDisabled={isLoading}>
+            <FormLabel>Title</FormLabel>
+            <Input
+              placeholder="Page title"
+              name="title"
+              value={data?.title}
+              onChange={(event) =>
+                setInputData({ ...data, title: event.target.value })
+              }
+            />
 
-          {data.slug && (
-            <Flex marginTop={2} align="center" gap={2} color="gray">
+            <Flex marginTop={2} align="center" gap={2} color="gray" minH="29px">
               <Heading as="h4" fontSize="sm">
                 Slug:
               </Heading>
 
-              <CustomEditable
-                value={data.slug}
-                onChange={(newValue) => {
-                  setIsCustomEdited(true);
-                  setInputData({ ...data, slug: newValue });
-                }}
-              />
+              {data.slug && (
+                <CustomEditable
+                  name="slug"
+                  value={data.slug}
+                  onChange={(newValue) => {
+                    setIsCustomEdited(true);
+                    setInputData({ ...data, slug: newValue });
+                  }}
+                />
+              )}
 
               {isCustomEdited && (
                 <IconButton
@@ -89,26 +103,41 @@ export const PageForm = ({ data: propsData }: PageFormProps) => {
                 />
               )}
             </Flex>
-          )}
-        </FormControl>
+          </FormControl>
 
-        <FormControl isDisabled={isLoading}>
-          <FormLabel>Title</FormLabel>
-          <Textarea
-            placeholder="Page title"
-            value={data?.content}
-            onChange={(event) =>
-              setInputData({ ...data, content: event.target.value })
-            }
-          />
-        </FormControl>
-      </Stack>
+          <FormControl isDisabled={isLoading}>
+            <FormLabel>Content</FormLabel>
+            <TextEditor
+              name="content"
+              value={data.content}
+              onChange={(newValue) =>
+                setInputData({ ...data, content: newValue })
+              }
+            />
+          </FormControl>
 
-      <Stack spacing={3} width="280px">
-        <Button colorScheme="blue" isLoading={isLoading} onClick={handleSubmit}>
-          Publish
-        </Button>
-      </Stack>
-    </Flex>
+          <FormControl isDisabled={isLoading}>
+            <FormLabel>Locale</FormLabel>
+            <Select
+              name="locale"
+              placeholder="Select locale"
+              value={data.locale}
+              onChange={(e) =>
+                setInputData({ ...data, locale: e.currentTarget.value })
+              }
+            >
+              <option value="vi">Vietnamese</option>
+              <option value="en">English</option>
+            </Select>
+          </FormControl>
+        </Stack>
+
+        <Stack spacing={3} width="280px">
+          <Button colorScheme="blue" isLoading={isLoading} type="submit">
+            Publish
+          </Button>
+        </Stack>
+      </Flex>
+    </FormWrapper>
   );
 };
