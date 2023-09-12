@@ -1,0 +1,16 @@
+{
+   "navigation": {
+     "home": "Trang chủ",
+     "about-us": "Về chúng tôi"
+   },
+   "page": {
+     "home": {
+       "title": "Chào mứng đến với trang chủ",
+       "description": "Ngôn ngữ toàn cầu với NextJs 13 App-Router"
+     },
+     "about-us": {
+       "title": "Tiêu đề",
+       "description": "Mô tả về thông tin của chúng tôi"
+     }
+   }
+ }
