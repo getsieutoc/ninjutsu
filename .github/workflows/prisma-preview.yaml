@@ -9,7 +9,7 @@ on:
       - "prisma/**"
 
 jobs:
-  prisma-production:
+  prisma-preview:
     if: >-
       github.event.pull_request.user.login != 'renovate' &&
       github.event.pull_request.user.login != 'renovate[bot]'
