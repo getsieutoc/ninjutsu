@@ -4,6 +4,7 @@ import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 
 import { i18n } from './configs/i18n.config';
+
 const PUBLIC_FILE = /\.(.*)$/;
 export const config = {
   // Matcher ignoring `/_next/` and `/api/`
