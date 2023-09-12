@@ -1,20 +1,18 @@
-import { Box, Flex, Heading, Spacer, Text } from '@/components/chakra';
-import { VirtualTable } from '@/components/client';
+import { Flex, Heading, Spacer, Text } from '@/components/chakra';
+import { AddNewButton, VirtualTable } from '@/components/client';
 import { prisma } from '@/utils/prisma';
-
-import { AddPageButton } from './AddPageButton';
 
 export default async function PagesDashboard() {
   const pages = await prisma.page.findMany({});
 
   return (
-    <Box>
+    <Flex direction="column">
       <Flex justify="space-between" align="center" width="100%">
         <Heading as="h3" size="lg" alignItems="center" color="gray">
           Pages
         </Heading>
 
-        <AddPageButton />
+        <AddNewButton title="Add New Page" />
       </Flex>
 
       <Spacer />
@@ -33,6 +31,6 @@ export default async function PagesDashboard() {
       ) : (
         <Text>No pages</Text>
       )}
-    </Box>
+    </Flex>
   );
 }
