@@ -1,9 +1,10 @@
 'use client';
-
 import { usePathname, useRouter } from 'next/navigation';
 
 import { i18n, type Locale } from '@/configs/i18n.config';
 import { Select } from '@/components/chakra';
+import { redirectedPathName } from '@/utils/dictionary';
+import { LOCALE_LOCAL } from '@/utils/constants';
 
 type PropTypes = {
   locale: Locale;
@@ -11,18 +12,14 @@ type PropTypes = {
 export function LocaleSwitcher({ locale }: PropTypes) {
   const router = useRouter();
   const pathName = usePathname();
-
-  const redirectedPathName = (locale: string) => {
-    if (!pathName) return '/';
-    const segments = pathName.split('/');
-    segments[1] = locale;
-    const path = segments.join('/');
-    router.push(path);
-  };
-
   return (
     <Select
-      onChange={(e) => redirectedPathName(e.target.value)}
+      onChange={(e) => {
+        const locale = e.target.value;
+        const path = redirectedPathName(locale, pathName);
+        localStorage.setItem(LOCALE_LOCAL, locale);
+        router.push(path);
+      }}
       width="55px"
       size="xs"
       rounded={5}

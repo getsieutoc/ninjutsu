@@ -1,4 +1,4 @@
-import 'server-only';
+// import 'server-only';
 import type { Locale } from '@/configs/i18n.config';
 
 const dictionaries = {
@@ -7,3 +7,9 @@ const dictionaries = {
 };
 
 export const getDictionary = async (locale: Locale) => dictionaries[locale]();
+export const redirectedPathName = (locale: string, pathName: string) => {
+  if (!pathName) return '/';
+  const segments = pathName.split('/');
+  segments[1] = locale;
+  return segments.join('/');
+};

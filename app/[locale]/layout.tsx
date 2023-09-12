@@ -2,6 +2,7 @@ import type { ReactNode } from '@/types';
 
 import { Locale, i18n } from '@/configs/i18n.config';
 import { Providers } from './providers';
+import { getSession } from 'next-auth/react';
 
 export const metadata = {
   title: 'Sieutoc Website',
@@ -11,17 +12,20 @@ export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params,
 }: {
   children: ReactNode;
-  params: { lang: Locale };
+  params: { locale: Locale };
 }) {
+  const session = await getSession();
   return (
-    <html lang={params.lang}>
+    <html lang={params.locale}>
       <body>
-        <Providers>{children}</Providers>
+        <Providers session={session} locale={params.locale}>
+          {children}
+        </Providers>
       </body>
     </html>
   );

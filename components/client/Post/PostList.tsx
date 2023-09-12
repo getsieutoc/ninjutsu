@@ -178,12 +178,7 @@ export const PostList = () => {
           setTake={setTake}
         />
       </Flex>
-      <VirtualTable
-        data={dataTable}
-        columns={columns}
-        height={'500px'}
-        // onRowClick={(row) => console.log(row.item[row?.context?.column?.id])}
-      />
+      <VirtualTable data={dataTable} columns={columns} height={'500px'} />
     </Box>
   );
 };
