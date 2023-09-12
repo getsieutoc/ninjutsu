@@ -12,9 +12,9 @@ import {
   Stack,
 } from '@/components/chakra';
 import { CustomEditable, FormWrapper, TextEditor } from '@/components/client';
-import { useEffect, useRouter, useState } from '@/hooks';
+import { useEffect, useRouter, useState, useToast } from '@/hooks';
 import { RepeatIcon } from '@/icons';
-import { createPage } from '@/services/pages';
+import { createPage, updatePage } from '@/services/pages';
 import { Page } from '@/types';
 import slugify from 'slugify';
 
@@ -23,6 +23,7 @@ export type PageFormProps = {
 };
 
 export const PageForm = ({ data: propsData }: PageFormProps) => {
+  const toast = useToast();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -48,13 +49,24 @@ export const PageForm = ({ data: propsData }: PageFormProps) => {
   const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
 
-    const response = await createPage(formData);
+    if (propsData) {
+      const response = await updatePage(propsData.id, formData);
 
-    if (response) {
-      setIsLoading(false);
-      router.refresh();
-      router.push(`/dashboard/pages/${response.id}`);
+      if (response) {
+        toast({ description: 'Cập nhật thành công' });
+        router.refresh();
+      }
+    } else {
+      const response = await createPage(formData);
+
+      if (response) {
+        toast({ description: 'Published successfully' });
+        router.refresh();
+        router.push(`/dashboard/pages/${response.id}`);
+      }
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -105,9 +117,10 @@ export const PageForm = ({ data: propsData }: PageFormProps) => {
             </Flex>
           </FormControl>
 
-          <FormControl isDisabled={isLoading}>
+          <FormControl id="text-editor" isDisabled={isLoading}>
             <FormLabel>Content</FormLabel>
             <TextEditor
+              id="text-editor"
               name="content"
               value={data.content}
               onChange={(newValue) =>
@@ -134,7 +147,7 @@ export const PageForm = ({ data: propsData }: PageFormProps) => {
 
         <Stack spacing={3} width="280px">
           <Button colorScheme="blue" isLoading={isLoading} type="submit">
-            Publish
+            {propsData ? 'Update' : 'Publish'}
           </Button>
         </Stack>
       </Flex>

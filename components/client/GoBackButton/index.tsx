@@ -9,10 +9,25 @@ import {
 import { ArrowBackIcon } from '@/icons';
 import { useRouter } from '@/hooks';
 
-export type GoBackButtonProps = ButtonProps | IconButtonProps;
+export type GoBackButtonProps = { path?: string } & (
+  | ButtonProps
+  | IconButtonProps
+);
 
-export const GoBackButton = ({ children, ...rest }: GoBackButtonProps) => {
+export const GoBackButton = ({
+  path,
+  children,
+  ...rest
+}: GoBackButtonProps) => {
   const router = useRouter();
+
+  const handleClick = () => {
+    if (path) {
+      router.push(path);
+    } else {
+      router.back();
+    }
+  };
 
   if (children) {
     return (
@@ -20,7 +35,7 @@ export const GoBackButton = ({ children, ...rest }: GoBackButtonProps) => {
         size="sm"
         variant="ghost"
         leftIcon={<ArrowBackIcon />}
-        onClick={() => router.back()}
+        onClick={handleClick}
         {...rest}
       >
         {children}
@@ -34,7 +49,7 @@ export const GoBackButton = ({ children, ...rest }: GoBackButtonProps) => {
       aria-label="Back"
       variant="ghost"
       icon={<ArrowBackIcon />}
-      onClick={() => router.back()}
+      onClick={handleClick}
       {...rest}
     />
   );

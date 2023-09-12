@@ -10,6 +10,7 @@ import {
   type EditableProps,
   InputProps,
 } from '@/components/chakra';
+import { useId } from '@/hooks';
 import { CheckIcon, SmallCloseIcon, EditIcon } from '@/icons';
 
 // Will bring outside if reuse again
@@ -51,10 +52,13 @@ export type CustomEditableProps = EditableProps &
   Pick<InputProps, 'name' | 'value'>;
 
 export const CustomEditable = ({
+  id,
   name,
   value,
   ...rest
 }: CustomEditableProps) => {
+  const randomId = useId();
+
   return (
     <Editable
       gap={2}
@@ -66,7 +70,7 @@ export const CustomEditable = ({
       {...rest}
     >
       <EditablePreview fontSize="sm" />
-      <Input as={EditableInput} size="sm" name={name} />
+      <Input id={id ?? randomId} as={EditableInput} size="sm" name={name} />
       {value && <EditableControls />}
     </Editable>
   );

@@ -1,5 +1,4 @@
 'use server';
-import 'server-only';
 
 import { prisma } from '@/utils/prisma';
 import { getSession } from '@/utils/auth';
@@ -21,6 +20,25 @@ export const createPage = async (formData: FormData) => {
       ...entries,
       authorId: session.user.id,
     },
+  });
+
+  return result;
+};
+
+type UpdatePageDto = Partial<CreatePageDto>;
+
+export const updatePage = async (id: string, formData: FormData) => {
+  const session = await getSession();
+
+  if (!session) {
+    throw new Error('Unauthorized request');
+  }
+
+  const entries = Object.fromEntries(formData.entries()) as UpdatePageDto;
+
+  const result = await prisma.page.update({
+    where: { id, authorId: session.user.id },
+    data: entries,
   });
 
   return result;

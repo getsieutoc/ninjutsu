@@ -13,12 +13,11 @@ export default async function EditPage({ params }: EditPageProps) {
   const { id } = params;
 
   const data = await prisma.page.findUnique({ where: { id } });
-  console.log('### data: ', { data });
 
   return (
     <Flex direction="column">
       <Stack direction="row" align="center">
-        <GoBackButton />
+        <GoBackButton path="/dashboard/pages" />
 
         <Heading as="h3" size="lg" alignItems="center" color="gray">
           Edit Page
