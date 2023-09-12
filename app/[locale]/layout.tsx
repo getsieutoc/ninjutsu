@@ -16,10 +16,10 @@ export default function RootLayout({
   params,
 }: {
   children: ReactNode;
-  params: { lang: Locale };
+  params: { locale: Locale };
 }) {
   return (
-    <html lang={params.lang}>
+    <html lang={params.locale}>
       <body>
         <Providers>{children}</Providers>
       </body>
