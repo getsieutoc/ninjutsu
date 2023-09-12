@@ -36,7 +36,7 @@ export type PageDeleteSectionProps = {
   page: Page;
 };
 
-export const PageDeleteSection = ({ page }: PageDeleteSectionProps) => {
+export const DeleteSection = ({ page }: PageDeleteSectionProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const toast = useToast();

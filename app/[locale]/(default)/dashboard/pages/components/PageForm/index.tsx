@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Button,
   Flex,
@@ -17,7 +15,7 @@ import { RepeatIcon } from '@/icons';
 import { createPage, updatePage } from '@/services/pages';
 import { Page } from '@/types';
 import slugify from 'slugify';
-import { PageDeleteSection } from '../PageDeleteSection';
+import { DeleteSection } from './DeleteSection';
 
 export type PageFormProps = {
   data?: Page;
@@ -151,7 +149,7 @@ export const PageForm = ({ data: propsData }: PageFormProps) => {
             {propsData ? 'Update' : 'Publish'}
           </Button>
 
-          {propsData && <PageDeleteSection page={propsData} />}
+          {propsData && <DeleteSection page={propsData} />}
         </Stack>
       </Flex>
     </FormWrapper>
