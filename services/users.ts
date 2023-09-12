@@ -1,3 +1,4 @@
+import 'server-only';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { NextResponse } from 'next/server';
 import { exclude, parseQuery } from '@/utils/parsers';
