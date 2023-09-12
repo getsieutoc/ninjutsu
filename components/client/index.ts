@@ -2,9 +2,10 @@
 
 export * from './AccessDenied';
 export * from './AddNewButton';
-export * from './GoBackButton';
 export * from './CustomEditable';
 export * from './FormWrapper';
+export * from './GoBackButton';
+export * from './LocaleSwitcher';
 export * from './Navbar';
 export * from './NextImage';
 export * from './NextLink';

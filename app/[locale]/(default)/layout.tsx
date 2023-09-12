@@ -1,6 +1,6 @@
-import { ProfileMenu, LocaleSwitcher } from '@/components/server';
+import { LocaleSwitcher, Sidebar } from '@/components/client';
+import { ProfileMenu } from '@/components/server';
 import { Box, Flex } from '@/components/chakra';
-import { Sidebar } from '@/components/client';
 import type { Locale } from '@/configs/i18n.config';
 import type { ReactNode } from '@/types';
 

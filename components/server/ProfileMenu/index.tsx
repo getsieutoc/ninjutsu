@@ -63,4 +63,3 @@ export const ProfileMenu = async () => {
     </Menu>
   );
 };
-export { LocaleSwitcher } from './LocaleSwitcher';
