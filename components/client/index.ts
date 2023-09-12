@@ -10,6 +10,7 @@ export * from './NextImage';
 export * from './NextLink';
 export * from './Pagination';
 export * from './Post';
+export * from './Providers';
 export * from './Sidebar';
 export * from './Sidebar';
 export * from './TextEditor';

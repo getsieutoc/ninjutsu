@@ -2,6 +2,8 @@ import { GoBackButton } from '@/components/client';
 import { Flex, Heading, Stack } from '@/components/chakra';
 import { PageForm } from '../PageForm';
 
+export const dynamic = 'force-dynamic';
+
 export default function AddNewPage() {
   return (
     <Flex direction="column">
