@@ -6,7 +6,7 @@ import { i18n, type Locale } from '@/configs/i18n.config';
 import { Select } from '@/components/chakra';
 import { redirectedPathName } from '@/utils/redirectedPathLocale';
 import { useAuth, useToast } from '@/hooks';
-import { httpClient } from '@/utils/httpClient';
+import { updateUser } from '@/services/users';
 
 type LocaleSwitcherProps = {
   locale: Locale;
@@ -21,39 +21,10 @@ export function LocaleSwitcher({ locale }: LocaleSwitcherProps) {
   const handleChangeLocale = async (localeSelected: Locale) => {
     const userID = session?.user.id;
     if (!userID) return;
-    // setIsLoading(true);
-
-    const { status, statusText } = await fetch('/api/users', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        preferences: {
-          locale: localeSelected,
-        },
-        id: userID,
-      }),
+    const result = await updateUser(session.user.id, {
+      preferences: { locale: localeSelected },
     });
 
-    if (status === 200) {
-      toast({
-        status: 'success',
-        title: 'Successfully',
-        duration: 2000,
-        isClosable: true,
-        position: 'top-right',
-      });
-      router.refresh();
-    } else {
-      toast({
-        status: 'error',
-        description: statusText,
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-    // setIsLoading(false);
     router.push(redirectedPathName(pathName, localeSelected));
   };
   return (

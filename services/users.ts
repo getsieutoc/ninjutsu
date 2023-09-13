@@ -1,11 +1,13 @@
-import 'server-only';
+'use server';
+// import 'server-only';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { NextResponse } from 'next/server';
 import { exclude, parseQuery } from '@/utils/parsers';
-import { type User, UserRole } from '@prisma/client';
+import { type User, UserRole, Prisma } from '@prisma/client';
 import { type Session } from 'next-auth';
 import { prisma } from '@/utils/prisma';
 import { hash } from '@/utils/password';
+import { getSession } from '@/utils/auth';
 
 // export type UserWithPayload = Prisma.UserGetPayload<>;
 export const getUser = async (
@@ -83,35 +85,32 @@ export const queryUsers = async (
   }
 };
 
-export const updateUser = async (
-  req: Request,
-  res: NextApiResponse<Omit<User, 'password'>>,
-  session: Session | null
-) => {
+export const updateUser = async (id: string, data: Partial<User>) => {
+  const session = await getSession();
+
+  if (!session) {
+    throw new Error('Unauthorized request');
+  }
   try {
-    const data = await req.json();
-    if (!session || !data) {
-      return NextResponse.json({ status: 403 });
+    if (!id || !data) {
+      throw new Error('id and data update must be request');
     }
-
-    let { id } = data;
     const role = session.user.role;
-
+    // const entries = Object.fromEntries(formData.entries()) as CreatePageDto;
     // Normal user can only update their own account
     if (role === UserRole.USER || role === UserRole.AUTHOR) {
       id = session.user.id;
     }
     const result = await prisma.user.update({
       where: { id: id as string },
-      data,
+      data: {
+        ...data,
+        preferences: data.preferences as Prisma.JsonObject,
+      },
     });
-    console.log(data);
-    return NextResponse.json({
-      status: 200,
-      result: exclude(result, 'password'),
-    });
+    return exclude(result, 'password');
   } catch (error) {
-    return NextResponse.json({ status: 500 });
+    return { status: 500 };
   }
 };
 
