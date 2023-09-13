@@ -20,6 +20,7 @@ export const SetColorMode = () => {
       <Flex width="100%" justify="space-between" align="center">
         <Text>Dark mode</Text>
         <Switch
+          name="color-mode-switch"
           colorScheme="purple"
           isChecked={colorMode === 'dark'}
           onChange={(e) => setColorMode(e.target.checked ? 'light' : 'dark')}

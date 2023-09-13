@@ -1,5 +1,3 @@
-'use client';
-
 import { TableVirtuoso, type TableComponents } from 'react-virtuoso';
 import { forwardRef, useState, type CSSProperties } from 'react';
 import {
@@ -33,10 +31,10 @@ const defaultComponents: TableComponents = {
   Table: (props) => (
     <Table style={{ width: '100%', tableLayout: 'fixed' }} {...props} />
   ),
-  TableRow: (props) => {
-    const cursor = (props?.context as any).clickable ? 'pointer' : 'default';
+  TableRow: ({ context, ...rest }) => {
+    const cursor = (context as any).clickable ? 'pointer' : 'default';
     const background = useColorModeValue('blackAlpha.100', 'whiteAlpha.100');
-    return <Tr _hover={{ cursor, background }} {...props} />;
+    return <Tr _hover={{ cursor, background }} {...rest} />;
   },
   TableHead: forwardRef((props, ref) => <Thead {...props} ref={ref} />),
   TableBody: forwardRef((props, ref) => <Tbody {...props} ref={ref} />),
@@ -49,6 +47,7 @@ type RowClickParams<TData extends RowData> = {
 };
 
 export type VirtualTableProps<TData extends RowData, TValue = unknown> = {
+  href?: string;
   columns: ColumnDef<TData, TValue>[];
   components?: TableComponents;
   data: TData[];

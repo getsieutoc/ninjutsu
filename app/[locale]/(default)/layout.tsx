@@ -1,8 +1,8 @@
-import { Box, Flex, HStack } from '@/components/chakra';
-import { Navbar } from '@/components/client';
-import { ProfileMenu, LocaleSwitcher } from '@/components/server';
-import type { ReactNode } from '@/types';
+import { LocaleSwitcher, Sidebar } from '@/components/client';
+import { ProfileMenu } from '@/components/server';
+import { Box, Flex } from '@/components/chakra';
 import type { Locale } from '@/configs/i18n.config';
+import type { ReactNode } from '@/types';
 
 export default function DefaultLayout({
   children,
@@ -12,17 +12,13 @@ export default function DefaultLayout({
   params: { locale: Locale };
 }) {
   return (
-    <Flex direction="column">
-      <Navbar>
-        <HStack spacing={1}>
-          <Box>
-            <LocaleSwitcher locale={params.locale} />
-          </Box>
-          <Box>
-            <ProfileMenu />
-          </Box>
-        </HStack>
-      </Navbar>
+    <Flex>
+      <Sidebar>
+        <Flex gap={1} align="center">
+          <LocaleSwitcher locale={params.locale} />
+          <ProfileMenu />
+        </Flex>
+      </Sidebar>
 
       <Box padding={6} width="100%" height="100vh" overflowY="scroll">
         {children}
