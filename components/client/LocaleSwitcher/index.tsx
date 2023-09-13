@@ -6,10 +6,11 @@ import { i18n, type Locale } from '@/configs/i18n.config';
 import { Select } from '@/components/chakra';
 import { redirectedPathName } from '@/utils/redirectedPathLocale';
 
-type PropTypes = {
+type LocaleSwitcherProps = {
   locale: Locale;
 };
-export function LocaleSwitcher({ locale }: PropTypes) {
+
+export function LocaleSwitcher({ locale }: LocaleSwitcherProps) {
   const router = useRouter();
   const pathName = usePathname();
 

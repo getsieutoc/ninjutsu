@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET(
   req: Request,
-  res: NextApiResponse<{ posts: Post[]; count: number } | Post>
+  _res: NextApiResponse<{ posts: Post[]; count: number } | Post>
 ) {
   const { searchParams } = new URL(req.url);
   const pageIndex = Number(searchParams.get('pageIndex') ?? 0);
@@ -19,7 +19,7 @@ export async function GET(
 }
 export async function POST(
   req: Request,
-  res: NextApiResponse<{ posts: Post[]; count: number } | Post>
+  _res: NextApiResponse<{ posts: Post[]; count: number } | Post>
 ) {
   const data = await req.json();
   try {

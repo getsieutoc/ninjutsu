@@ -16,6 +16,13 @@ enum UserRole {
   MANAGER
 }
 
+enum PostType {
+  DEFAULT
+  AUDIO
+  VIDEO
+  YOUTUBE
+}
+
 model Account {
   id                String  @id @default(uuid())
   type              String
@@ -54,6 +61,7 @@ model User {
   sessions      Session[]
   pages         Page[]
   posts         Post[]
+  preferences   Json?     @default("{}")
 }
 
 model VerificationToken {
@@ -94,6 +102,8 @@ model Post {
   translatedPosts Post[]    @relation("OriginalTranslated")
   locale          String
   tags            Tag[]
+  type            PostType? @default(DEFAULT)
+  featuredImage   String?
   authorId        String
   author          User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }

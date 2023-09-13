@@ -9,13 +9,18 @@ export type TextEditorProps = {
   onChange?: (value: string) => void;
 } & Omit<IAllProps, 'onChange'>;
 
-export const TextEditor = ({ name, onChange, ...rest }: TextEditorProps) => {
-  const id = useId();
+export const TextEditor = ({
+  name,
+  onChange,
+  id,
+  ...rest
+}: TextEditorProps) => {
+  const randomId = useId();
   const editorRef = useRef<EditorInterface | null>(null);
 
   return (
     <Editor
-      id={id}
+      id={id ?? randomId}
       textareaName={name}
       onInit={(_evt, editor) => (editorRef.current = editor)}
       apiKey={process.env.NEXT_PUBLIC_API_KEY_TINYMCE}

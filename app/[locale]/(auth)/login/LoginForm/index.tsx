@@ -1,19 +1,12 @@
 'use client';
-import {
-  Input,
-  VStack,
-  Divider,
-  Button,
-  FormLabel,
-  FormControl,
-} from '@/components/chakra';
-import { useAuth, useEffect, useMemo, useState, useRouter } from '@/hooks';
-import { getProviders, signIn } from 'next-auth/react';
+
+import { Input, Button, FormLabel, FormControl } from '@/components/chakra';
+import { useAuth, useEffect, useState, useRouter } from '@/hooks';
+import { signIn } from 'next-auth/react';
 import { NextLink } from '@/components/client';
 
 export default function LoginForm() {
   const router = useRouter();
-  const providers = useMemo(async () => await getProviders(), []);
   const { isAuthenticated } = useAuth();
   const [credentials, setCredentials] = useState({
     email: '',
@@ -34,27 +27,9 @@ export default function LoginForm() {
       router.back();
     }
   }, [isAuthenticated, router]);
+
   return (
     <>
-      <VStack>
-        {Object.values(providers)
-          .filter((p) => p.name !== 'Credentials')
-          .map((provider) => (
-            <Button
-              key={provider.name}
-              width="100%"
-              colorScheme="gray"
-              onClick={() =>
-                signIn(provider.id, { callbackUrl: getCallbackUrl() })
-              }
-            >
-              Sign in with {provider.name}
-            </Button>
-          ))}
-      </VStack>
-
-      <Divider />
-
       <FormControl
         isRequired
         isInvalid={credentials.email.length > 0 && !validEmail}
