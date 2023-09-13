@@ -84,28 +84,28 @@ export const queryUsers = async (
 };
 
 export const updateUser = async (
-  req: NextApiRequest,
+  req: Request,
   res: NextApiResponse<Omit<User, 'password'>>,
   session: Session | null
 ) => {
   try {
-    if (!session) {
+    const data = await req.json();
+    if (!session || !data) {
       return NextResponse.json({ status: 403 });
     }
 
+    let { id } = data;
     const role = session.user.role;
-    let { id } = req.query;
 
     // Normal user can only update their own account
     if (role === UserRole.USER || role === UserRole.AUTHOR) {
       id = session.user.id;
     }
-
     const result = await prisma.user.update({
       where: { id: id as string },
-      data: JSON.parse(req.body),
+      data,
     });
-
+    console.log(data);
     return NextResponse.json({
       status: 200,
       result: exclude(result, 'password'),
