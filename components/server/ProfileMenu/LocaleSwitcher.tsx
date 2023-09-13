@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import { i18n, type Locale } from '@/configs/i18n.config';
 import { Select } from '@/components/chakra';
+import { redirectedPathName } from '@/utils/redirectedPathLocale';
 
 type PropTypes = {
   locale: Locale;
@@ -12,21 +13,16 @@ export function LocaleSwitcher({ locale }: PropTypes) {
   const router = useRouter();
   const pathName = usePathname();
 
-  const redirectedPathName = (locale: string) => {
-    if (!pathName) return '/';
-    const segments = pathName.split('/');
-    segments[1] = locale;
-    const path = segments.join('/');
-    router.push(path);
-  };
-
   return (
     <Select
-      onChange={(e) => redirectedPathName(e.target.value)}
+      onChange={(e) => {
+        const localeSelected = e.target.value as Locale;
+        router.push(redirectedPathName(pathName, localeSelected));
+      }}
       width="55px"
       size="xs"
       rounded={5}
-      defaultValue={locale}
+      value={locale}
     >
       {i18n.locales.map((locale, index) => {
         return (
