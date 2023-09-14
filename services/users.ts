@@ -91,27 +91,23 @@ export const updateUser = async (id: string, data: Partial<User>) => {
   if (!session) {
     throw new Error('Unauthorized request');
   }
-  try {
-    if (!id || !data) {
-      throw new Error('id and data update must be request');
-    }
-    const role = session.user.role;
-    // const entries = Object.fromEntries(formData.entries()) as CreatePageDto;
-    // Normal user can only update their own account
-    if (role === UserRole.USER || role === UserRole.AUTHOR) {
-      id = session.user.id;
-    }
-    const result = await prisma.user.update({
-      where: { id: id as string },
-      data: {
-        ...data,
-        preferences: data.preferences as Prisma.JsonObject,
-      },
-    });
-    return exclude(result, 'password');
-  } catch (error) {
-    return { status: 500 };
+
+  if (!id || !data) {
+    throw new Error('id and data update must be request');
   }
+  const role = session.user.role;
+  // Normal user can only update their own account
+  if (role === UserRole.USER || role === UserRole.AUTHOR) {
+    id = session.user.id;
+  }
+  const result = await prisma.user.update({
+    where: { id: id as string },
+    data: {
+      ...data,
+      preferences: data.preferences as Prisma.JsonObject,
+    },
+  });
+  return exclude(result, 'password');
 };
 
 // TODO: implement rate limit on the next PR
