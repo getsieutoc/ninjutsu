@@ -62,7 +62,6 @@ model User {
   sessions      Session[]
   pages         Page[]
   posts         Post[]
-  preferences   Json?     @default("{}")
 }
 
 model VerificationToken {
