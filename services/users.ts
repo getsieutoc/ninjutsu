@@ -95,18 +95,27 @@ export const updateUser = async (id: string, data: Partial<User>) => {
   if (!id || !data) {
     throw new Error('id and data update must be request');
   }
-  const role = session.user.role;
+  const currentUser = await prisma.user.findUnique({ where: { id } });
+  if (!currentUser) {
+    throw new Error('user not found');
+  }
+  const { role } = currentUser;
   // Normal user can only update their own account
   if (role === UserRole.USER || role === UserRole.AUTHOR) {
     id = session.user.id;
   }
+  const preferences = {
+    ...(currentUser.preferences as Prisma.JsonObject),
+    ...(data.preferences as Prisma.JsonObject),
+  };
   const result = await prisma.user.update({
-    where: { id: id as string },
+    where: { id },
     data: {
       ...data,
-      preferences: data.preferences as Prisma.JsonObject,
+      preferences,
     },
   });
+
   return exclude(result, 'password');
 };
 
