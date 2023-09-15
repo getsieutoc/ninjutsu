@@ -97,7 +97,7 @@ model Post {
   title           String    @db.VarChar(255)
   slug            String    @db.VarChar(255)
   content         String
-  originalId      String
+  originalId      String?
   originalPost    Post?     @relation("OriginalTranslated", fields: [originalId], references: [id])
   translatedPosts Post[]    @relation("OriginalTranslated")
   locale          String
