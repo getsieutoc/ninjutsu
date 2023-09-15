@@ -7,12 +7,18 @@ import { updateUser } from '@/services/users';
 import { i18n } from '@/configs/i18n.config';
 import { useAuth } from '@/hooks';
 import { Locale } from '@/types';
+import { LOCALE } from '@/utils/constants';
 
 export type LocaleSwitcherProps = {
   locale: Locale;
 };
 
 export const LocaleSwitcher = ({ locale }: LocaleSwitcherProps) => {
+
+
+// const localeAtom = atomWithStorage<Locale>(LOCALE, i18n.defaultLocale);
+
+export function LocaleSwitcher() {
   const router = useRouter();
   const pathName = usePathname();
   const { session } = useAuth();

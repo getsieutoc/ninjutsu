@@ -12,7 +12,7 @@ export const metadata = {
 //   return i18n.locales.map((locale) => ({ locale }));
 // }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params,
 }: {
