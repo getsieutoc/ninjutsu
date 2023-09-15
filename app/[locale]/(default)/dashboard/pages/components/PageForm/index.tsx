@@ -25,7 +25,7 @@ import { DeleteSection } from './DeleteSection';
 export type PageFormProps = {
   title?: string;
   backPath?: string;
-  data: Page | null;
+  data?: Page | null;
 };
 
 export const PageForm = ({

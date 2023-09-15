@@ -25,7 +25,7 @@ import { DeleteSection } from './DeleteSection';
 export type PostFormProps = {
   title?: string;
   backPath?: string;
-  data: Post | null;
+  data?: Post | null;
 };
 
 export const PostForm = ({
