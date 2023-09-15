@@ -5,7 +5,6 @@ import type { ReactNode, Locale } from '@/types';
 
 export default async function CustomLayout({
   children,
-  params,
 }: {
   children: ReactNode;
   params: { locale: Locale };
@@ -13,8 +12,8 @@ export default async function CustomLayout({
   return (
     <Flex direction="column">
       <Navbar>
-        <Flex gap={1} align="center">
-          <LocaleSwitcher locale={params.locale} />
+        <Flex gap={1}>
+          <LocaleSwitcher />
           <ProfileMenu />
         </Flex>
       </Navbar>

@@ -35,7 +35,6 @@ export function middleware(request: NextRequest) {
     ({ value }) =>
       !pathname.startsWith(`/${value}/`) && pathname !== `/${value}`
   );
-
   // Redirect if there is no locale
   if (pathnameIsMissingLocale) {
     const locale = getLocale(request);

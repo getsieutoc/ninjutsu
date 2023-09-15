@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 
-import type { FC, Post } from '@/types';
+import type { Post } from '@/types';
 import {
   Flex,
   Box,
@@ -17,10 +17,10 @@ import {
 import { HTMLParser } from '../HTMLParser';
 import { NextLink } from '../NextLink';
 
-type PropTypes = {
+type PostCardProps = {
   post: Post;
 };
-export const PostCard: FC<PropTypes> = ({ post }) => {
+export const PostCard = ({ post }: PostCardProps) => {
   return (
     <Box>
       <Card height={400}>
