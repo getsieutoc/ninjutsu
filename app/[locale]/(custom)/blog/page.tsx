@@ -7,12 +7,19 @@ export const metadata: Metadata = {
   title: 'Blog',
 };
 
-export default async function BlogsPage() {
+export default async function BlogsPage({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
   const data = await prisma?.post.findMany({
-    orderBy: { createdAt: 'desc' },
+    where: { locale },
     take: 25,
+    orderBy: { createdAt: 'desc' },
   });
+
   if (!data) return <Spinner size="sm" />;
+
   return (
     <>
       <Heading>The latest articles</Heading>

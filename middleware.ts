@@ -1,10 +1,8 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
+import { NextRequest, NextResponse } from 'next/server';
 import Negotiator from 'negotiator';
 
 import { i18n } from './configs/i18n.config';
-import { LOCALE } from './utils/constants';
 
 const PUBLIC_FILE = /\.(.*)$/;
 export const config = {
@@ -13,18 +11,26 @@ export const config = {
 };
 
 function getLocale(request: NextRequest): string | undefined {
-  const negotiatorHeaders: Record<string, string> = {};
-  request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
+  const headers: Record<string, string> = {};
+  request.headers.forEach((value, key) => (headers[key] = value));
 
-  const cookieValue = request.cookies.get(LOCALE)?.value;
-  const defaultLocale = cookieValue ?? i18n.defaultLocale;
+  const cookieValue = request.cookies.get('NEXT_LOCALE')?.value;
 
-  const locales = i18n.locales.map((locale) => locale.value);
+  if (cookieValue) {
+    return cookieValue;
+  }
 
-  const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
-  const locale = matchLocale(languages, locales, defaultLocale);
+  // If we dont have cookie value, try to get it from user's preferences
+  const availableLocales = i18n.locales.map((locale) => locale.value);
+  const acceptLanguages = new Negotiator({ headers: headers }).languages();
 
-  return locale;
+  const detectedLocale = matchLocale(
+    acceptLanguages,
+    availableLocales,
+    i18n.defaultLocale
+  );
+
+  return detectedLocale;
 }
 
 export function middleware(request: NextRequest) {
