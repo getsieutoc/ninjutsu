@@ -1,11 +1,13 @@
-import 'server-only';
+'use server';
+// import 'server-only';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { NextResponse } from 'next/server';
 import { exclude, parseQuery } from '@/utils/parsers';
-import { type User, UserRole } from '@prisma/client';
+import { type User, UserRole, Prisma } from '@prisma/client';
 import { type Session } from 'next-auth';
 import { prisma } from '@/utils/prisma';
 import { hash } from '@/utils/password';
+import { getSession } from '@/utils/auth';
 
 // export type UserWithPayload = Prisma.UserGetPayload<>;
 export const getUser = async (
@@ -83,36 +85,43 @@ export const queryUsers = async (
   }
 };
 
-export const updateUser = async (
-  req: NextApiRequest,
-  res: NextApiResponse<Omit<User, 'password'>>,
-  session: Session | null
-) => {
-  try {
-    if (!session) {
-      return NextResponse.json({ status: 403 });
-    }
+export const updateUser = async (id: string, data: Partial<User>) => {
+  const session = await getSession();
 
-    const role = session.user.role;
-    let { id } = req.query;
-
-    // Normal user can only update their own account
-    if (role === UserRole.USER || role === UserRole.AUTHOR) {
-      id = session.user.id;
-    }
-
-    const result = await prisma.user.update({
-      where: { id: id as string },
-      data: JSON.parse(req.body),
-    });
-
-    return NextResponse.json({
-      status: 200,
-      result: exclude(result, 'password'),
-    });
-  } catch (error) {
-    return NextResponse.json({ status: 500 });
+  if (!session) {
+    throw new Error('Unauthorized request');
   }
+
+  if (!id || !data) {
+    throw new Error('id and data update must be request');
+  }
+  const currentUser = await prisma.user.findUnique({
+    where: { id },
+    select: {
+      preferences: true,
+    },
+  });
+  if (!currentUser) {
+    throw new Error('user not found');
+  }
+  const { role } = session.user;
+  // Normal user can only update their own account
+  if (role === UserRole.USER || role === UserRole.AUTHOR) {
+    id = session.user.id;
+  }
+  const preferences = {
+    ...(currentUser.preferences as Prisma.JsonObject),
+    ...(data.preferences as Prisma.JsonObject),
+  };
+  const result = await prisma.user.update({
+    where: { id },
+    data: {
+      ...data,
+      preferences,
+    },
+  });
+
+  return exclude(result, 'password');
 };
 
 // TODO: implement rate limit on the next PR

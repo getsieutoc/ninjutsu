@@ -1,4 +1,4 @@
-import { createUser, queryUsers } from '@/services/users';
+import { createUser, queryUsers, updateUser } from '@/services/users';
 import { getSession } from '@/utils/auth';
 import { withRateLimit } from '@/utils/rateLimit';
 
