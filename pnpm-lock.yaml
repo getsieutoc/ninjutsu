@@ -87,8 +87,8 @@ dependencies:
     specifier: 2.2.2
     version: 2.2.2(react@18.2.0)
   tinymce:
-    specifier: 6.6.2
-    version: 6.6.2
+    specifier: 6.7.0
+    version: 6.7.0
 
 devDependencies:
   '@tanstack/react-table':
@@ -1749,7 +1749,7 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      tinymce: 6.6.2
+      tinymce: 6.7.0
     dev: false
 
   /@tsconfig/node10@1.0.9:
@@ -4398,8 +4398,8 @@ packages:
     resolution: {integrity: sha512-AD5ih2NlSssTCwsMznbvwMZpJ1cbhkGd2uueNxzv2jDlEeZdU04JQfRnggJQ8DrcVBGjAsCKwFBbDlVNtEMlzw==}
     dev: false
 
-  /tinymce@6.6.2:
-    resolution: {integrity: sha512-ShoaznNP3qI8dPtEnYt3ByhAJfMhzIY1K04CoFu1IPDeAxmAZCUJLgfiplo8etP4wN8zrBIxHEqpwYYb2IllOQ==}
+  /tinymce@6.7.0:
+    resolution: {integrity: sha512-Wf2RSobIXQ7XNw3/v4z1lPGiH3Pjsmc/6/7fG28aIS6uVWj/7IhvOPuwfJJDeOx0o0D3nSnoLHgR2KU8JAdE+w==}
     dev: false
 
   /to-fast-properties@2.0.0:
