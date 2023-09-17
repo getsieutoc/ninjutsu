@@ -1,9 +1,16 @@
 'use client';
 
-import { Input, Button, FormLabel, FormControl } from '@/components/chakra';
+import {
+  Input,
+  Button,
+  FormLabel,
+  FormControl,
+  Stack,
+  Flex,
+} from '@/components/chakra';
 import { useAuth, useEffect, useState, useRouter } from '@/hooks';
-import { signIn } from 'next-auth/react';
 import { NextLink } from '@/components/client';
+import { signIn } from 'next-auth/react';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -29,7 +36,7 @@ export default function LoginForm() {
   }, [isAuthenticated, router]);
 
   return (
-    <>
+    <Stack spacing={4}>
       <FormControl
         isRequired
         isInvalid={credentials.email.length > 0 && !validEmail}
@@ -54,26 +61,28 @@ export default function LoginForm() {
         />
       </FormControl>
 
-      <Button
-        width="100%"
-        size="lg"
-        marginTop={2}
-        colorScheme={colorScheme}
-        // isLoading={!!router.query.callback}
-        onClick={() => {
-          signIn('credentials', {
-            ...credentials,
-            redirect: true,
-            callbackUrl: getCallbackUrl(),
-          });
-        }}
-      >
-        Login
-      </Button>
+      <Flex direction="column" gap={2}>
+        <Button
+          width="100%"
+          size="lg"
+          marginTop={2}
+          colorScheme={colorScheme}
+          // isLoading={!!router.query.callback}
+          onClick={() => {
+            signIn('credentials', {
+              ...credentials,
+              redirect: true,
+              callbackUrl: getCallbackUrl(),
+            });
+          }}
+        >
+          Login
+        </Button>
 
-      <Button size="lg" variant="outline" as={NextLink} href="/signup">
-        Sign up
-      </Button>
-    </>
+        <Button size="lg" variant="ghost" as={NextLink} href="/signup">
+          Sign up
+        </Button>
+      </Flex>
+    </Stack>
   );
 }

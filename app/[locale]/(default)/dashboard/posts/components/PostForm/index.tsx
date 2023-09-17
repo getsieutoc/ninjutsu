@@ -17,22 +17,22 @@ import {
 } from '@/components/client';
 import { useEffect, useRouter, useState, useToast } from '@/hooks';
 import { ArrowUpIcon, RepeatIcon } from '@/icons';
-import { createPage, updatePage } from '@/services/pages';
-import { Page } from '@/types';
+import { createPost, updatePost } from '@/services/posts';
+import { Post } from '@/types';
 import slugify from 'slugify';
 import { DeleteSection } from './DeleteSection';
 
-export type PageFormProps = {
+export type PostFormProps = {
   title?: string;
   backPath?: string;
-  data?: Page | null;
+  data?: Post | null;
 };
 
-export const PageForm = ({
+export const PostForm = ({
   backPath,
   title,
   data: propsData,
-}: PageFormProps) => {
+}: PostFormProps) => {
   const toast = useToast();
   const router = useRouter();
 
@@ -60,19 +60,19 @@ export const PageForm = ({
     setIsLoading(true);
 
     if (propsData) {
-      const response = await updatePage(propsData.id, formData);
+      const response = await updatePost(propsData.id, formData);
 
       if (response) {
         toast({ description: 'Cập nhật thành công' });
         router.refresh();
       }
     } else {
-      const response = await createPage(formData);
+      const response = await createPost(formData);
 
       if (response) {
         toast({ description: 'Published successfully' });
         router.refresh();
-        router.push(`/dashboard/pages/${response.id}`);
+        router.push(`/dashboard/posts/${response.id}`);
       }
     }
 
@@ -97,14 +97,14 @@ export const PageForm = ({
             isLoading={isLoading}
             leftIcon={propsData ? <RepeatIcon /> : <ArrowUpIcon />}
           >
-            {propsData ? 'Update Page' : 'Publish Page'}
+            {propsData ? 'Update Post' : 'Publish Post'}
           </Button>
         </Flex>
 
         <FormControl isDisabled={isLoading}>
           <FormLabel>Title</FormLabel>
           <Input
-            placeholder="Page title"
+            placeholder="Post title"
             name="title"
             value={data?.title}
             onChange={(event) =>
@@ -112,7 +112,7 @@ export const PageForm = ({
             }
           />
 
-          <Flex marginTop={2} align="center" gap={2} color="gray" minH="29px">
+          <Flex marginTop={2} align="center" gap={2} minH="29px">
             <Heading as="h4" fontSize="sm">
               Slug:
             </Heading>
@@ -172,7 +172,7 @@ export const PageForm = ({
           </Select>
         </FormControl>
 
-        {propsData && <DeleteSection page={propsData} />}
+        {propsData && <DeleteSection post={propsData} />}
       </Stack>
     </FormWrapper>
   );

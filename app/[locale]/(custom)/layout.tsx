@@ -1,5 +1,5 @@
 import { LocaleSwitcher, Navbar } from '@/components/client';
-import { Box, Flex } from '@/components/chakra';
+import { Box, Container, Flex } from '@/components/chakra';
 import { ProfileMenu } from '@/components/server';
 import type { ReactNode } from '@/types';
 import type { Locale } from '@/configs/i18n.config';
@@ -14,15 +14,23 @@ export default function CustomLayout({
   return (
     <Flex direction="column">
       <Navbar>
-        <Flex gap={1}>
+        <Flex gap={1} align="center">
           <LocaleSwitcher locale={params.locale} />
           <ProfileMenu />
         </Flex>
       </Navbar>
 
-      <Box padding={6} width="100%" height="100vh" overflowY="scroll">
+      <Container
+        as={Box}
+        maxW={{
+          lg: 'container.lg',
+          md: 'container.m',
+          sm: 'container.sm',
+          xl: 'container.xl',
+        }}
+      >
         {children}
-      </Box>
+      </Container>
     </Flex>
   );
 }

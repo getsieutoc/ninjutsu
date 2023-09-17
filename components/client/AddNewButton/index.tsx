@@ -22,12 +22,7 @@ export const AddNewButton = ({
   };
 
   return (
-    <Button
-      colorScheme="green"
-      leftIcon={<AddIcon />}
-      size="sm"
-      onClick={handleClick}
-    >
+    <Button colorScheme="green" leftIcon={<AddIcon />} onClick={handleClick}>
       {title}
     </Button>
   );

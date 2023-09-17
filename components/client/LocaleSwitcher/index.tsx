@@ -31,7 +31,7 @@ export function LocaleSwitcher({ locale }: LocaleSwitcherProps) {
     <Select
       onChange={(e) => handleChangeLocale(e.target.value as Locale)}
       width="55px"
-      size="xs"
+      size="sm"
       rounded={5}
       value={locale}
     >

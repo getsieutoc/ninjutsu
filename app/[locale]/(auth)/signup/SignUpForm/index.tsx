@@ -7,17 +7,15 @@ import {
   FormLabel,
   FormControl,
   FormErrorMessage,
+  Stack,
+  Flex,
 } from '@/components/chakra';
 import { MIN_PASSWORD_LENGTH } from '@/utils/constants';
 import { httpClient } from '@/utils/httpClient';
-import { useEffect, useRouter, useState } from '@/hooks';
-import type { Session } from 'next-auth';
+import { useRouter, useState } from '@/hooks';
 import { NextLink } from '@/components/client';
 
-type PropTypes = {
-  session?: Session | null;
-};
-export default function SignUpForm({ session }: PropTypes) {
+export default function SignUpForm() {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
   const [agreed, setAgreed] = useState(false);
@@ -33,12 +31,6 @@ export default function SignUpForm({ session }: PropTypes) {
   const validForm = validEmail && isPasswordStrong && isConfirmMatched;
   const colorScheme = validForm ? 'brand' : 'gray';
 
-  useEffect(() => {
-    if (session?.user?.id) {
-      router.push('/protected');
-    }
-  }, [session?.user?.id, router]);
-
   const handleSignUp = async () => {
     setLoading(true);
     await httpClient.post('/api/users', credentials);
@@ -47,7 +39,7 @@ export default function SignUpForm({ session }: PropTypes) {
   };
 
   return (
-    <>
+    <Stack spacing={4}>
       <FormControl>
         <FormLabel>Name</FormLabel>
         <Input
@@ -119,21 +111,23 @@ export default function SignUpForm({ session }: PropTypes) {
         </Checkbox>
       </FormControl>
 
-      <Button
-        width="100%"
-        size="lg"
-        marginTop={1}
-        isLoading={isLoading}
-        colorScheme={colorScheme}
-        isDisabled={!validForm || !agreed}
-        onClick={() => handleSignUp()}
-      >
-        Sign Up
-      </Button>
+      <Flex direction="column" gap={2}>
+        <Button
+          width="100%"
+          size="lg"
+          marginTop={1}
+          isLoading={isLoading}
+          colorScheme={colorScheme}
+          isDisabled={!validForm || !agreed}
+          onClick={() => handleSignUp()}
+        >
+          Sign Up
+        </Button>
 
-      <Button size="lg" variant="outline" as={NextLink} href="/login">
-        Login
-      </Button>
-    </>
+        <Button size="lg" variant="ghost" as={NextLink} href="/login">
+          Login
+        </Button>
+      </Flex>
+    </Stack>
   );
 }
