@@ -31,7 +31,7 @@
     "argon2": "0.31.0",
     "date-fns": "2.30.0",
     "deepmerge": "4.3.1",
-    "framer-motion": "10.16.1",
+    "framer-motion": "10.16.4",
     "jotai": "2.4.0",
     "lodash": "4.17.21",
     "negotiator": "0.6.3",
