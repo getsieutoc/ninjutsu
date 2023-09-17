@@ -1,6 +1,5 @@
-import { Locale } from '@/configs/i18n.config';
+import type { ReactNode, Locale } from '@/types';
 import { Providers } from '@/components/client';
-import type { ReactNode } from '@/types';
 
 export const metadata = {
   title: 'Sieutoc Website',

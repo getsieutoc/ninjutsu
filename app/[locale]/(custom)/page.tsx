@@ -1,5 +1,5 @@
-import { Locale } from '@/configs/i18n.config';
 import { getDictionary } from '@/utils/dictionary';
+import { Locale } from '@/types';
 
 export default async function HomePage({
   params: { locale },

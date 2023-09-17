@@ -6,7 +6,10 @@ import {
   Heading,
   IconButton,
   Input,
-  Select,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Stack,
   Tab,
   TabList,
@@ -20,9 +23,18 @@ import {
   GoBackButton,
   TextEditor,
 } from '@/components/client';
-import { useEffect, useRouter, useState, useToast } from '@/hooks';
+import {
+  AddIcon,
+  ArrowUpIcon,
+  CheckCircleIcon,
+  ChevronDownIcon,
+  GlobeIcon,
+  LockIcon,
+  RepeatIcon,
+} from '@/icons';
+import { useEffect, useLocale, useRouter, useState, useToast } from '@/hooks';
 import { createPost, updatePost } from '@/services/posts';
-import { ArrowUpIcon, RepeatIcon } from '@/icons';
+import { i18n } from '@/configs/i18n.config';
 import { isEqual } from '@/utils/compare';
 import { Post } from '@/types';
 import slugify from 'slugify';
@@ -33,25 +45,34 @@ export type PostFormProps = {
   title?: string;
   backPath?: string;
   data?: Post;
+  translatedPosts?: Post[];
+  originalId?: string;
+  translateTo?: string;
 };
 
 export const PostForm = ({
   backPath,
   title,
   data: propsData,
+  translatedPosts,
+  originalId,
+  translateTo,
 }: PostFormProps) => {
   const toast = useToast();
   const router = useRouter();
 
+  const { currentLocale, defaultLocale } = useLocale();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const initialData = {
-    id: propsData?.id ?? '',
     title: propsData?.title ?? '',
     slug: propsData?.slug ?? '',
     content: propsData?.content ?? '',
-    locale: propsData?.locale ?? 'en',
+    locale: propsData?.locale ?? translateTo ?? currentLocale,
+    originalId: propsData?.originalId ?? originalId,
   };
+
   const [data, setInputData] = useState(initialData);
 
   const [isCustomEdited, setIsCustomEdited] = useState(false);
@@ -67,10 +88,47 @@ export const PostForm = ({
 
   const isFormDirty = isEqual(data, initialData);
 
+  const getTranslationIcon = (locale: string) => {
+    const foundTranslated = translatedPosts?.find((p) => p.locale === locale);
+
+    if (defaultLocale === locale) {
+      return <LockIcon />;
+    }
+
+    if (
+      (foundTranslated && foundTranslated.locale === locale) ||
+      data.locale === locale
+    ) {
+      return <CheckCircleIcon />;
+    }
+
+    return <AddIcon />;
+  };
+
+  const handleNewTranslatedPost = (locale: string) => {
+    if (!propsData) return;
+
+    const foundTranslated = translatedPosts?.find((p) => p.locale === locale);
+
+    if (foundTranslated) {
+      // Go to edit translated post version
+      const newPath = `/dashboard/posts/${foundTranslated.id}`;
+      router.push(newPath);
+    } else if (data.originalId) {
+      // Go to edit original post version
+      const newPath = `/dashboard/posts/${data.originalId}`;
+      router.push(newPath);
+    } else {
+      // Or else go to create new post
+      const newPath = `/dashboard/posts/new?translateTo=${locale}&originalId=${propsData.id}`;
+      router.push(newPath);
+    }
+  };
+
   const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
 
-    if (propsData && isFormDirty) {
+    if (propsData) {
       const response = await updatePost(propsData.id, formData);
 
       if (response) {
@@ -78,6 +136,11 @@ export const PostForm = ({
         router.refresh();
       }
     } else {
+      if (originalId) {
+        formData.append('originalId', originalId);
+        formData.append('locale', data.locale);
+      }
+
       const response = await createPost(formData);
 
       if (response) {
@@ -101,15 +164,42 @@ export const PostForm = ({
           </Heading>
         </Stack>
 
-        <Button
-          type="submit"
-          isDisabled={isFormDirty}
-          colorScheme={propsData ? 'blue' : 'green'}
-          isLoading={isLoading}
-          leftIcon={propsData ? <RepeatIcon /> : <ArrowUpIcon />}
-        >
-          {propsData ? 'Update Post' : 'Publish Post'}
-        </Button>
+        <Stack direction="row" align="center">
+          <Menu>
+            <MenuButton
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              variant="outline"
+              isDisabled={!propsData}
+            >
+              <GlobeIcon /> Translations
+            </MenuButton>
+            <MenuList>
+              {i18n.locales.map(({ label, value }) => {
+                return (
+                  <MenuItem
+                    key={value}
+                    isDisabled={data.locale === value}
+                    icon={getTranslationIcon(value)}
+                    onClick={() => handleNewTranslatedPost(value)}
+                  >
+                    {label} {defaultLocale === value ? '(default)' : ''}
+                  </MenuItem>
+                );
+              })}
+            </MenuList>
+          </Menu>
+
+          <Button
+            type="submit"
+            isDisabled={isFormDirty}
+            colorScheme={propsData ? 'blue' : 'green'}
+            isLoading={isLoading}
+            leftIcon={propsData ? <RepeatIcon /> : <ArrowUpIcon />}
+          >
+            {propsData ? 'Update Post' : 'Publish Post'}
+          </Button>
+        </Stack>
       </Flex>
 
       <Tabs>
@@ -175,21 +265,6 @@ export const PostForm = ({
                     setInputData({ ...data, content: newValue })
                   }
                 />
-              </FormControl>
-
-              <FormControl isDisabled={isLoading}>
-                <FormLabel>Locale</FormLabel>
-                <Select
-                  name="locale"
-                  placeholder="Select locale"
-                  value={data.locale}
-                  onChange={(e) =>
-                    setInputData({ ...data, locale: e.currentTarget.value })
-                  }
-                >
-                  <option value="vi">Vietnamese</option>
-                  <option value="en">English</option>
-                </Select>
               </FormControl>
             </Stack>
           </TabPanel>

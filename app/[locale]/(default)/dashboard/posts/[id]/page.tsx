@@ -3,17 +3,30 @@ import { prisma } from '@/utils/prisma';
 import { PostForm } from '../components';
 
 type EditPostProps = {
-  params: { id: string };
+  params: {
+    id: string;
+  };
 };
 
 export default async function EditPost({ params }: EditPostProps) {
   const { id } = params;
 
-  const data = await prisma.post.findUnique({ where: { id } });
+  const originalPost = await prisma.post.findUnique({ where: { id } });
 
-  if (!data) {
+  if (!originalPost) {
     return null;
   }
 
-  return <PostForm backPath="/dashboard/posts" title="Edit Post" data={data} />;
+  const translatedPosts = await prisma.post.findMany({
+    where: { originalId: id },
+  });
+
+  return (
+    <PostForm
+      backPath="/dashboard/posts"
+      title="Edit Post"
+      data={originalPost}
+      translatedPosts={translatedPosts}
+    />
+  );
 }

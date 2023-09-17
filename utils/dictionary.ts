@@ -1,5 +1,7 @@
 import 'server-only';
-import { type Locale, i18n } from '@/configs/i18n.config';
+
+import { i18n } from '@/configs/i18n.config';
+import { Locale } from '@/types';
 
 const dictionaries = {
   en: () => import('@/dictionaries/en.json').then((module) => module.default),

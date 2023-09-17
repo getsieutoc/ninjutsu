@@ -1,14 +1,15 @@
 import { Icon, type IconProps as P } from '@/components/chakra';
 import {
+  MdBarChart,
+  MdBusiness,
+  MdDashboard,
+  MdDataExploration,
+  MdFlag,
+  MdInsertChart,
   MdLogout,
+  MdOutlineDesignServices,
   MdPalette,
   MdPreview,
-  MdBusiness,
-  MdBarChart,
-  MdDashboard,
-  MdInsertChart,
-  MdDataExploration,
-  MdOutlineDesignServices,
 } from 'react-icons/md';
 
 export const Business = (p: P) => <Icon as={MdBusiness} {...p} />;
@@ -22,3 +23,4 @@ export const LogoutIcon = (p: P) => <Icon as={MdLogout} {...p} />;
 export const PaletteIcon = (p: P) => <Icon as={MdPalette} {...p} />;
 export const PreviewIcon = (p: P) => <Icon as={MdPreview} {...p} />;
 export const BarChartIcon = (p: P) => <Icon as={MdBarChart} {...p} />;
+export const FlagIcon = (p: P) => <Icon as={MdFlag} {...p} />;

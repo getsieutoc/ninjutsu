@@ -1,8 +1,7 @@
 import { LocaleSwitcher, Sidebar } from '@/components/client';
 import { ProfileMenu } from '@/components/server';
 import { Box, Flex } from '@/components/chakra';
-import type { Locale } from '@/configs/i18n.config';
-import type { ReactNode } from '@/types';
+import type { ReactNode, Locale } from '@/types';
 
 export default function DefaultLayout({
   children,

@@ -1,47 +1,49 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
-
-import { i18n, type Locale } from '@/configs/i18n.config';
-import { Select } from '@/components/chakra';
 import { redirectedPathName } from '@/utils/redirectedPathLocale';
-import { useAuth, useToast } from '@/hooks';
+import { usePathname, useRouter } from 'next/navigation';
+import { Box, Select } from '@/components/chakra';
 import { updateUser } from '@/services/users';
+import { i18n } from '@/configs/i18n.config';
+import { useAuth } from '@/hooks';
+import { Locale } from '@/types';
 
-type LocaleSwitcherProps = {
+export type LocaleSwitcherProps = {
   locale: Locale;
 };
 
-export function LocaleSwitcher({ locale }: LocaleSwitcherProps) {
+export const LocaleSwitcher = ({ locale }: LocaleSwitcherProps) => {
   const router = useRouter();
-  const toast = useToast();
   const pathName = usePathname();
   const { session } = useAuth();
 
   const handleChangeLocale = async (localeSelected: Locale) => {
     const userID = session?.user.id;
     if (!userID) return;
-    const result = await updateUser(session.user.id, {
+
+    await updateUser(session.user.id, {
       preferences: { locale: localeSelected },
     });
 
     router.push(redirectedPathName(pathName, localeSelected));
   };
   return (
-    <Select
-      onChange={(e) => handleChangeLocale(e.target.value as Locale)}
-      width="55px"
-      size="sm"
-      rounded={5}
-      value={locale}
-    >
-      {i18n.locales.map((locale, index) => {
-        return (
-          <option key={locale + index} value={locale}>
-            {locale}
-          </option>
-        );
-      })}
-    </Select>
+    <Box>
+      <Select
+        name="locale-switcher"
+        size="sm"
+        rounded={5}
+        value={locale}
+        onChange={(e) => handleChangeLocale(e.target.value as Locale)}
+      >
+        {i18n.locales.map(({ label, value }, index) => {
+          return (
+            <option key={value + index} value={value}>
+              {label}
+            </option>
+          );
+        })}
+      </Select>
+    </Box>
   );
-}
+};
