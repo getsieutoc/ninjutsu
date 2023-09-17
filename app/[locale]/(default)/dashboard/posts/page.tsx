@@ -1,10 +1,17 @@
 import { Flex, Heading, Spacer } from '@/components/chakra';
 import { AddNewButton } from '@/components/client';
 import { prisma } from '@/utils/prisma';
+import { Locale } from '@/types';
+
 import { PostTable } from './components';
 
-export default async function PostsDashboard() {
+export default async function PostsDashboard({
+  params,
+}: {
+  params: { locale: Locale };
+}) {
   const posts = await prisma.post.findMany({
+    where: { locale: params.locale },
     include: { author: true },
   });
 

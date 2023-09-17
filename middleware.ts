@@ -15,7 +15,7 @@ function getLocale(request: NextRequest): string | undefined {
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
 
-  const locales = i18n.locales;
+  const locales = i18n.locales.map((o) => o.value);
   const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
 
   const locale = matchLocale(languages, locales, i18n.defaultLocale);
@@ -24,6 +24,7 @@ function getLocale(request: NextRequest): string | undefined {
 
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
+  const searchParams = request.nextUrl.search;
 
   //to take the files from the publisc folder
   if (PUBLIC_FILE.test(request.nextUrl.pathname)) {
@@ -31,7 +32,8 @@ export function middleware(request: NextRequest) {
   }
 
   const pathnameIsMissingLocale = i18n.locales.every(
-    (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+    ({ value }) =>
+      !pathname.startsWith(`/${value}/`) && pathname !== `/${value}`
   );
 
   // Redirect if there is no locale
@@ -39,7 +41,9 @@ export function middleware(request: NextRequest) {
     const locale = getLocale(request);
     return NextResponse.redirect(
       new URL(
-        `/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}`,
+        `/${locale}${
+          pathname.startsWith('/') ? '' : '/'
+        }${pathname}${searchParams}`,
         request.url
       )
     );

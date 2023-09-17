@@ -1,8 +1,7 @@
 import { LocaleSwitcher, Navbar } from '@/components/client';
 import { Box, Container, Flex } from '@/components/chakra';
 import { ProfileMenu } from '@/components/server';
-import type { ReactNode } from '@/types';
-import type { Locale } from '@/configs/i18n.config';
+import type { ReactNode, Locale } from '@/types';
 
 export default function CustomLayout({
   children,

@@ -158,8 +158,6 @@ export const createUser = async (
       },
     });
 
-    console.log('### result: ', { result });
-
     return NextResponse.json({
       status: 200,
       result: exclude(result, 'password'),

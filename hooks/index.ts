@@ -18,6 +18,8 @@ export {
 } from 'react';
 export { useSession } from 'next-auth/react';
 export { useRouter, usePathname, useParams } from 'next/navigation';
+export { default as useSWRInfinite } from 'swr/infinite';
 export { default as useSWR } from 'swr';
 
-export * from './useAuth';
+export * from './use-auth';
+export * from './use-locale';
