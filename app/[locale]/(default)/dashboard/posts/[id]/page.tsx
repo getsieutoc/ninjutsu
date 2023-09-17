@@ -11,5 +11,9 @@ export default async function EditPost({ params }: EditPostProps) {
 
   const data = await prisma.post.findUnique({ where: { id } });
 
+  if (!data) {
+    return null;
+  }
+
   return <PostForm backPath="/dashboard/posts" title="Edit Post" data={data} />;
 }

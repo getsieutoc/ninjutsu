@@ -32,6 +32,8 @@ import {
 import { deletePost } from '@/services/posts';
 import type { Post } from '@/types';
 
+const DELETE_CONFIRM = 'DELETE';
+
 export type PostDeleteSectionProps = {
   post: Post;
 };
@@ -130,11 +132,11 @@ export const DeleteSection = ({ post }: PostDeleteSectionProps) => {
               <FormLabel>
                 Confirm by typing:{' '}
                 <Text as="span" fontWeight="bold">
-                  YES
+                  {DELETE_CONFIRM}
                 </Text>
               </FormLabel>
               <Input
-                placeholder="YES"
+                placeholder={DELETE_CONFIRM}
                 value={confirmText ?? ''}
                 onChange={(event) => setConfirmText(event.target.value)}
               />
@@ -151,7 +153,7 @@ export const DeleteSection = ({ post }: PostDeleteSectionProps) => {
               </Button>
               <Button
                 isLoading={isLoading}
-                isDisabled={confirmText !== 'YES' || isLoading}
+                isDisabled={confirmText !== DELETE_CONFIRM || isLoading}
                 colorScheme="red"
                 onClick={handleDelete}
               >
