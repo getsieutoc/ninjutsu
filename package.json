@@ -23,6 +23,7 @@
     "@emotion/styled": "11.11.0",
     "@formatjs/intl-localematcher": "0.4.2",
     "@next-auth/prisma-adapter": "1.0.7",
+    "@orrisroot/react-html-parser": "2.1.2",
     "@prisma/client": "5.3.1",
     "@tinymce/tinymce-react": "4.3.0",
     "@types/negotiator": "0.6.1",

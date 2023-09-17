@@ -13,6 +13,8 @@ import {
   CardFooter,
   AvatarGroup,
 } from '@/components/chakra';
+
+import { HTMLParser } from '../HTMLParser';
 import { NextLink } from '../NextLink';
 
 type PropTypes = {
@@ -53,7 +55,7 @@ export const PostCard: FC<PropTypes> = ({ post }) => {
           <Box paddingY={3}>
             <Heading size="md">{post.title}</Heading>
           </Box>
-          <Box
+          <HTMLParser
             __css={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -61,9 +63,8 @@ export const PostCard: FC<PropTypes> = ({ post }) => {
               WebkitLineClamp: 5,
               WebkitBoxOrient: 'vertical',
             }}
-            as="div"
             maxHeight={300}
-            dangerouslySetInnerHTML={{ __html: post?.content ?? '' }}
+            content={post?.content}
           />
         </CardBody>
         <CardFooter padding={2}>
