@@ -4,6 +4,7 @@ export const toastOptions: UseToastOptions = {
   position: 'top-right',
   duration: 1000,
   status: 'success',
+  isClosable: true,
 };
 
 const colorModeInLocalStorage =

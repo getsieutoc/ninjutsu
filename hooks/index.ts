@@ -7,7 +7,15 @@ export {
   useDisclosure,
   useToast,
 } from '@/components/chakra';
-export { useId, useState, useEffect, useReducer, useRef, useMemo } from 'react';
+export {
+  useId,
+  useCallback,
+  useState,
+  useEffect,
+  useReducer,
+  useRef,
+  useMemo,
+} from 'react';
 export { useSession } from 'next-auth/react';
 export { useRouter, usePathname, useParams } from 'next/navigation';
 export { default as useSWR } from 'swr';
