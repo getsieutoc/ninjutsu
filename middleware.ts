@@ -4,6 +4,7 @@ import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 
 import { i18n } from './configs/i18n.config';
+import { LOCALE } from './utils/constants';
 
 const PUBLIC_FILE = /\.(.*)$/;
 export const config = {
@@ -15,10 +16,14 @@ function getLocale(request: NextRequest): string | undefined {
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
 
-  const locales = i18n.locales.map((o) => o.value);
-  const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
+  const cookieValue = request.cookies.get(LOCALE)?.value;
+  const defaultLocale = cookieValue ?? i18n.defaultLocale;
 
-  const locale = matchLocale(languages, locales, i18n.defaultLocale);
+  const locales = i18n.locales.map((locale) => locale.value);
+
+  const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
+  const locale = matchLocale(languages, locales, defaultLocale);
+
   return locale;
 }
 
@@ -30,14 +35,18 @@ export function middleware(request: NextRequest) {
   if (PUBLIC_FILE.test(request.nextUrl.pathname)) {
     return;
   }
-
   const pathnameIsMissingLocale = i18n.locales.every(
     ({ value }) =>
       !pathname.startsWith(`/${value}/`) && pathname !== `/${value}`
   );
+
+  const defaultLocale =
+    request.cookies.get(LOCALE)?.value ?? i18n.defaultLocale;
+
   // Redirect if there is no locale
   if (pathnameIsMissingLocale) {
     const locale = getLocale(request);
+
     return NextResponse.redirect(
       new URL(
         `/${locale}${

@@ -1,5 +1,8 @@
-import type { ReactNode, Locale } from '@/types';
+import { cookies } from 'next/headers';
+import { ClientCookiesProvider } from '@/components/client';
 import { Providers } from '@/components/client';
+import { ReactNode, Locale } from '@/types';
+import { LOCALE } from '@/utils/constants';
 
 export const metadata = {
   title: 'Sieutoc Website',
@@ -12,7 +15,7 @@ export const metadata = {
 //   return i18n.locales.map((locale) => ({ locale }));
 // }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
   params,
 }: {
@@ -22,7 +25,9 @@ export default async function RootLayout({
   return (
     <html lang={params.locale}>
       <body>
-        <Providers>{children}</Providers>
+        <ClientCookiesProvider value={cookies().getAll()}>
+          <Providers>{children}</Providers>
+        </ClientCookiesProvider>
       </body>
     </html>
   );

@@ -8,13 +8,11 @@ import {
   Stack,
   Flex,
 } from '@/components/chakra';
-import { useAuth, useEffect, useState, useRouter } from '@/hooks';
-import { NextLink } from '@/components/client';
+import { useState } from '@/hooks';
 import { signIn } from 'next-auth/react';
+import { NextLink } from '@/components/client';
 
 export default function LoginForm() {
-  const router = useRouter();
-  const { isAuthenticated } = useAuth();
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
@@ -28,12 +26,6 @@ export default function LoginForm() {
   const hasPassword = credentials.password.length > 8;
 
   const colorScheme = validEmail && hasPassword ? 'brand' : 'gray';
-
-  useEffect(() => {
-    if (isAuthenticated && router) {
-      router.back();
-    }
-  }, [isAuthenticated, router]);
 
   return (
     <Stack spacing={4}>

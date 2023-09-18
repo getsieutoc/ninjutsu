@@ -3,7 +3,7 @@ import { getSession } from '@/utils/auth';
 import { LocaleSwitcher, Sidebar } from '@/components/client';
 import { ProfileMenu } from '@/components/server';
 import { Box, Flex } from '@/components/chakra';
-import type { ReactNode, Locale } from '@/types';
+import type { ReactNode } from '@/types';
 
 export default async function DefaultLayout({
   children,
@@ -21,7 +21,7 @@ export default async function DefaultLayout({
     <Flex>
       <Sidebar>
         <Flex gap={1} align="center">
-          <LocaleSwitcher locale={params.locale} />
+          <LocaleSwitcher />
           <ProfileMenu />
         </Flex>
       </Sidebar>

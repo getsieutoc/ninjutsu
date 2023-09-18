@@ -1,55 +1,66 @@
 'use client';
 
-import { redirectedPathName } from '@/utils/redirectedPathLocale';
+import { Prisma } from '@prisma/client';
 import { usePathname, useRouter } from 'next/navigation';
-import { Box, Select } from '@/components/chakra';
-import { updateUser } from '@/services/users';
+import { useCookies } from 'next-client-cookies';
 import { i18n } from '@/configs/i18n.config';
+import type { Locale } from '@/types';
+import { Select } from '@/components/chakra';
+import { redirectedPathName } from '@/utils/redirectedPathLocale';
 import { useAuth } from '@/hooks';
-import { Locale } from '@/types';
+import { updateUser } from '@/services/users';
 import { LOCALE } from '@/utils/constants';
 
-export type LocaleSwitcherProps = {
+type LocaleSwitcherProps = {
   locale: Locale;
 };
 
-export const LocaleSwitcher = ({ locale }: LocaleSwitcherProps) => {
-
-
-// const localeAtom = atomWithStorage<Locale>(LOCALE, i18n.defaultLocale);
-
-export function LocaleSwitcher() {
+export function LocaleSwitcher({ locale }: LocaleSwitcherProps) {
   const router = useRouter();
   const pathName = usePathname();
-  const { session } = useAuth();
-
+  const cookies = useCookies();
+  const { session, update } = useAuth();
+  const locale = cookies.get(LOCALE);
   const handleChangeLocale = async (localeSelected: Locale) => {
     const userID = session?.user.id;
-    if (!userID) return;
+    cookies.set(LOCALE, localeSelected);
+    // store to database
+    if (userID) {
+      const result = await updateUser(userID, {
+        preferences: { locale: localeSelected },
+      });
 
-    await updateUser(session.user.id, {
-      preferences: { locale: localeSelected },
-    });
+      // store to session local
+      if (result) {
+        update({
+          user: {
+            ...session?.user,
+            preferences: {
+              ...session.user.preferences,
+              ...(result.preferences as Prisma.JsonObject),
+            },
+          },
+        });
+      }
+    }
 
     router.push(redirectedPathName(pathName, localeSelected));
   };
   return (
-    <Box>
-      <Select
-        name="locale-switcher"
-        size="sm"
-        rounded={5}
-        value={locale}
-        onChange={(e) => handleChangeLocale(e.target.value as Locale)}
-      >
-        {i18n.locales.map(({ label, value }, index) => {
-          return (
-            <option key={value + index} value={value}>
-              {label}
-            </option>
-          );
-        })}
-      </Select>
-    </Box>
+    <Select
+      onChange={(e) => handleChangeLocale(e.target.value as Locale)}
+      width="65px"
+      size="xs"
+      rounded={5}
+      // value={locale}
+    >
+      {i18n.locales.map((locale, index) => {
+        return (
+          <option key={locale.value + index} value={locale.value}>
+            {locale.value}
+          </option>
+        );
+      })}
+    </Select>
   );
-};
+}
