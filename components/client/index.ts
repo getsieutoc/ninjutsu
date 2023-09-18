@@ -18,3 +18,4 @@ export * from './Sidebar';
 export * from './Sidebar';
 export * from './TextEditor';
 export * from './VirtualTable';
+export * from './CookiesProvider';
