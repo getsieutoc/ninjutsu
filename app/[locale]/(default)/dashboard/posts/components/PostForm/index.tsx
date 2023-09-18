@@ -136,9 +136,11 @@ export const PostForm = ({
         router.refresh();
       }
     } else {
-      if (originalId) {
+      if (originalId && translateTo) {
         formData.append('originalId', originalId);
-        formData.append('locale', data.locale);
+        formData.append('locale', translateTo);
+      } else {
+        formData.append('locale', currentLocale);
       }
 
       const response = await createPost(formData);
