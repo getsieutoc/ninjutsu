@@ -1,3 +1,4 @@
+import { Skeleton, SkeletonText, Stack } from '@/components/chakra';
 import { getSession } from '@/utils/auth';
 
 export default async function SettingsPage() {
