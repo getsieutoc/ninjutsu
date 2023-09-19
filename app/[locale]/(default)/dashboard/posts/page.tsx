@@ -1,15 +1,22 @@
+import { redirect } from 'next/navigation';
 import { Flex, Heading, Spacer } from '@/components/chakra';
 import { AddNewButton } from '@/components/client';
 import { prisma } from '@/utils/prisma';
 import { Locale } from '@/types';
 
 import { PostTable } from './components';
+import { getSession } from '@/utils/auth';
 
 export default async function PostsDashboard({
   params,
 }: {
   params: { locale: Locale };
 }) {
+  const session = await getSession();
+
+  if (!session?.user.id) {
+    redirect('/login');
+  }
   const posts = await prisma.post.findMany({
     where: { locale: params.locale },
     include: { author: true },

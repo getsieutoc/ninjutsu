@@ -3,7 +3,7 @@ import { Box, Container, Flex } from '@/components/chakra';
 import { ProfileMenu } from '@/components/server';
 import type { ReactNode, Locale } from '@/types';
 
-export default function CustomLayout({
+export default async function CustomLayout({
   children,
   params,
 }: {
