@@ -10,6 +10,12 @@ import {
 } from '@/components/chakra';
 // import { GeneralLayout } from '@/components';
 import { Business, DataExploration, OutlineDesignServices } from '@/icons';
+import { Metadata } from '@/types';
+
+export const metadata: Metadata = {
+  title: 'Home | Nextjs Template',
+  description: 'This is the home page of Nextjs Template',
+};
 
 export default function HomePage() {
   return (

@@ -3,6 +3,7 @@ import { i18n } from '@/configs/i18n.config';
 
 export * from '@prisma/client';
 
+export type { Metadata, ResolvingMetadata } from 'next';
 export type { FC, ReactNode } from 'react';
 
 export enum HttpMethod {

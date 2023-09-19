@@ -1,6 +1,11 @@
 import { Box, Heading, SimpleGrid, Spinner } from '@/components/chakra';
 import { PostCard } from '@/components/client';
 import { prisma } from '@/utils/prisma';
+import { Metadata } from '@/types';
+
+export const metadata: Metadata = {
+  title: 'Blog',
+};
 
 export default async function BlogsPage() {
   const data = await prisma?.post.findMany({

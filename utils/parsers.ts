@@ -1,3 +1,5 @@
+import sanitizer from 'sanitize-html';
+
 // This helper mostly uses for pagination query: skip, take etc
 export const parseQuery = (query?: string | string[] | number) => {
   if (Array.isArray(query)) {
@@ -34,4 +36,34 @@ export const exclude = <T extends Record<string, unknown>, K extends keyof T>(
 
   delete result[keys];
   return result;
+};
+
+export const htmlSanitizer = (textWithHTML?: string | null): string => {
+  if (!textWithHTML) return '';
+
+  return sanitizer(textWithHTML, {
+    allowedTags: [],
+  });
+};
+
+export const inputSanitizer = (input?: string | null): string => {
+  if (!input) return '';
+
+  return sanitizer(input, {
+    allowedTags: [
+      'p',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'ul',
+      'ol',
+      'li',
+      'em',
+      'span',
+      'strong',
+    ],
+  });
 };
