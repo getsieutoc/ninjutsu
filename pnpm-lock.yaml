@@ -87,8 +87,8 @@ dependencies:
     specifier: 4.11.0
     version: 4.11.0(react@18.2.0)
   react-virtuoso:
-    specifier: 4.5.1
-    version: 4.5.1(react-dom@18.2.0)(react@18.2.0)
+    specifier: 4.6.0
+    version: 4.6.0(react-dom@18.2.0)(react@18.2.0)
   slugify:
     specifier: 1.6.6
     version: 1.6.6
@@ -4125,8 +4125,8 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /react-virtuoso@4.5.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-Jdo9M/T5PcDAczvmXAKwvb/BW0MCMr/cb+3j2m9192zlQgQ+syMdJR42i+Sk80ln5aSNaL1fnxleJzdKsCc4lw==}
+  /react-virtuoso@4.6.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-paQbkLA8U6dRe9srltWgPeoFCtNKqUYIcOpUR01JyznzaXWVzgZQE0M9KGi9vMoq8vHvHkGzuxJ6jDCS6uzePg==}
     engines: {node: '>=10'}
     peerDependencies:
       react: '>=16 || >=17 || >= 18'
