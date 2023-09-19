@@ -14,7 +14,6 @@ export const createPost = async (formData: FormData) => {
   }
 
   const entries = Object.fromEntries(formData.entries()) as CreatePostDto;
-  console.log('### entries: ', { entries });
 
   const result = await prisma.post.create({
     data: {

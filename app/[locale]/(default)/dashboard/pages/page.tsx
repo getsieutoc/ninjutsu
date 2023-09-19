@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation';
 import { Flex, Heading, Spacer } from '@/components/chakra';
 import { AddNewButton } from '@/components/client';
 import { prisma } from '@/utils/prisma';
+import { Locale } from '@/types';
+
 import { PageTable } from './components';
 import { getSession } from '@/utils/auth';
 
@@ -12,6 +14,7 @@ export default async function PagesDashboard() {
     redirect('/login');
   }
   const pages = await prisma.page.findMany({
+    where: { locale: params.locale },
     include: { author: true },
   });
 
