@@ -33,10 +33,11 @@ import { deletePage } from '@/services/pages';
 import type { Page } from '@/types';
 
 export type PageDeleteSectionProps = {
+  isDisabled?: boolean;
   page: Page;
 };
 
-export const DeleteSection = ({ page }: PageDeleteSectionProps) => {
+export const DeleteSection = ({ isDisabled, page }: PageDeleteSectionProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const toast = useToast();
@@ -55,7 +56,7 @@ export const DeleteSection = ({ page }: PageDeleteSectionProps) => {
 
   const handleDelete = async () => {
     try {
-      if (!page) return;
+      if (!page || isDisabled) return;
 
       setIsLoading(true);
 
@@ -103,7 +104,7 @@ export const DeleteSection = ({ page }: PageDeleteSectionProps) => {
           <Flex width="100%" direction="row" justify="end">
             <Button
               colorScheme="red"
-              isDisabled={isLoading}
+              isDisabled={isLoading || isDisabled}
               isLoading={isLoading}
               onClick={onOpen}
             >

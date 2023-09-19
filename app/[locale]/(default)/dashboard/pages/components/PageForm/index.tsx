@@ -208,7 +208,7 @@ export const PageForm = ({
       <Tabs>
         <TabList>
           <Tab>General</Tab>
-          <Tab isDisabled={!propsData}>Advance</Tab>
+          <Tab>Advance</Tab>
         </TabList>
 
         <TabPanels>
