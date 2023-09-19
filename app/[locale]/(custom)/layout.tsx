@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation';
+import { getSession } from '@/utils/auth';
 import { LocaleSwitcher, Navbar } from '@/components/client';
 import { Box, Container, Flex } from '@/components/chakra';
 import { ProfileMenu } from '@/components/server';
@@ -10,6 +12,10 @@ export default async function CustomLayout({
   children: ReactNode;
   params: { locale: Locale };
 }) {
+  const session = await getSession();
+  if (!session) {
+    redirect('/login');
+  }
   return (
     <Flex direction="column">
       <Navbar>
