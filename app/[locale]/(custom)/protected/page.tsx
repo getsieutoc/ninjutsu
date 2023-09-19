@@ -5,7 +5,7 @@ import { getSession } from '@/utils/auth';
 
 export default async function ProtectedPage() {
   const session = await getSession();
-  if (!session?.user.id) {
+  if (!session) {
     redirect('/login');
   }
   return (
