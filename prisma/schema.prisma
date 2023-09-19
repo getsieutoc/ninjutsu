@@ -84,28 +84,35 @@ model Page {
   locale      String
   isBlog      Boolean?
   meta        Json?     @default("[{}]")
-  authorId    String
-  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   tags        Tag[]
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  originalId      String?
+  originalPage    Page?   @relation("OriginalTranslated", fields: [originalId], references: [id])
+  translatedPages Page[]  @relation("OriginalTranslated")
 }
 
 model Post {
-  id              String    @id @default(uuid())
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  publishedAt     DateTime?
-  title           String    @db.VarChar(255)
-  slug            String    @db.VarChar(255)
-  content         String
+  id            String    @id @default(uuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  publishedAt   DateTime?
+  title         String    @db.VarChar(255)
+  slug          String    @db.VarChar(255)
+  content       String
+  locale        String
+  tags          Tag[]
+  type          PostType? @default(DEFAULT)
+  featuredImage String?
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
   originalId      String?
-  originalPost    Post?     @relation("OriginalTranslated", fields: [originalId], references: [id])
-  translatedPosts Post[]    @relation("OriginalTranslated")
-  locale          String
-  tags            Tag[]
-  type            PostType? @default(DEFAULT)
-  featuredImage   String?
-  authorId        String
-  author          User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  originalPost    Post?   @relation("OriginalTranslated", fields: [originalId], references: [id])
+  translatedPosts Post[]  @relation("OriginalTranslated")
 }
 
 model Tag {
