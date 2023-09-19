@@ -2,7 +2,7 @@
 
 import { Editor, type IAllProps } from '@tinymce/tinymce-react';
 import type { Editor as EditorInterface } from 'tinymce';
-import { useRef, useId } from '@/hooks';
+import { useRef, useId, useColorMode, useEffect } from '@/hooks';
 
 export type TextEditorProps = {
   name?: string;
@@ -17,6 +17,7 @@ export const TextEditor = ({
 }: TextEditorProps) => {
   const randomId = useId();
   const editorRef = useRef<EditorInterface | null>(null);
+  const { colorMode } = useColorMode();
 
   return (
     <Editor
@@ -26,6 +27,8 @@ export const TextEditor = ({
       apiKey={process.env.NEXT_PUBLIC_API_KEY_TINYMCE}
       onEditorChange={(text) => onChange && onChange(text)}
       init={{
+        skin: colorMode === 'dark' ? `oxide-${colorMode}` : 'oxide',
+        content_css: colorMode ? colorMode : 'default',
         height: 500,
         menubar: false,
         branding: false,
