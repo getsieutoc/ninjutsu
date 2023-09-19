@@ -2,7 +2,7 @@
 
 import { Editor, type IAllProps } from '@tinymce/tinymce-react';
 import type { Editor as EditorInterface } from 'tinymce';
-import { useRef, useId, useColorMode, useEffect } from '@/hooks';
+import { useRef, useId, useColorMode } from '@/hooks';
 
 export type TextEditorProps = {
   name?: string;
@@ -23,7 +23,9 @@ export const TextEditor = ({
     <Editor
       id={id ?? randomId}
       textareaName={name}
-      onInit={(_evt, editor) => (editorRef.current = editor)}
+      onInit={(_evt, editor) => {
+        editorRef.current = editor;
+      }}
       apiKey={process.env.NEXT_PUBLIC_API_KEY_TINYMCE}
       onEditorChange={(text) => onChange && onChange(text)}
       init={{
