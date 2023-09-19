@@ -4,7 +4,10 @@ import { prisma } from '@/utils/prisma';
 import { getSession } from '@/utils/auth';
 import type { Page } from '@/types';
 
-type CreatePageDto = Pick<Page, 'title' | 'content' | 'slug' | 'locale'>;
+type CreatePageDto = Pick<
+  Page,
+  'title' | 'content' | 'slug' | 'locale' | 'originalId'
+>;
 
 export const createPage = async (formData: FormData) => {
   const session = await getSession();
