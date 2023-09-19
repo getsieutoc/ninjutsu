@@ -1,4 +1,4 @@
-import { Heading, Stack } from '@/components/chakra';
+import { Heading, Skeleton, Stack } from '@/components/chakra';
 import SignUpForm from './SignUpForm';
 import { getSession } from '@/utils/auth';
 import { redirect } from 'next/navigation';
