@@ -25,3 +25,7 @@ export enum HttpMethod {
 export type Locale = (typeof i18n)['locales'][number]['value'];
 
 export type Dictionary = Awaited<ReturnType<typeof getDictionary>>;
+
+export type PageWithTags = Prisma.PageGetPayload<{
+  include: { tags: true };
+}>;

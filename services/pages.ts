@@ -16,11 +16,22 @@ export const createPage = async (formData: FormData) => {
     throw new Error('Unauthorized request');
   }
 
-  const entries = Object.fromEntries(formData.entries()) as CreatePageDto;
+  const { title, slug, content, locale, ...rest } = Object.fromEntries(
+    formData.entries()
+  ) as CreatePageDto;
 
   const result = await prisma.page.create({
     data: {
-      ...entries,
+      title,
+      slug,
+      content,
+      locale,
+      meta: {
+        // @ts-expect-error
+        title: rest['meta.title'],
+        // @ts-expect-error
+        description: rest['meta.description'],
+      },
       authorId: session.user.id,
     },
   });
@@ -37,13 +48,28 @@ export const updatePage = async (id: string, formData: FormData) => {
     throw new Error('Unauthorized request');
   }
 
-  const entries = Object.fromEntries(formData.entries()) as UpdatePageDto;
+  const { title, slug, content, locale, ...rest } = Object.fromEntries(
+    formData.entries()
+  ) as UpdatePageDto;
 
   const result = await prisma.page.update({
     where: { id, authorId: session.user.id },
-    data: entries,
+    data: {
+      title,
+      slug,
+      content,
+      locale,
+      meta: {
+        // @ts-expect-error
+        title: rest['meta.title'],
+        // @ts-expect-error
+        description: rest['meta.description'],
+      },
+      authorId: session.user.id,
+    },
   });
 
+  console.log('### result: ', { result });
   return result;
 };
 

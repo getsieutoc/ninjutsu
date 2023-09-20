@@ -65,6 +65,7 @@ export const CustomEditable = ({
       as={Flex}
       align="center"
       isPreviewFocusable={false}
+      height="32px"
       width="100%"
       value={value}
       {...rest}

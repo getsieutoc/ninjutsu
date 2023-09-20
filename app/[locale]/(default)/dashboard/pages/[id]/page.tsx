@@ -12,7 +12,7 @@ export default async function EditPage({ params }: EditPageProps) {
   const { id } = params;
   const session = await getSession();
 
-  const data = await prisma.page.findUnique({ where: { id } });
+  const originalPage = await prisma.page.findUnique({ where: { id } });
 
   if (!originalPage) {
     return null;
