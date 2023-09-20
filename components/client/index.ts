@@ -13,6 +13,7 @@ export * from './NextLink';
 export * from './Pagination';
 export * from './Post';
 export * from './Providers';
+export * from './SettingNav';
 export * from './Sidebar';
 export * from './Sidebar';
 export * from './TextEditor';
