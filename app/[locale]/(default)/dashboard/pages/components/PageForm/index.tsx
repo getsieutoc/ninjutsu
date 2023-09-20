@@ -10,7 +10,6 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Select,
   Stack,
   Tab,
   TabList,
@@ -35,17 +34,18 @@ import {
   RepeatIcon,
 } from '@/icons';
 import { createPage, updatePage } from '@/services/pages';
-import { Page } from '@/types';
+import { Page, PageWithTags } from '@/types';
 import slugify from 'slugify';
 import { i18n } from '@/configs/i18n.config';
 
 import { DeleteSection } from './DeleteSection';
 import { isEqual } from '@/utils/compare';
+import { BasicSEO } from '../BasicSEO';
 
 export type PageFormProps = {
   title?: string;
   backPath?: string;
-  data?: Page;
+  data?: PageWithTags;
   translatedPages?: Page[];
   originalId?: string;
   translateTo?: string;
@@ -67,14 +67,17 @@ export const PageForm = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const initialData = {
+    id: propsData?.id ?? '',
     title: propsData?.title ?? '',
     slug: propsData?.slug ?? '',
     content: propsData?.content ?? '',
     locale: propsData?.locale ?? translateTo ?? currentLocale,
     originalId: propsData?.originalId ?? originalId,
+    meta: propsData?.meta ?? {},
+    tags: propsData?.tags ?? [],
   };
 
-  const [data, setInputData] = useState(initialData);
+  const [inputData, setInputData] = useState(initialData);
 
   const [isCustomEdited, setIsCustomEdited] = useState(false);
 
@@ -85,9 +88,9 @@ export const PageForm = ({
         slug: slugify(prev.title),
       }));
     }
-  }, [data.title, isCustomEdited]);
+  }, [inputData.title, isCustomEdited]);
 
-  const isFormDirty = isEqual(data, initialData);
+  const isFormDirty = isEqual(inputData, initialData);
 
   const getTranslationIcon = (locale: string) => {
     const foundTranslated = translatedPages?.find((p) => p.locale === locale);
@@ -98,7 +101,7 @@ export const PageForm = ({
 
     if (
       (foundTranslated && foundTranslated.locale === locale) ||
-      data.locale === locale
+      inputData.locale === locale
     ) {
       return <CheckCircleIcon />;
     }
@@ -115,9 +118,9 @@ export const PageForm = ({
       // Go to edit translated page version
       const newPath = `/dashboard/pages/${foundTranslated.id}`;
       router.push(newPath);
-    } else if (data.originalId) {
+    } else if (inputData.originalId) {
       // Go to edit original page version
-      const newPath = `/dashboard/pages/${data.originalId}`;
+      const newPath = `/dashboard/pages/${inputData.originalId}`;
       router.push(newPath);
     } else {
       // Or else go to create new page
@@ -182,7 +185,7 @@ export const PageForm = ({
                 return (
                   <MenuItem
                     key={value}
-                    isDisabled={data.locale === value}
+                    isDisabled={inputData.locale === value}
                     icon={getTranslationIcon(value)}
                     onClick={() => handleNewTranslatedPage(value)}
                   >
@@ -214,14 +217,16 @@ export const PageForm = ({
         <TabPanels>
           <TabPanel>
             <Stack spacing={4} flex={1}>
+              <Input type="hidden" name="locale" value={inputData.locale} />
+
               <FormControl isDisabled={isLoading}>
                 <FormLabel>Title</FormLabel>
                 <Input
                   placeholder="Page title"
                   name="title"
-                  value={data?.title}
+                  value={inputData.title}
                   onChange={(event) =>
-                    setInputData({ ...data, title: event.target.value })
+                    setInputData({ ...inputData, title: event.target.value })
                   }
                 />
 
@@ -236,13 +241,13 @@ export const PageForm = ({
                     Slug:
                   </Heading>
 
-                  {data.slug && (
+                  {inputData.slug && (
                     <CustomEditable
                       name="slug"
-                      value={data.slug}
+                      value={inputData.slug}
                       onChange={(newValue) => {
                         setIsCustomEdited(true);
-                        setInputData({ ...data, slug: newValue });
+                        setInputData({ ...inputData, slug: newValue });
                       }}
                     />
                   )}
@@ -255,8 +260,8 @@ export const PageForm = ({
                       onClick={() => {
                         setIsCustomEdited(false);
                         setInputData({
-                          ...data,
-                          slug: slugify(data.title),
+                          ...inputData,
+                          slug: slugify(inputData.title),
                         });
                       }}
                     />
@@ -269,16 +274,21 @@ export const PageForm = ({
                 <TextEditor
                   id="text-editor"
                   name="content"
-                  value={data.content}
+                  value={inputData.content}
                   onChange={(newValue) =>
-                    setInputData({ ...data, content: newValue })
+                    setInputData({ ...inputData, content: newValue })
                   }
                 />
               </FormControl>
             </Stack>
           </TabPanel>
 
-          <TabPanel>{propsData && <DeleteSection page={propsData} />}</TabPanel>
+          <TabPanel>
+            <Stack spacing={4} flex={1}>
+              <BasicSEO data={inputData} />
+              {propsData && <DeleteSection page={propsData} />}
+            </Stack>
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </FormWrapper>

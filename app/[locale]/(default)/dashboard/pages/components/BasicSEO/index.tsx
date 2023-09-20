@@ -13,29 +13,25 @@ import {
   Stack,
 } from '@/components/chakra';
 import { useColorModeValue, useState } from '@/hooks';
-import { JsonObject, Prisma } from '@/types';
+import { JsonObject, PageWithTags } from '@/types';
 import { htmlSanitizer } from '@/utils/parsers';
 
-export type PageWithPayload = Prisma.PageGetPayload<{
-  include: { tags: true };
-}>;
-
 export type BasicSEOProps = {
-  data: PageWithPayload;
+  data: Partial<PageWithTags> | undefined;
 };
 
-export const BasicSEO = ({ data }: BasicSEOProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const metaData = data.meta as JsonObject;
+export const BasicSEO = ({ data: propsData }: BasicSEOProps) => {
+  const metaData = propsData?.meta as JsonObject;
 
   const initialData = {
-    title: (metaData?.title as string) ?? data.title,
+    title: (metaData?.title as string) ?? propsData?.title,
     description:
       (metaData?.description as string) ??
-      htmlSanitizer(data.content).slice(0, 200),
+      htmlSanitizer(propsData?.content).slice(0, 200),
     keywords:
-      (metaData?.keywords as string[]) ?? data.tags.map(({ value }) => value),
+      (metaData?.keywords as string[]) ??
+      propsData?.tags?.map(({ value }) => value) ??
+      [],
   };
 
   const [inputData, setInputData] = useState(initialData);
@@ -53,7 +49,8 @@ export const BasicSEO = ({ data }: BasicSEOProps) => {
           <FormControl isRequired>
             <FormLabel>Title</FormLabel>
             <Input
-              value={initialData.title}
+              name="meta.title"
+              value={inputData.title}
               onChange={(e) =>
                 setInputData({ ...inputData, title: e.target.value })
               }
@@ -63,9 +60,10 @@ export const BasicSEO = ({ data }: BasicSEOProps) => {
           <FormControl isRequired>
             <FormLabel>Description</FormLabel>
             <Input
-              value={initialData.title}
+              name="meta.description"
+              value={inputData.description}
               onChange={(e) =>
-                setInputData({ ...inputData, title: e.target.value })
+                setInputData({ ...inputData, description: e.target.value })
               }
             />
           </FormControl>
@@ -76,12 +74,8 @@ export const BasicSEO = ({ data }: BasicSEOProps) => {
 
       <CardFooter>
         <Flex width="100%" direction="row" justify="end">
-          <Button
-            colorScheme="blue"
-            isDisabled={isLoading}
-            isLoading={isLoading}
-          >
-            Delete
+          <Button type="submit" colorScheme="blue">
+            Save
           </Button>
         </Flex>
       </CardFooter>
