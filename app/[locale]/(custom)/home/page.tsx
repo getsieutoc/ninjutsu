@@ -8,7 +8,6 @@ import {
   CardFooter,
   Heading,
 } from '@/components/chakra';
-// import { GeneralLayout } from '@/components';
 import { Business, DataExploration, OutlineDesignServices } from '@/icons';
 import { Metadata } from '@/types';
 
@@ -23,7 +22,7 @@ export default function HomePage() {
       <HStack width="100%" spacing={30}>
         <Card rounded={30} background="#9ccbf7" width="50%">
           <CardBody padding={10}>
-            <Avatar src="./img/sangdth.jpg" size="2xl" />
+            <Avatar src="/img/sangdth.jpg" size="2xl" />
             <Heading marginY={5} size="xl">
               About our work
             </Heading>
