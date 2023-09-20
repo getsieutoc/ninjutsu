@@ -17,7 +17,13 @@ export {
   useMemo,
 } from 'react';
 export { useSession } from 'next-auth/react';
-export { useRouter, usePathname, useParams } from 'next/navigation';
+export {
+  useParams,
+  usePathname,
+  useRouter,
+  useSelectedLayoutSegment,
+  useSelectedLayoutSegments,
+} from 'next/navigation';
 export { default as useSWRInfinite } from 'swr/infinite';
 export { default as useSWR } from 'swr';
 
