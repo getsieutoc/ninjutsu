@@ -2,7 +2,6 @@ import { cookies } from 'next/headers';
 import { ClientCookiesProvider } from '@/components/client';
 import { Providers } from '@/components/client';
 import { ReactNode, Locale } from '@/types';
-import { LOCALE } from '@/utils/constants';
 
 export const metadata = {
   title: 'Sieutoc Website',

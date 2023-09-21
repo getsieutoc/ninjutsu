@@ -1,7 +1,7 @@
 import { Box, Heading, SimpleGrid, Spinner } from '@/components/chakra';
 import { PostCard } from '@/components/client';
 import { prisma } from '@/utils/prisma';
-import { Metadata } from '@/types';
+import { Locale, Metadata } from '@/types';
 
 export const metadata: Metadata = {
   title: 'Blog',
