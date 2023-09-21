@@ -7,7 +7,7 @@ import { SWRConfig } from 'swr';
 
 import { ChakraProvider } from '@/components/chakra';
 import { theme, toastOptions } from '@/utils/chakra';
-import { configs } from '@/utils/swr';
+import { configs } from '@/configs/swr';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
