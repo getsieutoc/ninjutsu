@@ -2,7 +2,7 @@
 // import 'server-only';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { NextResponse } from 'next/server';
-import { exclude, parseQuery } from '@/utils/parsers';
+import { exclude, paramParser } from '@/utils/parsers';
 import { type User, UserRole, Prisma } from '@prisma/client';
 import { type Session } from 'next-auth';
 import { prisma } from '@/configs/prisma';
@@ -68,8 +68,8 @@ export const queryUsers = async (
     };
 
     const results = await prisma.user.findMany({
-      skip: parseQuery(skip),
-      take: parseQuery(take),
+      skip: paramParser(skip),
+      take: paramParser(take),
       where: {
         ...managerFilters(),
         ...(s ? { name: { search: s as string } } : {}),
