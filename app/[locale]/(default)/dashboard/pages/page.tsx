@@ -7,21 +7,20 @@ import { Locale } from '@/types';
 import { PageTable } from './components';
 import { getSession } from '@/configs/auth';
 
+import { PageTable } from './components';
+
 export default async function PagesDashboard({
-  params,
+  params: { locale },
 }: {
   params: { locale: Locale };
 }) {
   const session = await getSession();
 
-  if (!session?.user.id) {
+  if (!session) {
     redirect('/login');
   }
 
-  const pages = await prisma.page.findMany({
-    where: { locale: params.locale },
-    include: { author: true },
-  });
+  const pages = await queryPages({ where: { locale } });
 
   return (
     <Flex direction="column">

@@ -1,13 +1,4 @@
-export { preload } from 'swr';
-
-export async function fetcher<JSON = unknown>(
-  input: RequestInfo,
-  init?: RequestInit
-): Promise<JSON> {
-  const response = await fetch(input, init);
-
-  return response.json();
-}
+import { fetcher } from '@/utils/fetcher';
 
 export const configs = {
   fetcher,
