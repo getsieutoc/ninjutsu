@@ -1,17 +1,12 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
-import { useCookies } from 'next-client-cookies';
 import { i18n } from '@/configs/i18n.config';
 import type { Locale } from '@/types';
 import { Select } from '@/components/chakra';
 import { redirectedPathName } from '@/utils/redirectedPathLocale';
 import { useAuth, useCookies, usePathname, useRouter } from '@/hooks';
 import { updateUser } from '@/services/users';
-import { LOCALE } from '@/utils/constants';
 import { Prisma } from '@prisma/client';
-
-// const localeAtom = atomWithStorage<Locale>(LOCALE, i18n.defaultLocale);
 
 export function LocaleSwitcher() {
   const router = useRouter();
@@ -57,7 +52,7 @@ export function LocaleSwitcher() {
       width="65px"
       size="xs"
       rounded={5}
-      // value={locale}
+      value={cookieLocale}
     >
       {i18n.locales.map((locale, index) => {
         return (

@@ -1,4 +1,4 @@
-import { match as matchLocale } from '@formatjs/intl-localematcher';
+import { match } from '@formatjs/intl-localematcher';
 import { NextRequest, NextResponse } from 'next/server';
 import Negotiator from 'negotiator';
 
@@ -24,7 +24,7 @@ function getLocale(request: NextRequest): string | undefined {
   const availableLocales = i18n.locales.map((locale) => locale.value);
   const acceptLanguages = new Negotiator({ headers: headers }).languages();
 
-  const detectedLocale = matchLocale(
+  const detectedLocale = match(
     acceptLanguages,
     availableLocales,
     i18n.defaultLocale
@@ -41,13 +41,11 @@ export function middleware(request: NextRequest) {
   if (PUBLIC_FILE.test(request.nextUrl.pathname)) {
     return;
   }
+
   const pathnameIsMissingLocale = i18n.locales.every(
     ({ value }) =>
       !pathname.startsWith(`/${value}/`) && pathname !== `/${value}`
   );
-
-  const defaultLocale =
-    request.cookies.get(LOCALE)?.value ?? i18n.defaultLocale;
 
   // Redirect if there is no locale
   if (pathnameIsMissingLocale) {
