@@ -1,14 +1,7 @@
 'use client'; // Error components must be Client Components
 
-import {
-  Box,
-  Alert,
-  Button,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-} from '@/components/chakra';
-import { RepeatIcon } from '@/icons';
+import { Box } from '@/components/chakra';
+import { Error as ErrorBoundary } from '@/components/client';
 import { useEffect } from 'react';
 
 export default function Error({
@@ -25,33 +18,7 @@ export default function Error({
 
   return (
     <Box textAlign="center">
-      <Alert
-        status="error"
-        variant="subtle"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        textAlign="center"
-        height="200px"
-      >
-        <AlertIcon boxSize="40px" mr={0} />
-        <AlertTitle mt={4} mb={1} fontSize="lg">
-          {error.name}
-        </AlertTitle>
-        <AlertDescription maxWidth="sm">
-          <Box as="p">{error.message}</Box>
-          <Button
-            colorScheme="blue"
-            leftIcon={<RepeatIcon />}
-            onClick={
-              // Attempt to recover by trying to re-render the segment
-              () => reset()
-            }
-          >
-            Try again
-          </Button>
-        </AlertDescription>
-      </Alert>
+      <ErrorBoundary error={error} reset={reset} />
     </Box>
   );
 }
