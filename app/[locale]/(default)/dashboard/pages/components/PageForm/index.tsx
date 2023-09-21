@@ -34,7 +34,7 @@ import {
   RepeatIcon,
 } from '@/icons';
 import { createPage, updatePage } from '@/services/pages';
-import { Page, PageWithTags } from '@/types';
+import { PageWithTags } from '@/types';
 import slugify from 'slugify';
 import { i18n } from '@/configs/i18n.config';
 
@@ -46,7 +46,7 @@ export type PageFormProps = {
   title?: string;
   backPath?: string;
   data?: PageWithTags;
-  translatedPages?: Page[];
+  translatedPages?: PageWithTags[];
   originalId?: string;
   translateTo?: string;
 };
