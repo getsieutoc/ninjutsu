@@ -12,7 +12,14 @@ export default async function EditPage({ params }: EditPageProps) {
   const { id } = params;
   const session = await getSession();
 
-  const originalPage = await prisma.page.findUnique({ where: { id } });
+  if (!session) {
+    return redirect('/login');
+  }
+
+  const originalPage = await prisma.page.findUnique({
+    where: { id },
+    include: { tags: true },
+  });
 
   if (!originalPage) {
     return null;
@@ -20,6 +27,7 @@ export default async function EditPage({ params }: EditPageProps) {
 
   const translatedPages = await prisma.page.findMany({
     where: { originalId: id },
+    include: { tags: true },
   });
 
   return (
