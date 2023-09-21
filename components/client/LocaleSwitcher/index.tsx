@@ -6,16 +6,15 @@ import { Select } from '@/components/chakra';
 import { redirectedPathName } from '@/utils/redirectedPathLocale';
 import { useAuth, useCookies, usePathname, useRouter } from '@/hooks';
 import { updateUser } from '@/services/users';
-import { Prisma } from '@prisma/client';
 
 export function LocaleSwitcher() {
   const router = useRouter();
   const pathName = usePathname();
 
-  const { session, update } = useAuth();
+  const { session } = useAuth();
 
   const cookies = useCookies();
-  const cookieLocale = cookies.get('NEXT_LOCALE');
+  const cookieLocale = cookies.get('NEXT_LOCALE') ?? i18n.defaultLocale;
 
   const handleChangeLocale = async (localeSelected: Locale) => {
     const userID = session?.user.id;
@@ -24,22 +23,9 @@ export function LocaleSwitcher() {
 
     // store to database
     if (userID) {
-      const result = await updateUser(userID, {
+      await updateUser(userID, {
         preferences: { locale: localeSelected },
       });
-
-      // store to session local
-      if (result) {
-        update({
-          user: {
-            ...session?.user,
-            preferences: {
-              ...session.user.preferences,
-              ...(result.preferences as Prisma.JsonObject),
-            },
-          },
-        });
-      }
     }
 
     router.refresh();

@@ -68,11 +68,7 @@ export const authOptions: NextAuthOptions = {
     // How this works: On the first login, the shape of token is really simple { name, email, sub, picture }
     // but we have info inside account (simple form because this is credentials), user (returned from authorize callback)
     // we dont have value in `profile` because it only from OAuth like login by Google/Facebook
-    jwt: async ({ token, account, profile, user, trigger, session }) => {
-      if (trigger === 'update' && session) {
-        token.preferences = session.user.preferences;
-        return token;
-      }
+    jwt: async ({ token, account, profile, user }) => {
       if (profile && account && account.type === 'oauth') {
         return {
           ...token,
