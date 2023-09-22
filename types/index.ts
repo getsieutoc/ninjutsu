@@ -29,3 +29,11 @@ export type Dictionary = Awaited<ReturnType<typeof getDictionary>>;
 export type PageWithTags = Prisma.PageGetPayload<{
   include: { tags: true };
 }>;
+
+export type RecursivePartial<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[]
+    ? RecursivePartial<U>[]
+    : T[P] extends Record<string, unknown>
+    ? RecursivePartial<T[P]>
+    : T[P];
+};
