@@ -19,4 +19,4 @@ export * from './Sidebar';
 export * from './TextEditor';
 export * from './VirtualTable';
 export * from './CookiesProvider';
-export * from './Error';
+export * from './ErrorBoundary';

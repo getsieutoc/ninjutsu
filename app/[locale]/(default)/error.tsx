@@ -1,7 +1,7 @@
 'use client'; // Error components must be Client Components
 
 import { Box } from '@/components/chakra';
-import { Error as ErrorBoundary } from '@/components/client';
+import { ErrorBoundary } from '@/components/client';
 import { useEffect } from 'react';
 
 export default function Error({

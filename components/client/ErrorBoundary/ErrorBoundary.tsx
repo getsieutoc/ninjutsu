@@ -11,7 +11,13 @@ import {
 import { RepeatIcon } from '@/icons';
 import { useEffect } from 'react';
 
-export function Error({ error, reset }: { error: Error; reset: () => void }) {
+export function ErrorBoundary({
+  error,
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}) {
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error);
