@@ -16,10 +16,11 @@ export default async function EditPage({ params }: EditPageProps) {
     return redirect('/login');
   }
 
-  const originalPage = await prisma.page.findUnique({
+  const originalPage = await getPage({
     where: { id },
     include: { tags: true },
   });
+  console.log('### originalPage: ', { originalPage });
 
   if (!originalPage) {
     return null;

@@ -20,7 +20,10 @@ export default async function PagesDashboard({
     redirect('/login');
   }
 
-  const pages = await queryPages({ where: { locale } });
+  const pages = await queryPages({
+    where: { locale },
+    // include: { translatedPages: true },
+  });
 
   return (
     <Flex direction="column">

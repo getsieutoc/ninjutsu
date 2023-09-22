@@ -23,7 +23,14 @@ import {
   GoBackButton,
   TextEditor,
 } from '@/components/client';
-import { useEffect, useLocale, useRouter, useState, useToast } from '@/hooks';
+import {
+  useAuth,
+  useEffect,
+  useLocale,
+  useRouter,
+  useState,
+  useToast,
+} from '@/hooks';
 import {
   AddIcon,
   ArrowUpIcon,
@@ -40,7 +47,6 @@ import { i18n } from '@/configs/i18n.config';
 
 import { DeleteSection } from './DeleteSection';
 import { isEqual } from '@/utils/compare';
-import { BasicSEO } from '../BasicSEO';
 
 export type PageFormProps = {
   title?: string;
@@ -61,6 +67,7 @@ export const PageForm = ({
 }: PageFormProps) => {
   const toast = useToast();
   const router = useRouter();
+  const { session } = useAuth();
 
   const { currentLocale, defaultLocale } = useLocale();
 
@@ -133,21 +140,41 @@ export const PageForm = ({
     setIsLoading(true);
 
     if (propsData) {
-      const response = await updatePage(propsData.id, formData);
+      const { title, slug, content } = Object.fromEntries(
+        formData.entries()
+      ) as { title: string; slug: string; content: string };
+
+      const response = await updatePage({
+        where: { id: propsData.id },
+        data: {
+          title,
+          slug,
+          content,
+        },
+      });
 
       if (response) {
-        toast({ description: 'Cập nhật thành công' });
+        console.log('### response: ', { response });
+        toast({ description: 'Update successfully' });
         router.refresh();
       }
     } else {
-      if (originalId && translateTo) {
-        formData.append('originalId', originalId);
-        formData.append('locale', translateTo);
-      } else {
-        formData.append('locale', currentLocale);
-      }
+      if (!session) return;
 
-      const response = await createPage(formData);
+      const { title, slug, content } = Object.fromEntries(
+        formData.entries()
+      ) as { title: string; slug: string; content: string };
+
+      const response = await createPage({
+        data: {
+          title,
+          slug,
+          content,
+          originalId,
+          locale: translateTo ?? defaultLocale,
+          authorId: session.user.id,
+        },
+      });
 
       if (response) {
         toast({ description: 'Published successfully' });
@@ -285,7 +312,6 @@ export const PageForm = ({
 
           <TabPanel>
             <Stack spacing={4} flex={1}>
-              <BasicSEO data={inputData} />
               {propsData && <DeleteSection page={propsData} />}
             </Stack>
           </TabPanel>
