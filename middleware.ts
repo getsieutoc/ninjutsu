@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Negotiator from 'negotiator';
 
 import { i18n } from './configs/i18n.config';
+import { NEXT_LOCALE } from './utils/constants';
 
 const PUBLIC_FILE = /\.(.*)$/;
 export const config = {
@@ -14,7 +15,7 @@ function getLocale(request: NextRequest): string | undefined {
   const headers: Record<string, string> = {};
   request.headers.forEach((value, key) => (headers[key] = value));
 
-  const cookieValue = request.cookies.get('NEXT_LOCALE')?.value;
+  const cookieValue = request.cookies.get(NEXT_LOCALE)?.value;
 
   if (cookieValue) {
     return cookieValue;

@@ -6,6 +6,7 @@ import { Select } from '@/components/chakra';
 import { redirectedPathName } from '@/utils/redirectedPathLocale';
 import { useAuth, useCookies, usePathname, useRouter } from '@/hooks';
 import { updateUser } from '@/services/users';
+import { NEXT_LOCALE } from '@/utils/constants';
 
 export function LocaleSwitcher() {
   const router = useRouter();
@@ -14,22 +15,19 @@ export function LocaleSwitcher() {
   const { session } = useAuth();
 
   const cookies = useCookies();
-  const cookieLocale = cookies.get('NEXT_LOCALE') ?? i18n.defaultLocale;
+  const cookieLocale = cookies.get(NEXT_LOCALE) ?? i18n.defaultLocale;
 
   const handleChangeLocale = async (localeSelected: Locale) => {
     const userID = session?.user.id;
 
-    cookies.set('NEXT_LOCALE', localeSelected);
-
+    cookies.set(NEXT_LOCALE, localeSelected);
     // store to database
     if (userID) {
-      await updateUser(userID, {
+      updateUser(userID, {
         preferences: { locale: localeSelected },
       });
     }
-
     router.refresh();
-
     router.push(redirectedPathName(pathName, localeSelected));
   };
   return (
