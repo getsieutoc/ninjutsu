@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { getSession } from '@/utils/auth';
+import { getSession } from '@/configs/auth';
 
 export default async function FilesDashboard() {
   const session = await getSession();

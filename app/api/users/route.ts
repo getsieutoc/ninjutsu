@@ -1,5 +1,5 @@
 import { createUser, queryUsers, updateUser } from '@/services/users';
-import { getSession } from '@/utils/auth';
+import { getSession } from '@/configs/auth';
 import { withRateLimit } from '@/utils/rateLimit';
 
 export const GET = withRateLimit(async (req, res) => {

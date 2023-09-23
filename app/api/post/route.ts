@@ -1,4 +1,4 @@
-import { prisma } from '@/utils/prisma';
+import { prisma } from '@/configs/prisma';
 import type { Post, Prisma } from '@/types';
 import type { NextApiResponse } from 'next';
 import { NextResponse } from 'next/server';

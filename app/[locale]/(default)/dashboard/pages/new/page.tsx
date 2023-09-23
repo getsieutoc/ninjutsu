@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { PageForm } from '../components';
-import { getSession } from '@/utils/auth';
+import { getSession } from '@/configs/auth';
 
 export default async function AddNewPage() {
   const session = await getSession();

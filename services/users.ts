@@ -5,9 +5,9 @@ import { NextResponse } from 'next/server';
 import { exclude, parseQuery } from '@/utils/parsers';
 import { type User, UserRole, Prisma } from '@prisma/client';
 import { type Session } from 'next-auth';
-import { prisma } from '@/utils/prisma';
+import { prisma } from '@/configs/prisma';
 import { hash } from '@/utils/password';
-import { getSession } from '@/utils/auth';
+import { getSession } from '@/configs/auth';
 
 // export type UserWithPayload = Prisma.UserGetPayload<>;
 export const getUser = async (

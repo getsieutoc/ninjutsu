@@ -1,11 +1,11 @@
 import { redirect } from 'next/navigation';
 import { Flex, Heading, Spacer } from '@/components/chakra';
 import { AddNewButton } from '@/components/client';
-import { prisma } from '@/utils/prisma';
+import { prisma } from '@/configs/prisma';
 import { Locale } from '@/types';
 
 import { PageTable } from './components';
-import { getSession } from '@/utils/auth';
+import { getSession } from '@/configs/auth';
 
 export default async function PagesDashboard({
   params,

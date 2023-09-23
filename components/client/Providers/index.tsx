@@ -6,7 +6,7 @@ import { Provider as JotaiProvider } from 'jotai';
 import { SWRConfig } from 'swr';
 
 import { ChakraProvider } from '@/components/chakra';
-import { theme, toastOptions } from '@/utils/chakra';
+import { theme, toastOptions } from '@/configs/chakra';
 import { configs } from '@/configs/swr';
 
 export function Providers({ children }: { children: React.ReactNode }) {

@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 
 import { Stack, Heading } from '@/components/chakra';
 import LoginForm from './LoginForm';
-import { getSession } from '@/utils/auth';
+import { getSession } from '@/configs/auth';
 
 export default async function Login() {
   const session = await getSession();

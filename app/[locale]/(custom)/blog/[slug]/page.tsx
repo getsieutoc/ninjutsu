@@ -1,7 +1,7 @@
 import { Box, Heading } from '@/components/chakra';
 import { HTMLParser } from '@/components/client';
 import { htmlSanitizer } from '@/utils/parsers';
-import { prisma } from '@/utils/prisma';
+import { prisma } from '@/configs/prisma';
 import type { Metadata } from '@/types';
 
 type SinglePostViewProps = {

@@ -1,4 +1,4 @@
-import { getSession } from '@/utils/auth';
+import { getSession } from '@/configs/auth';
 
 export default async function SettingsPage() {
   const session = await getSession();
