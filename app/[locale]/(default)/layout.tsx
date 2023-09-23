@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { getSession } from '@/utils/auth';
+import { getSession } from '@/configs/auth';
 import { LocaleSwitcher, Sidebar } from '@/components/client';
 import { ProfileMenu } from '@/components/server';
 import { Box, Flex } from '@/components/chakra';

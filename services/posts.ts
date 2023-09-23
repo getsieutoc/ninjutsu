@@ -1,7 +1,7 @@
 'use server';
 
-import { prisma } from '@/utils/prisma';
-import { getSession } from '@/utils/auth';
+import { prisma } from '@/configs/prisma';
+import { getSession } from '@/configs/auth';
 import type { Post } from '@/types';
 
 type CreatePostDto = Pick<Post, 'title' | 'content' | 'slug' | 'locale'>;

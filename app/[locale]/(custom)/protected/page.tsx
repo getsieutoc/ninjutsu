@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 
 import { Box } from '@/components/chakra';
 import { AccessDenied } from '@/components/client';
-import { getSession } from '@/utils/auth';
+import { getSession } from '@/configs/auth';
 
 export default async function ProtectedPage() {
   const session = await getSession();

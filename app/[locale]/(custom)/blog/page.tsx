@@ -1,6 +1,6 @@
 import { Box, Heading, SimpleGrid, Spinner } from '@/components/chakra';
 import { PostCard } from '@/components/client';
-import { prisma } from '@/utils/prisma';
+import { prisma } from '@/configs/prisma';
 import { Locale, Metadata } from '@/types';
 
 export const metadata: Metadata = {

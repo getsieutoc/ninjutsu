@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { Box } from '@/components/chakra';
 import type { ReactNode } from '@/types';
-import { getSession } from '@/utils/auth';
+import { getSession } from '@/configs/auth';
 
 export default async function DefaultLayout({
   children,

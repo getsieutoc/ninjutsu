@@ -1,4 +1,4 @@
-import { prisma } from '@/utils/prisma';
+import { prisma } from '@/configs/prisma';
 import type { NextApiResponse } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
 

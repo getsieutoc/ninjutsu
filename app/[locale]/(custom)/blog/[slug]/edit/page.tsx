@@ -1,8 +1,8 @@
 import { Box, Stack, Heading } from '@/components/chakra';
 import { PostList } from '@/components/client';
 import { redirect } from 'next/navigation';
-import { getSession } from '@/utils/auth';
-import { prisma } from '@/utils/prisma';
+import { getSession } from '@/configs/auth';
+import { prisma } from '@/configs/prisma';
 import type { Post } from '@/types';
 
 import { ButtonCreatePost } from './BlogEditForm/ButtonCreatePost';

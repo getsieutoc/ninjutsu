@@ -4,7 +4,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { JWT_MAX_AGE } from '@/utils/constants';
 import { exclude } from '@/utils/parsers';
 import { verify } from '@/utils/password';
-import { prisma } from '@/utils/prisma';
+import { prisma } from '@/configs/prisma';
 import { UserRole } from '@/types';
 
 if (!process.env.NEXTAUTH_SECRET) {
