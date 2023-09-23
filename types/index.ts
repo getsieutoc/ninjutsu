@@ -8,7 +8,7 @@ export type JsonObject = Prisma.JsonObject;
 export type JsonValue = Prisma.JsonValue;
 
 export type { Metadata, ResolvingMetadata } from 'next';
-export type { FC, ReactNode } from 'react';
+export type { FC, ReactNode, ChangeEvent } from 'react';
 
 export type { PageWithPayload } from '@/services/pages';
 export type { UserWithPayload } from '@/services/users';
