@@ -6,13 +6,13 @@ import { useRouter } from '@/hooks';
 import type { PageWithPayload } from '@/types';
 
 export type PageTableProps = {
-  data: PageWithPayload[];
+  data?: PageWithPayload[];
 };
 
 export const PageTable = ({ data }: PageTableProps) => {
   const router = useRouter();
 
-  return data.length > 0 ? (
+  return data && data.length > 0 ? (
     <VirtualTable
       data={data}
       columns={[

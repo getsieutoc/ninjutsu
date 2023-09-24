@@ -1,7 +1,7 @@
 import { paramParser, queryParser } from '@/utils/parsers';
 import { NextRequest, NextResponse } from 'next/server';
 import { createPage, queryPages } from '@/services/pages';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@/types';
 
 export async function GET(req: NextRequest) {
   try {
