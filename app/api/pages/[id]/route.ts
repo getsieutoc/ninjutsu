@@ -1,4 +1,3 @@
-import { paramParser, queryParser } from '@/utils/parsers';
 import { NextRequest, NextResponse } from 'next/server';
 import { updatePage, getPage } from '@/services/pages';
 

@@ -1,5 +1,6 @@
 'use server';
-// import 'server-only';
+import 'server-only';
+
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { NextResponse } from 'next/server';
 import { exclude, paramParser } from '@/utils/parsers';
@@ -113,6 +114,7 @@ export const updateUser = async (id: string, data: Partial<User>) => {
     ...(currentUser.preferences as Prisma.JsonObject),
     ...(data.preferences as Prisma.JsonObject),
   };
+
   const result = await prisma.user.update({
     where: { id },
     data: {
