@@ -1,80 +1,113 @@
 'use server';
 
-import { prisma } from '@/configs/prisma';
-import { getSession } from '@/configs/auth';
-import type { Page } from '@/types';
+import { prisma } from '@/utils/prisma';
+import { getSession } from '@/utils/auth';
+import { UserRole, type Prisma, type RecursivePartial } from '@/types';
+import deepmerge from 'deepmerge';
 
-export const createPage = async (args: Prisma.PageCreateArgs) => {
-  const session = await getSession();
+// Making the include dynamically is not productive with Typescript
+// because it is not possible to make the return type skipable with the optional args
+const richInclude = {
+  tags: true,
+  author: true,
+  originalPage: true,
+  translatedPages: true,
+};
 
-  if (!session) {
-    throw new Error('Unauthorized request');
-  }
+export type PageWithPayload = Prisma.PageGetPayload<{
+  include: typeof richInclude;
+}>;
 
-  const finalArgs = deepmerge<
-    RecursivePartial<Prisma.PageCreateArgs>,
-    Prisma.PageCreateArgs
-  >(
-    {
-      data: {
-        // Make sure the author is the current user
-        authorId: session.user.id,
-      },
-    },
-    args
-  );
+export async function getPage({
+  where,
+}: {
+  where: Prisma.PageWhereUniqueInput;
+}): Promise<PageWithPayload | null> {
+  const response = await prisma.page.findUnique({
+    where,
+    include: richInclude,
+  });
 
-  const response = await prisma.page.create(finalArgs);
+  return response;
+}
+
+export const queryPages = async ({
+  skip,
+  take,
+  where,
+}: {
+  skip?: number;
+  take?: number;
+  where: Prisma.PageWhereInput;
+}): Promise<PageWithPayload[]> => {
+  const response = await prisma.page.findMany({
+    skip,
+    take,
+    where,
+    include: richInclude,
+  });
 
   return response;
 };
 
-export const updatePage = async (args: Prisma.PageUpdateArgs) => {
+export const createPage = async (data: Prisma.PageUncheckedCreateInput) => {
   const session = await getSession();
 
   if (!session) {
     throw new Error('Unauthorized request');
   }
 
-  const finalArgs = deepmerge<
-    RecursivePartial<Prisma.PageUpdateArgs>,
-    Prisma.PageUpdateArgs
-  >(
-    {
+  const response = await prisma.page.create({
+    data: {
+      ...data,
+      authorId: session.user.id,
+    },
+  });
+
+  return response;
+};
+
+export const updatePage = async (
+  id: string,
+  data: Prisma.PageUncheckedUpdateInput
+): Promise<PageWithPayload> => {
+  const session = await getSession();
+
+  if (!session) {
+    throw new Error('Unauthorized request');
+  }
+
+  const response = await prisma.page.update({
+    where: {
+      id,
       // Only ADMIN can update every page
       ...(session.user.role !== UserRole.ADMIN
-        ? { where: { authorId: session.user.id } }
+        ? { authorId: session.user.id }
         : {}),
     },
-    args
-  );
-
-  const response = await prisma.page.update(finalArgs);
+    include: richInclude,
+    data,
+  });
 
   return response;
 };
 
-export const deletePage = async (args: Prisma.PageDeleteArgs) => {
+export const deletePage = async (id: string) => {
   const session = await getSession();
 
   if (!session) {
     throw new Error('Unauthorized request');
   }
 
-  const finalArgs = deepmerge<
-    RecursivePartial<Prisma.PageDeleteArgs>,
-    Prisma.PageDeleteArgs
-  >(
-    {
+  const response = await prisma.page.delete({
+    where: {
+      id,
       // Only ADMIN can delete every page
       ...(session.user.role !== UserRole.ADMIN
-        ? { where: { authorId: session.user.id } }
+        ? { authorId: session.user.id }
         : {}),
     },
-    args
-  );
-
-  const response = await prisma.page.delete(finalArgs);
+  });
 
   return response;
 };

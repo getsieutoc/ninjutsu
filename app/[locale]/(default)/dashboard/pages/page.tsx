@@ -22,7 +22,6 @@ export default async function PagesDashboard({
 
   const pages = await queryPages({
     where: { locale },
-    // include: { translatedPages: true },
   });
 
   return (
