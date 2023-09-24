@@ -19,13 +19,6 @@ export const transporter = nodemailer.createTransport({
   },
 });
 
-const CONTACT_MESSAGE_FIELDS = {
-  name: 'Name',
-  email: 'Email',
-  subject: 'Subject',
-  message: 'Message',
-};
-
 export async function POST(req: Request, res: NextApiResponse) {
   const data = await req.json();
   if (!data || !data.name || !data.email || !data.subject || !data.message) {
