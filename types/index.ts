@@ -11,6 +11,7 @@ export type { Metadata, ResolvingMetadata } from 'next';
 export type { FC, ReactNode } from 'react';
 
 export type { PageWithPayload } from '@/services/pages';
+export type { UserWithPayload } from '@/services/users';
 
 export enum HttpMethod {
   CONNECT = 'CONNECT',

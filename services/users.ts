@@ -9,31 +9,27 @@ import { type Session } from 'next-auth';
 import { prisma } from '@/configs/prisma';
 import { hash } from '@/utils/password';
 import { getSession } from '@/configs/auth';
+import deepmerge from 'deepmerge';
 
-// export type UserWithPayload = Prisma.UserGetPayload<>;
-export const getUser = async (
-  req: NextApiRequest,
-  res: NextApiResponse<Omit<User, 'password'>>,
-  session: Session | null
-) => {
-  try {
-    if (!session) {
-      return NextResponse.json({ status: 403 });
-    }
+const richInclude = {
+  pages: true,
+  posts: true,
+};
 
-    const { id } = req.query;
+export type UserWithPayload = Prisma.UserGetPayload<{
+  include: typeof richInclude;
+}>;
 
-    const result = await prisma.user.findUniqueOrThrow({
-      where: { id: id as string },
-    });
+export const getUser = async ({
+  where,
+}: {
+  where: Prisma.UserWhereUniqueInput;
+}) => {
+  const response = await prisma.user.findUnique({
+    where,
+  });
 
-    return NextResponse.json({
-      status: 200,
-      result: exclude(result, 'password'),
-    });
-  } catch (error) {
-    return res.status(500).end(error);
-  }
+  return response;
 };
 
 export const queryUsers = async (
@@ -86,44 +82,45 @@ export const queryUsers = async (
   }
 };
 
-export const updateUser = async (id: string, data: Partial<User>) => {
-  const session = await getSession();
+export const updateUser = async (
+  id: string,
+  data: Prisma.UserUncheckedUpdateInput
+) => {
+  try {
+    const session = await getSession();
 
-  if (!session) {
-    throw new Error('Unauthorized request');
-  }
+    if (!session) {
+      throw new Error('Unauthorized request');
+    }
 
-  if (!id || !data) {
-    throw new Error('id and data update must be request');
-  }
-  const currentUser = await prisma.user.findUnique({
-    where: { id },
-    select: {
-      preferences: true,
-    },
-  });
-  if (!currentUser) {
-    throw new Error('user not found');
-  }
-  const { role } = session.user;
-  // Normal user can only update their own account
-  if (role === UserRole.USER || role === UserRole.AUTHOR) {
-    id = session.user.id;
-  }
-  const preferences = {
-    ...(currentUser.preferences as Prisma.JsonObject),
-    ...(data.preferences as Prisma.JsonObject),
-  };
+    // Only ADMIN can update every page
+    const userId = session.user.role !== UserRole.ADMIN ? session.user.id : id;
 
-  const result = await prisma.user.update({
-    where: { id },
-    data: {
-      ...data,
-      preferences,
-    },
-  });
+    if ('preferences' in data) {
+      const currentUser = await prisma.user.findUniqueOrThrow({
+        where: { id: userId },
+        select: {
+          preferences: true,
+        },
+      });
 
-  return exclude(result, 'password');
+      data.preferences = deepmerge(
+        currentUser.preferences as Prisma.JsonObject,
+        data.preferences as Prisma.JsonObject
+      );
+    }
+
+    const response = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data,
+    });
+
+    return exclude(response, 'password');
+  } catch (error) {
+    console.error({ error });
+  }
 };
 
 // TODO: implement rate limit on the next PR

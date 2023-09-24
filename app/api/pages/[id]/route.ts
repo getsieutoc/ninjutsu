@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { updatePage, getPage } from '@/services/pages';
 
-export async function GET(_req: NextRequest, params: { id: string }) {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const { id } = params;
 
@@ -13,7 +16,10 @@ export async function GET(_req: NextRequest, params: { id: string }) {
   }
 }
 
-export async function PATCH(req: NextRequest, params: { id: string }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const { id } = params;
     const updateInput = await req.json();
