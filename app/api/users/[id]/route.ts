@@ -25,7 +25,6 @@ export async function PATCH(
     const updateInput = await req.json();
 
     const updatedUser = await updateUser(id, updateInput);
-    console.log('### updatedUser: ', { updatedUser });
 
     return NextResponse.json(updatedUser);
   } catch (error) {

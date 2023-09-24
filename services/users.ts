@@ -1,14 +1,11 @@
 'use server';
 import 'server-only';
 
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { NextResponse } from 'next/server';
-import { exclude, paramParser } from '@/utils/parsers';
-import { type User, UserRole, Prisma } from '@prisma/client';
-import { type Session } from 'next-auth';
+import { User, UserRole, Prisma } from '@prisma/client';
+import { getSession } from '@/configs/auth';
+import { exclude } from '@/utils/parsers';
 import { prisma } from '@/configs/prisma';
 import { hash } from '@/utils/password';
-import { getSession } from '@/configs/auth';
 import deepmerge from 'deepmerge';
 
 const richInclude = {
@@ -16,6 +13,7 @@ const richInclude = {
   posts: true,
 };
 
+export type CleanUser = Omit<User, 'password'>;
 export type UserWithPayload = Prisma.UserGetPayload<{
   include: typeof richInclude;
 }>;
@@ -24,68 +22,27 @@ export const getUser = async ({
   where,
 }: {
   where: Prisma.UserWhereUniqueInput;
-}) => {
-  const response = await prisma.user.findUnique({
-    where,
-  });
-
-  return response;
-};
-
-export const queryUsers = async (
-  req: Request,
-  res: NextApiResponse<Omit<User, 'password'>[]>,
-  session: Session | null
-) => {
+}): Promise<CleanUser | void> => {
   try {
-    if (!session) {
-      return res.status(403).end();
-    }
-
-    const role = session.user.role;
-    const { skip, take, s = '' } = await req.json();
-
-    // Most likely this is blocked from frontend, but just in case...
-    if (role === UserRole.USER || role === UserRole.AUTHOR) {
-      return NextResponse.json({ status: 200, results: [] });
-    }
-
-    const managerFilters = () => {
-      if (role === UserRole.MANAGER) {
-        return {
-          managers: {
-            some: {
-              id: session.user.id,
-            },
-          },
-        };
-      }
-
-      return undefined;
-    };
-
-    const results = await prisma.user.findMany({
-      skip: paramParser(skip),
-      take: paramParser(take),
-      where: {
-        ...managerFilters(),
-        ...(s ? { name: { search: s as string } } : {}),
-      },
+    const response = await prisma.user.findUniqueOrThrow({
+      where,
     });
 
-    return NextResponse.json({
-      status: 200,
-      results: results.map((o) => exclude(o, 'password')),
-    });
+    return exclude(response, 'password');
   } catch (error) {
-    return NextResponse.json({ status: 500, error });
+    console.error({ error });
   }
 };
 
-export const updateUser = async (
-  id: string,
-  data: Prisma.UserUncheckedUpdateInput
-) => {
+export const queryUsers = async ({
+  skip,
+  take,
+  where,
+}: {
+  skip?: number;
+  take?: number;
+  where: Prisma.UserWhereInput;
+}): Promise<CleanUser[] | void> => {
   try {
     const session = await getSession();
 
@@ -93,7 +50,30 @@ export const updateUser = async (
       throw new Error('Unauthorized request');
     }
 
-    // Only ADMIN can update every page
+    const response = await prisma.user.findMany({
+      skip,
+      take,
+      where,
+    });
+
+    return response.map((o) => exclude(o, 'password'));
+  } catch (error) {
+    console.error({ error });
+  }
+};
+
+export const updateUser = async (
+  id: string,
+  data: Prisma.UserUncheckedUpdateInput
+): Promise<CleanUser | void> => {
+  try {
+    const session = await getSession();
+
+    if (!session) {
+      throw new Error('Unauthorized request');
+    }
+
+    // Only ADMIN can update every where
     const userId = session.user.role !== UserRole.ADMIN ? session.user.id : id;
 
     if ('preferences' in data) {
@@ -104,6 +84,7 @@ export const updateUser = async (
         },
       });
 
+      // Currently Prisma doesn't support partial update on JSON
       data.preferences = deepmerge(
         currentUser.preferences as Prisma.JsonObject,
         data.preferences as Prisma.JsonObject
@@ -123,53 +104,43 @@ export const updateUser = async (
   }
 };
 
-// TODO: implement rate limit on the next PR
 export const createUser = async (
-  req: Request,
-  res: NextApiResponse<Omit<User, 'password'>>
-) => {
+  inputData: Prisma.UserCreateInput
+): Promise<CleanUser | void> => {
   try {
-    const { name, email, password } = (await req.json()) as Pick<
-      User,
-      'name' | 'email' | 'password'
-    >;
-
-    if (!email || !password) {
-      throw new Error('Email and password are required.');
-    }
-
-    const found = await prisma.user.findUnique({
-      where: { email },
-    });
-
-    if (found) {
-      throw new Error('Email already in use');
-    }
-
     const totalUser = await prisma.user.count();
 
     const result = await prisma.user.create({
       data: {
-        name,
-        email,
-        password: await hash(password),
+        ...inputData,
+        password: await hash(inputData.password),
         role: totalUser === 0 ? UserRole.ADMIN : UserRole.USER,
       },
     });
 
-    return NextResponse.json({
-      status: 200,
-      result: exclude(result, 'password'),
-    });
+    return exclude(result, 'password');
   } catch (error) {
-    return NextResponse.json({ status: 500, error });
+    console.error({ error });
   }
 };
 
-export const deleteUser = (
-  req: NextApiRequest,
-  res: NextApiResponse,
-  session: Session
-) => {
-  return NextResponse.json({ status: 200 });
+export const deleteUser = async (id: string): Promise<CleanUser | void> => {
+  try {
+    const session = await getSession();
+
+    if (!session) {
+      throw new Error('Unauthorized request');
+    }
+
+    const response = await prisma.user.delete({
+      where: {
+        // Only ADMIN can delete every where
+        id: session.user.role !== UserRole.ADMIN ? session.user.id : id,
+      },
+    });
+
+    return exclude(response, 'password');
+  } catch (error) {
+    console.error({ error });
+  }
 };

@@ -11,9 +11,9 @@ import {
   Flex,
 } from '@/components/chakra';
 import { MIN_PASSWORD_LENGTH } from '@/utils/constants';
-import { httpClient } from '@/utils/httpClient';
 import { useRouter, useState } from '@/hooks';
 import { NextLink } from '@/components/client';
+import { HttpMethod } from '@/types';
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -33,7 +33,16 @@ export default function SignUpForm() {
 
   const handleSignUp = async () => {
     setLoading(true);
-    await httpClient.post('/api/users', credentials);
+
+    await fetch('/api/users', {
+      method: HttpMethod.POST,
+      body: JSON.stringify({
+        name: credentials.name,
+        email: credentials.email,
+        password: credentials.password,
+      }),
+    });
+
     setLoading(false);
     router.push('/login');
   };

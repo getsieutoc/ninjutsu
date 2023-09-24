@@ -1,12 +1,13 @@
-import type { NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 import { Ratelimit } from '@upstash/ratelimit';
 import { kv } from '@vercel/kv';
+
 import { IS_VERCEL } from './constants';
 
 export const withRateLimit = (
-  handler: (req: Request, res: NextApiResponse) => Promise<any>
+  handler: (req: NextRequest) => Promise<NextResponse>
 ) => {
-  return async (req: Request, res: NextApiResponse) => {
+  return async (req: NextRequest) => {
     if (
       IS_VERCEL &&
       process.env.KV_REST_API_URL &&
@@ -19,18 +20,16 @@ export const withRateLimit = (
 
       const ip = req.headers.get('x-forwarded-for');
 
-      const {
-        success,
-        // limit,
-        // reset,
-        // remaining,
-      } = await ratelimit.limit(`ratelimit_${ip}`);
+      const { success } = await ratelimit.limit(`ratelimit_${ip}`);
 
       if (!success) {
-        return res.status(429).end('You have reached request limit');
+        return NextResponse.json(
+          { message: 'You have reached request limit' },
+          { status: 429 }
+        );
       }
     }
 
-    return await handler(req, res);
+    return await handler(req);
   };
 };
