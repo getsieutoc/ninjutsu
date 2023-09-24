@@ -41,7 +41,7 @@ import {
   RepeatIcon,
 } from '@/icons';
 import { createPage, updatePage } from '@/services/pages';
-import { Page, PageWithPayload } from '@/types';
+import { Page, PageWithPayload, Locale } from '@/types';
 import slugify from 'slugify';
 import { i18n } from '@/configs/i18n.config';
 
@@ -54,7 +54,7 @@ export type PageFormProps = {
   data?: PageWithPayload;
   translatedPages?: Page[];
   originalId?: string;
-  translateTo?: string;
+  translateTo?: Locale;
 };
 
 export const PageForm = ({
@@ -136,9 +136,6 @@ export const PageForm = ({
     }
   };
 
-  console.log('### translateTo: ', { translateTo });
-
-  console.log('### originalId: ', { originalId });
   const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
 

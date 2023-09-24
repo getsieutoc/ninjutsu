@@ -1,8 +1,8 @@
+import { getSession } from '@/configs/auth';
+import { getPage } from '@/services/pages';
 import { redirect } from 'next/navigation';
-import { prisma } from '@/configs/prisma';
 
 import { PageForm } from '../components';
-import { getSession } from '@/configs/auth';
 
 type EditPageProps = {
   params: { id: string };

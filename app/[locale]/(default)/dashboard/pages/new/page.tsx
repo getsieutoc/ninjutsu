@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
-import { PageForm } from '../components';
 import { getSession } from '@/configs/auth';
+import { Locale } from '@/types';
 
 import { PageForm } from '../components';
 

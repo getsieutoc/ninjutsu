@@ -1,11 +1,9 @@
-import { redirect } from 'next/navigation';
 import { Flex, Heading, Spacer } from '@/components/chakra';
 import { AddNewButton } from '@/components/client';
-import { prisma } from '@/configs/prisma';
-import { Locale } from '@/types';
-
-import { PageTable } from './components';
+import { queryPages } from '@/services/pages';
 import { getSession } from '@/configs/auth';
+import { redirect } from 'next/navigation';
+import { Locale } from '@/types';
 
 import { PageTable } from './components';
 

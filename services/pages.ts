@@ -1,8 +1,8 @@
 'use server';
 
-import { prisma } from '@/utils/prisma';
-import { getSession } from '@/utils/auth';
-import { UserRole, type Prisma, type RecursivePartial } from '@/types';
+import { prisma } from '@/configs/prisma';
+import { getSession } from '@/configs/auth';
+import { UserRole, Prisma } from '@/types';
 
 // Making the include dynamically is not productive with Typescript
 // because it is not possible to make the return type skipable with the optional args
