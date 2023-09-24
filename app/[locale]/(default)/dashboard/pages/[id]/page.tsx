@@ -18,25 +18,18 @@ export default async function EditPage({ params }: EditPageProps) {
 
   const originalPage = await getPage({
     where: { id },
-    include: { tags: true },
   });
-  console.log('### originalPage: ', { originalPage });
 
   if (!originalPage) {
     return null;
   }
-
-  const translatedPages = await prisma.page.findMany({
-    where: { originalId: id },
-    include: { tags: true },
-  });
 
   return (
     <PageForm
       backPath="/dashboard/pages"
       title="Edit Page"
       data={originalPage}
-      translatedPages={translatedPages}
+      translatedPages={originalPage.translatedPages}
     />
   );
 }

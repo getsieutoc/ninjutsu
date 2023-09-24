@@ -3,12 +3,10 @@
 import { VirtualTable } from '@/components/client';
 import { Text } from '@/components/chakra';
 import { useRouter } from '@/hooks';
-import type { PageWithTags, Prisma } from '@/types';
+import type { PageWithPayload } from '@/types';
 
 export type PageTableProps = {
-  data: Prisma.PageGetPayload<{
-    include: { translatedPages: true };
-  }>[];
+  data: PageWithPayload[];
 };
 
 export const PageTable = ({ data }: PageTableProps) => {

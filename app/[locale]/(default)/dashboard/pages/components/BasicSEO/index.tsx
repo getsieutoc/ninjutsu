@@ -13,11 +13,11 @@ import {
   Stack,
 } from '@/components/chakra';
 import { useColorModeValue, useState } from '@/hooks';
-import { JsonObject, PageWithTags } from '@/types';
+import { JsonObject, PageWithPayload } from '@/types';
 import { htmlSanitizer } from '@/utils/parsers';
 
 export type BasicSEOProps = {
-  data: Partial<PageWithTags> | undefined;
+  data: Partial<PageWithPayload> | undefined;
 };
 
 export const BasicSEO = ({ data: propsData }: BasicSEOProps) => {

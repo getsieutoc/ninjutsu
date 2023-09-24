@@ -1,20 +1,24 @@
 import { paramParser, queryParser } from '@/utils/parsers';
 import { NextRequest, NextResponse } from 'next/server';
 import { createPage, queryPages } from '@/services/pages';
+import { Prisma } from '@prisma/client';
 
 export async function GET(req: NextRequest) {
   try {
     // We lost the type here, need to find a way to fix it, trpc might help
     const { searchParams } = new URL(req.url);
     const entries = queryParser(searchParams.toString());
+    const where =
+      'where' in entries ? (entries['where'] as Prisma.PageWhereInput) : {};
 
-    searchParams.forEach((value, key) => {
-      if (key === 'skip' || key === 'take') {
-        entries[key] = paramParser(value);
-      }
+    const skip = paramParser(searchParams.get('skip'));
+    const take = paramParser(searchParams.get('take'));
+
+    const pages = await queryPages({
+      skip,
+      take,
+      where,
     });
-
-    const pages = await queryPages(entries);
 
     return NextResponse.json(pages);
   } catch (error) {
@@ -25,9 +29,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     // We lost the type here, need to find a way to fix it, trpc might help
-    const createArgs = await req.json();
+    const createInput = await req.json();
 
-    const page = await createPage(createArgs);
+    const page = await createPage(createInput);
 
     return NextResponse.json(page);
   } catch (error) {

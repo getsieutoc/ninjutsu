@@ -60,7 +60,7 @@ export const DeleteSection = ({ isDisabled, page }: PageDeleteSectionProps) => {
 
       setIsLoading(true);
 
-      await deletePage({ where: { id: pageId } });
+      await deletePage(pageId);
 
       toast({ description: 'Delete successfully' });
 

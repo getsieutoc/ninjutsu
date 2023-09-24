@@ -10,6 +10,8 @@ export type JsonValue = Prisma.JsonValue;
 export type { Metadata, ResolvingMetadata } from 'next';
 export type { FC, ReactNode } from 'react';
 
+export type { PageWithPayload } from '@/services/pages';
+
 export enum HttpMethod {
   CONNECT = 'CONNECT',
   DELETE = 'DELETE',
@@ -25,10 +27,6 @@ export enum HttpMethod {
 export type Locale = (typeof i18n)['locales'][number]['value'];
 
 export type Dictionary = Awaited<ReturnType<typeof getDictionary>>;
-
-export type PageWithTags = Prisma.PageGetPayload<{
-  include: { tags: true };
-}>;
 
 export type RecursivePartial<T> = {
   [P in keyof T]?: T[P] extends (infer U)[]

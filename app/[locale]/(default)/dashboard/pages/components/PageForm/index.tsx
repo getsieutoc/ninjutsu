@@ -41,7 +41,7 @@ import {
   RepeatIcon,
 } from '@/icons';
 import { createPage, updatePage } from '@/services/pages';
-import { PageWithTags } from '@/types';
+import { Page, PageWithPayload } from '@/types';
 import slugify from 'slugify';
 import { i18n } from '@/configs/i18n.config';
 
@@ -51,8 +51,8 @@ import { isEqual } from '@/utils/compare';
 export type PageFormProps = {
   title?: string;
   backPath?: string;
-  data?: PageWithTags;
-  translatedPages?: PageWithTags[];
+  data?: PageWithPayload;
+  translatedPages?: Page[];
   originalId?: string;
   translateTo?: string;
 };
@@ -144,17 +144,13 @@ export const PageForm = ({
         formData.entries()
       ) as { title: string; slug: string; content: string };
 
-      const response = await updatePage({
-        where: { id: propsData.id },
-        data: {
-          title,
-          slug,
-          content,
-        },
+      const response = await updatePage(propsData.id, {
+        title,
+        slug,
+        content,
       });
 
       if (response) {
-        console.log('### response: ', { response });
         toast({ description: 'Update successfully' });
         router.refresh();
       }
@@ -166,14 +162,12 @@ export const PageForm = ({
       ) as { title: string; slug: string; content: string };
 
       const response = await createPage({
-        data: {
-          title,
-          slug,
-          content,
-          originalId,
-          locale: translateTo ?? defaultLocale,
-          authorId: session.user.id,
-        },
+        title,
+        slug,
+        content,
+        originalId,
+        locale: translateTo ?? defaultLocale,
+        authorId: session.user.id,
       });
 
       if (response) {
