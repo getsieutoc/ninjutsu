@@ -1,11 +1,16 @@
 'use client';
 
 import { i18n } from '@/configs/i18n.config';
-import type { Locale } from '@/types';
+import { HttpMethod, Locale } from '@/types';
 import { Select } from '@/components/chakra';
 import { redirectedPathName } from '@/utils/redirectedPathLocale';
-import { useAuth, useCookies, usePathname, useRouter } from '@/hooks';
-import { updateUser } from '@/services/users';
+import {
+  useAuth,
+  useCallback,
+  useCookies,
+  usePathname,
+  useRouter,
+} from '@/hooks';
 
 export function LocaleSwitcher() {
   const router = useRouter();
@@ -16,25 +21,32 @@ export function LocaleSwitcher() {
   const cookies = useCookies();
   const cookieLocale = cookies.get('NEXT_LOCALE') ?? i18n.defaultLocale;
 
-  const handleChangeLocale = async (localeSelected: Locale) => {
-    const userID = session?.user.id;
+  const handleChangeLocale = useCallback(
+    async (localeSelected: Locale) => {
+      const userID = session?.user.id;
 
-    cookies.set('NEXT_LOCALE', localeSelected);
+      cookies.set('NEXT_LOCALE', localeSelected);
 
-    // store to database
-    if (userID) {
-      await updateUser(userID, {
-        preferences: { locale: localeSelected },
-      });
-    }
+      // store to database
+      if (userID) {
+        await fetch(`/api/users/${userID}`, {
+          method: HttpMethod.PATCH,
+          body: JSON.stringify({
+            preferences: { locale: localeSelected },
+          }),
+        });
+      }
 
-    router.refresh();
+      router.refresh();
 
-    router.push(redirectedPathName(pathName, localeSelected));
-  };
+      router.push(redirectedPathName(pathName, localeSelected));
+    },
+    [cookies, pathName, router, session]
+  );
+
   return (
     <Select
-      onChange={(e) => handleChangeLocale(e.target.value as Locale)}
+      onChange={async (e) => await handleChangeLocale(e.target.value as Locale)}
       width="65px"
       size="xs"
       rounded={5}
