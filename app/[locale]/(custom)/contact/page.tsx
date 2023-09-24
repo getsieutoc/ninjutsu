@@ -173,7 +173,7 @@ export default function Home() {
   );
 }
 
-export const sendContactForm = async (data: ValueType) =>
+const sendContactForm = async (data: ValueType) =>
   fetch('/api/mailer/contact', {
     method: 'POST',
     body: JSON.stringify(data),
