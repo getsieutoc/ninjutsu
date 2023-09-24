@@ -1,9 +1,5 @@
 'use client';
 
-import { i18n } from '@/configs/i18n.config';
-import { HttpMethod, Locale } from '@/types';
-import { Select } from '@/components/chakra';
-import { redirectedPathName } from '@/utils/redirectedPathLocale';
 import {
   useAuth,
   useCallback,
@@ -11,6 +7,11 @@ import {
   usePathname,
   useRouter,
 } from '@/hooks';
+import { redirectedPathName } from '@/utils/redirectedPathLocale';
+import { NEXT_LOCALE } from '@/utils/constants';
+import { i18n } from '@/configs/i18n.config';
+import { Select } from '@/components/chakra';
+import { HttpMethod, Locale } from '@/types';
 
 export function LocaleSwitcher() {
   const router = useRouter();
@@ -19,13 +20,13 @@ export function LocaleSwitcher() {
   const { session } = useAuth();
 
   const cookies = useCookies();
-  const cookieLocale = cookies.get('NEXT_LOCALE') ?? i18n.defaultLocale;
+  const cookieLocale = cookies.get(NEXT_LOCALE) ?? i18n.defaultLocale;
 
   const handleChangeLocale = useCallback(
     async (localeSelected: Locale) => {
       const userID = session?.user.id;
 
-      cookies.set('NEXT_LOCALE', localeSelected);
+      cookies.set(NEXT_LOCALE, localeSelected);
 
       // store to database
       if (userID) {

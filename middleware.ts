@@ -1,7 +1,8 @@
-import { match } from '@formatjs/intl-localematcher';
 import { NextRequest, NextResponse } from 'next/server';
+import { match } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 
+import { NEXT_LOCALE } from './utils/constants';
 import { i18n } from './configs/i18n.config';
 
 const PUBLIC_FILE = /\.(.*)$/;
@@ -14,7 +15,7 @@ function getLocale(request: NextRequest): string | undefined {
   const headers: Record<string, string> = {};
   request.headers.forEach((value, key) => (headers[key] = value));
 
-  const cookieValue = request.cookies.get('NEXT_LOCALE')?.value;
+  const cookieValue = request.cookies.get(NEXT_LOCALE)?.value;
 
   if (cookieValue) {
     return cookieValue;
