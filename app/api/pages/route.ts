@@ -6,7 +6,7 @@ import { Prisma } from '@prisma/client';
 export async function GET(req: NextRequest) {
   try {
     // We lost the type here, need to find a way to fix it, trpc might help
-    const { searchParams } = new URL(req.url);
+    const { searchParams } = req.nextUrl;
     const entries = queryParser(searchParams.toString());
     const where =
       'where' in entries ? (entries['where'] as Prisma.PageWhereInput) : {};

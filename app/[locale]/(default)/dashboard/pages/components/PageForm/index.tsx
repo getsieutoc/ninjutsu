@@ -136,6 +136,9 @@ export const PageForm = ({
     }
   };
 
+  console.log('### translateTo: ', { translateTo });
+
+  console.log('### originalId: ', { originalId });
   const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
 

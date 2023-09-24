@@ -3,7 +3,6 @@
 import { prisma } from '@/utils/prisma';
 import { getSession } from '@/utils/auth';
 import { UserRole, type Prisma, type RecursivePartial } from '@/types';
-import deepmerge from 'deepmerge';
 
 // Making the include dynamically is not productive with Typescript
 // because it is not possible to make the return type skipable with the optional args
@@ -50,7 +49,9 @@ export const queryPages = async ({
   return response;
 };
 
-export const createPage = async (data: Prisma.PageUncheckedCreateInput) => {
+export const createPage = async (
+  inputData: Prisma.PageUncheckedCreateInput
+) => {
   const session = await getSession();
 
   if (!session) {
@@ -58,10 +59,7 @@ export const createPage = async (data: Prisma.PageUncheckedCreateInput) => {
   }
 
   const response = await prisma.page.create({
-    data: {
-      ...data,
-      authorId: session.user.id,
-    },
+    data: inputData,
   });
 
   return response;
