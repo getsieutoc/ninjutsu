@@ -14,6 +14,7 @@ import {
   Box,
 } from '@/components/chakra';
 import { type ChangeEvent } from '@/types';
+import { ChangeEventHandler } from 'react';
 
 const initValues = { name: '', email: '', subject: '', message: '' };
 const initState = { isLoading: false, error: '', values: initValues };
@@ -46,10 +47,14 @@ export default function Home() {
 
   const { values, isLoading, error } = state;
 
-  const onBlur = ({ target }: ChangeEvent<HTMLInputElement>) =>
+  const onBlur = ({
+    target,
+  }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setTouched((prev) => ({ ...prev, [target.name]: true }));
 
-  const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) =>
+  const handleChange = ({
+    target,
+  }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setState((prev) => ({
       ...prev,
       values: {
@@ -59,27 +64,28 @@ export default function Home() {
     }));
 
   const onSubmit = async () => {
-    // setState((prev) => ({
-    //   ...prev,
-    //   isLoading: true,
-    // }));
-    // try {
-    //   await sendContactForm(values);
-    //   setTouched({});
-    //   setState(initState);
-    //   toast({
-    //     title: 'Message sent.',
-    //     status: 'success',
-    //     duration: 2000,
-    //     position: 'top',
-    //   });
-    // } catch (error) {
-    //   setState((prev) => ({
-    //     ...prev,
-    //     isLoading: false,
-    //     error: error?.message,
-    //   }));
-    // }
+    setState((prev) => ({
+      ...prev,
+      isLoading: true,
+    }));
+
+    try {
+      await sendContactForm(values);
+      setTouched({});
+      setState(initState);
+      toast({
+        title: 'Message sent.',
+        status: 'success',
+        duration: 2000,
+        position: 'top',
+      });
+    } catch (error) {
+      setState((prev) => ({
+        ...prev,
+        isLoading: false,
+        error: error?.message,
+      }));
+    }
   };
 
   return (
@@ -153,8 +159,8 @@ export default function Home() {
           rows={4}
           errorBorderColor="red.300"
           value={values.message}
-          //  onChange={handleChange}
-          //  onBlur={onBlur}
+          onChange={handleChange}
+          onBlur={onBlur}
         />
         <FormErrorMessage>Required</FormErrorMessage>
       </FormControl>
@@ -176,12 +182,12 @@ export default function Home() {
   );
 }
 
-// export const sendContactForm = async (data) =>
-//   fetch('/api/contact', {
-//     method: 'POST',
-//     body: JSON.stringify(data),
-//     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-//   }).then((res) => {
-//     if (!res.ok) throw new Error('Failed to send message');
-//     return res.json();
-//   });
+export const sendContactForm = async (data: any) =>
+  fetch('/api/mailer', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+  }).then((res) => {
+    if (!res.ok) throw new Error('Failed to send message');
+    return res.json();
+  });
