@@ -1,6 +1,8 @@
 'use client';
+
 import { useState } from '@/hooks';
 import {
+  Box,
   Text,
   Button,
   Input,
@@ -11,29 +13,28 @@ import {
   Container,
   FormControl,
   FormErrorMessage,
-  Box,
 } from '@/components/chakra';
 import { type ChangeEvent } from '@/types';
-import { ChangeEventHandler } from 'react';
 
-const initValues = { name: '', email: '', subject: '', message: '' };
+const initValues = { name: '', email: '', phone: '', message: '' };
 const initState = { isLoading: false, error: '', values: initValues };
 
 type TouchedType = {
   email?: string;
   name?: string;
-  subject?: string;
+  phone?: string;
+  message?: string;
+};
+type ValueType = {
+  name?: string;
+  email?: string;
+  phone?: string;
   message?: string;
 };
 type StateType = {
   isLoading: boolean;
   error?: string;
-  values: {
-    name?: string;
-    email?: string;
-    subject?: string;
-    message?: string;
-  };
+  values: ValueType;
 };
 export default function Home() {
   const toast = useToast();
@@ -41,12 +42,11 @@ export default function Home() {
   const [touched, setTouched] = useState<TouchedType>({
     email: '',
     name: '',
-    subject: '',
+    phone: '',
     message: '',
   });
 
   const { values, isLoading, error } = state;
-
   const onBlur = ({
     target,
   }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -79,18 +79,18 @@ export default function Home() {
         duration: 2000,
         position: 'top',
       });
-    } catch (error) {
+    } catch (err) {
       setState((prev) => ({
         ...prev,
         isLoading: false,
-        error: error?.message,
+        error: JSON.stringify(err),
       }));
     }
   };
 
   return (
     <Container maxW="450px" mt={12}>
-      <Heading>Contact</Heading>
+      <Heading mb={3}>Contact</Heading>
       {error && (
         <Text color="red.300" my={4} fontSize="xl">
           {error}
@@ -131,21 +131,14 @@ export default function Home() {
         <FormErrorMessage>Required</FormErrorMessage>
       </FormControl>
 
-      <FormControl
-        mb={5}
-        isRequired
-        isInvalid={!!touched.subject && !values.subject}
-      >
-        <FormLabel>Subject</FormLabel>
+      <FormControl mb={5}>
+        <FormLabel>Phone</FormLabel>
         <Input
           type="text"
-          name="subject"
-          errorBorderColor="red.300"
-          value={values.subject}
+          name="phone"
+          value={values.phone}
           onChange={handleChange}
-          onBlur={onBlur}
         />
-        <FormErrorMessage>Required</FormErrorMessage>
       </FormControl>
 
       <FormControl
@@ -170,9 +163,7 @@ export default function Home() {
           variant="outline"
           colorScheme="blue"
           isLoading={isLoading}
-          disabled={
-            !values.name || !values.email || !values.subject || !values.message
-          }
+          disabled={!values.name || !values.email || !values.message}
           onClick={onSubmit}
         >
           Submit
@@ -182,8 +173,8 @@ export default function Home() {
   );
 }
 
-export const sendContactForm = async (data: any) =>
-  fetch('/api/mailer', {
+export const sendContactForm = async (data: ValueType) =>
+  fetch('/api/mailer/contact', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
