@@ -120,7 +120,6 @@ export const updateUser = async (id: string, data: Partial<User>) => {
       preferences,
     },
   });
-
   return exclude(result, 'password');
 };
 
