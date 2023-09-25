@@ -40,13 +40,13 @@ import {
   LockIcon,
   RepeatIcon,
 } from '@/icons';
-import { createPage, updatePage } from '@/services/pages';
-import { Page, PageWithPayload, Locale } from '@/types';
-import slugify from 'slugify';
+import { Page, PageWithPayload, Locale, HttpMethod } from '@/types';
 import { i18n } from '@/configs/i18n.config';
+import { isEqual } from '@/utils/compare';
+import { fetcher } from '@/utils/fetcher';
+import slugify from 'slugify';
 
 import { DeleteSection } from './DeleteSection';
-import { isEqual } from '@/utils/compare';
 
 export type PageFormProps = {
   title?: string;
@@ -144,13 +144,19 @@ export const PageForm = ({
         formData.entries()
       ) as { title: string; slug: string; content: string };
 
-      const response = await updatePage(propsData.id, {
-        title,
-        slug,
-        content,
-      });
+      const updatedPage = await fetcher<PageWithPayload>(
+        `/api/pages/${propsData.id}`,
+        {
+          method: HttpMethod.PATCH,
+          body: JSON.stringify({
+            title,
+            slug,
+            content,
+          }),
+        }
+      );
 
-      if (response) {
+      if (updatedPage) {
         toast({ description: 'Update successfully' });
         router.refresh();
       }
@@ -161,19 +167,22 @@ export const PageForm = ({
         formData.entries()
       ) as { title: string; slug: string; content: string };
 
-      const response = await createPage({
-        title,
-        slug,
-        content,
-        originalId,
-        locale: translateTo ?? defaultLocale,
-        authorId: session.user.id,
+      const createdPage = await fetcher<Page>('/api/pages', {
+        method: HttpMethod.POST,
+        body: JSON.stringify({
+          title,
+          slug,
+          content,
+          originalId,
+          locale: translateTo ?? defaultLocale,
+          authorId: session.user.id,
+        }),
       });
 
-      if (response) {
+      if (createdPage) {
         toast({ description: 'Published successfully' });
         router.refresh();
-        router.push(`/dashboard/pages/${response.id}`);
+        router.push(`/dashboard/pages/${createdPage.id}`);
       }
     }
 
