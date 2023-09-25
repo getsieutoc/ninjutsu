@@ -20,7 +20,17 @@ export const ProfileMenu = async () => {
   const session = await getSession();
 
   if (!session) {
-    return <NextLink href="/login">Join Today!</NextLink>;
+    return (
+      <Button
+        as={NextLink}
+        href="/login"
+        variant="ghost"
+        size="sm"
+        colorScheme="green"
+      >
+        Login / Sign up
+      </Button>
+    );
   }
 
   return (
