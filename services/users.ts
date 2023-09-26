@@ -110,6 +110,14 @@ export const createUser = async (
   try {
     const totalUser = await prisma.user.count();
 
+    const found = await prisma.user.findFirst({
+      where: { email: inputData.email },
+    });
+
+    if (found) {
+      throw new Error('User already exists');
+    }
+
     const result = await prisma.user.create({
       data: {
         ...inputData,
