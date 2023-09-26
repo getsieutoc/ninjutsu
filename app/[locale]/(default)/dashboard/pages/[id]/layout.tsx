@@ -1,5 +1,5 @@
-import { Box, Flex } from '@/components/chakra';
-import { SettingNav } from '@/components/client';
+import { Box, Button, Flex, Heading, Stack } from '@/components/chakra';
+import { GoBackButton, SettingNav } from '@/components/client';
 import type { ReactNode, Locale } from '@/types';
 
 export default function EditPageLayout({
@@ -10,7 +10,15 @@ export default function EditPageLayout({
   params: { locale: Locale; id: string };
 }) {
   return (
-    <Flex direction="column">
+    <Flex direction="column" gap={2}>
+      <Stack direction="row" align="center">
+        <GoBackButton path="/dashboard/pages" />
+
+        <Heading as="h3" size="lg" color="gray">
+          Edit Page
+        </Heading>
+      </Stack>
+
       <SettingNav
         baseUrl={`/${params.locale}/dashboard/pages`}
         nav={[
@@ -25,7 +33,7 @@ export default function EditPageLayout({
         ]}
       />
 
-      <Box>{children}</Box>
+      <Box padding={4}>{children}</Box>
     </Flex>
   );
 }

@@ -15,12 +15,11 @@ export const SettingNav = ({ baseUrl, nav }: SettingNavProps) => {
   const pathname = usePathname();
 
   return (
-    <Flex direction="column" paddingY={4}>
+    <Flex direction="column">
       <Stack direction="row" spacing={0} marginBottom="-2px">
         {nav.map(({ name, path }) => (
           <Button
             key={name}
-            size="sm"
             variant="ghost"
             as={NextLink}
             href={`${baseUrl}${path}`}
@@ -29,8 +28,7 @@ export const SettingNav = ({ baseUrl, nav }: SettingNavProps) => {
             borderBottomColor={
               pathname.endsWith(path) ? 'green' : 'transparent'
             }
-            borderBottomLeftRadius={0}
-            borderBottomRightRadius={0}
+            borderRadius={0}
             color={pathname.endsWith(path) ? 'green' : 'gray'}
           >
             {name}
