@@ -11,11 +11,6 @@ import {
   MenuItem,
   MenuList,
   Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
 } from '@/components/chakra';
 import {
   CustomEditable,
@@ -191,41 +186,94 @@ export const PageForm = ({
 
   return (
     <FormWrapper action={handleSubmit}>
-      <Flex align="center" justify="space-between">
-        <Stack direction="row" align="center">
-          <GoBackButton path={backPath} />
+      <Stack spacing={4} flex={1}>
+        <Flex align="center" justify="space-between">
+          <Stack direction="row" align="center">
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                variant="outline"
+                isDisabled={!propsData}
+              >
+                <GlobeIcon /> Translations
+              </MenuButton>
+              <MenuList>
+                {i18n.locales.map(({ label, value }) => {
+                  return (
+                    <MenuItem
+                      key={value}
+                      isDisabled={inputData.locale === value}
+                      icon={getTranslationIcon(value)}
+                      onClick={() => handleNewTranslatedPage(value)}
+                    >
+                      {label} {defaultLocale === value ? '(default)' : ''}
+                    </MenuItem>
+                  );
+                })}
+              </MenuList>
+            </Menu>
+          </Stack>
+        </Flex>
 
-          <Heading as="h3" size="lg" color="gray">
-            {title}
-          </Heading>
-        </Stack>
+        <Input type="hidden" name="locale" value={inputData.locale} />
 
-        <Stack direction="row" align="center">
-          <Menu>
-            <MenuButton
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-              variant="outline"
-              isDisabled={!propsData}
-            >
-              <GlobeIcon /> Translations
-            </MenuButton>
-            <MenuList>
-              {i18n.locales.map(({ label, value }) => {
-                return (
-                  <MenuItem
-                    key={value}
-                    isDisabled={inputData.locale === value}
-                    icon={getTranslationIcon(value)}
-                    onClick={() => handleNewTranslatedPage(value)}
-                  >
-                    {label} {defaultLocale === value ? '(default)' : ''}
-                  </MenuItem>
-                );
-              })}
-            </MenuList>
-          </Menu>
+        <FormControl isDisabled={isLoading}>
+          <FormLabel>Title</FormLabel>
+          <Input
+            placeholder="Page title"
+            name="title"
+            value={inputData.title}
+            onChange={(event) =>
+              setInputData({ ...inputData, title: event.target.value })
+            }
+          />
 
+          <Flex marginTop={2} align="center" gap={2} color="gray" minH="29px">
+            <Heading as="h4" fontSize="sm">
+              Slug:
+            </Heading>
+
+            {inputData.slug && (
+              <CustomEditable
+                name="slug"
+                value={inputData.slug}
+                onChange={(newValue) => {
+                  setIsCustomEdited(true);
+                  setInputData({ ...inputData, slug: newValue });
+                }}
+              />
+            )}
+
+            {isCustomEdited && (
+              <IconButton
+                aria-label="Reset"
+                size="xs"
+                icon={<RepeatIcon />}
+                onClick={() => {
+                  setIsCustomEdited(false);
+                  setInputData({
+                    ...inputData,
+                    slug: slugify(inputData.title),
+                  });
+                }}
+              />
+            )}
+          </Flex>
+        </FormControl>
+
+        <FormControl id="text-editor" isDisabled={isLoading}>
+          <FormLabel>Content</FormLabel>
+          <TextEditor
+            id="text-editor"
+            name="content"
+            value={inputData.content}
+            onChange={(newValue) =>
+              setInputData({ ...inputData, content: newValue })
+            }
+          />
+        </FormControl>
+        <Flex width="100%" justify="end">
           <Button
             type="submit"
             isDisabled={isFormDirty}
@@ -233,93 +281,10 @@ export const PageForm = ({
             isLoading={isLoading}
             leftIcon={propsData ? <RepeatIcon /> : <ArrowUpIcon />}
           >
-            {propsData ? 'Update Page' : 'Publish Page'}
+            {propsData ? 'Save' : 'Publish'}
           </Button>
-        </Stack>
-      </Flex>
-
-      <Tabs>
-        <TabList>
-          <Tab>General</Tab>
-          <Tab>Advance</Tab>
-        </TabList>
-
-        <TabPanels>
-          <TabPanel>
-            <Stack spacing={4} flex={1}>
-              <Input type="hidden" name="locale" value={inputData.locale} />
-
-              <FormControl isDisabled={isLoading}>
-                <FormLabel>Title</FormLabel>
-                <Input
-                  placeholder="Page title"
-                  name="title"
-                  value={inputData.title}
-                  onChange={(event) =>
-                    setInputData({ ...inputData, title: event.target.value })
-                  }
-                />
-
-                <Flex
-                  marginTop={2}
-                  align="center"
-                  gap={2}
-                  color="gray"
-                  minH="29px"
-                >
-                  <Heading as="h4" fontSize="sm">
-                    Slug:
-                  </Heading>
-
-                  {inputData.slug && (
-                    <CustomEditable
-                      name="slug"
-                      value={inputData.slug}
-                      onChange={(newValue) => {
-                        setIsCustomEdited(true);
-                        setInputData({ ...inputData, slug: newValue });
-                      }}
-                    />
-                  )}
-
-                  {isCustomEdited && (
-                    <IconButton
-                      aria-label="Reset"
-                      size="xs"
-                      icon={<RepeatIcon />}
-                      onClick={() => {
-                        setIsCustomEdited(false);
-                        setInputData({
-                          ...inputData,
-                          slug: slugify(inputData.title),
-                        });
-                      }}
-                    />
-                  )}
-                </Flex>
-              </FormControl>
-
-              <FormControl id="text-editor" isDisabled={isLoading}>
-                <FormLabel>Content</FormLabel>
-                <TextEditor
-                  id="text-editor"
-                  name="content"
-                  value={inputData.content}
-                  onChange={(newValue) =>
-                    setInputData({ ...inputData, content: newValue })
-                  }
-                />
-              </FormControl>
-            </Stack>
-          </TabPanel>
-
-          <TabPanel>
-            <Stack spacing={4} flex={1}>
-              {propsData && <DeleteSection page={propsData} />}
-            </Stack>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+        </Flex>
+      </Stack>
     </FormWrapper>
   );
 };
