@@ -62,6 +62,7 @@ model User {
   sessions      Session[]
   pages         Page[]
   posts         Post[]
+  confirmCode   String?
 }
 
 model VerificationToken {
