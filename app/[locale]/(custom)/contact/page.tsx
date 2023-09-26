@@ -173,12 +173,14 @@ export default function Home() {
   );
 }
 
-const sendContactForm = async (data: ValueType) =>
-  fetch('/api/mailer/contact', {
+async function sendContactForm(data: ValueType) {
+  const res = await fetch('/api/mailer', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-  }).then((res) => {
-    if (!res.ok) throw new Error('Failed to send message');
-    return res.json();
   });
+  if (res.status !== 200) {
+    throw new Error('Failed to send message');
+  }
+  // const data_ = await res.json();
+}
