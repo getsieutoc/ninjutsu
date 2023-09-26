@@ -7,7 +7,6 @@ import type { ReactNode } from '@/types';
 
 export default async function DefaultLayout({
   children,
-  params,
 }: {
   children: ReactNode;
   params: { locale: Locale };
@@ -17,10 +16,11 @@ export default async function DefaultLayout({
   if (!session) {
     redirect('/login');
   }
+
   return (
     <Flex>
       <Sidebar>
-        <Flex gap={1} align="center">
+        <Flex gap={2} align="center">
           <LocaleSwitcher />
           <ProfileMenu />
         </Flex>
