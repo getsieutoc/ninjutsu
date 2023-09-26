@@ -12,7 +12,7 @@ export default async function CustomLayout({
   return (
     <Flex direction="column">
       <Navbar>
-        <Flex gap={1}>
+        <Flex gap={2} align="center">
           <LocaleSwitcher />
           <ProfileMenu />
         </Flex>

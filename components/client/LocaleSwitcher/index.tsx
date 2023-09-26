@@ -38,6 +38,7 @@ export function LocaleSwitcher() {
 
   return (
     <Select
+      name="locale-switcher" // Do not delete it
       onChange={(e) => handleChangeLocale(e.target.value as Locale)}
       width="65px"
       size="xs"
