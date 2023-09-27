@@ -9,7 +9,7 @@ const transport: SMTPTransport.Options = {
   host,
   port,
   secure: true,
-  service: 'gmail',
+  // service: 'gmail',
   auth: {
     type: 'LOGIN',
     user: email,
