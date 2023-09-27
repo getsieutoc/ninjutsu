@@ -79,7 +79,7 @@ model Page {
   updatedAt   DateTime  @updatedAt
   publishedAt DateTime?
   title       String    @db.VarChar(255)
-  slug        String    @db.VarChar(255)
+  slug        String    @unique @db.VarChar(255)
   content     String
   components  Json      @default("{}")
   locale      String
@@ -101,7 +101,7 @@ model Post {
   updatedAt     DateTime  @updatedAt
   publishedAt   DateTime?
   title         String    @db.VarChar(255)
-  slug          String    @db.VarChar(255)
+  slug          String    @unique @db.VarChar(255)
   content       String
   locale        String
   tags          Tag[]
