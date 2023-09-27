@@ -23,7 +23,7 @@ export const SettingNav = ({ baseUrl, nav }: SettingNavProps) => {
             variant="ghost"
             isDisabled={!path}
             as={NextLink}
-            href={path ? `${baseUrl}${path}` : ''}
+            href={path ? `${baseUrl}${path}` : '#'}
             borderBottomWidth="2px"
             borderBottomStyle="solid"
             borderBottomColor={

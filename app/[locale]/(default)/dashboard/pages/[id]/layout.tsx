@@ -13,10 +13,12 @@ export default async function EditPageLayout({
   params: { locale: Locale; id: string };
 }) {
   const page = await getPage({ where: { id: params.id } });
+
   return (
     <Flex direction="column" gap={2}>
       <Flex direction="row" align="center" justify="space-between">
         <GoBackButton path="/dashboard/pages">Back to Pages</GoBackButton>
+
         {page && <Translations data={page} />}
       </Flex>
 
