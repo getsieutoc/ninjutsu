@@ -2,22 +2,17 @@ import { GoBackButton, SettingNav } from '@/components/client';
 import { Box, Flex } from '@/components/chakra';
 import type { ReactNode, Locale } from '@/types';
 
-import { Translations } from '../components';
-import { getPage } from '@/services/pages';
-
-export default async function EditPageLayout({
+export default function NewPageLayout({
   children,
   params,
 }: {
   children: ReactNode;
   params: { locale: Locale; id: string };
 }) {
-  const page = await getPage({ where: { id: params.id } });
   return (
     <Flex direction="column" gap={2}>
       <Flex direction="row" align="center" justify="space-between">
         <GoBackButton path="/dashboard/pages">Back to Pages</GoBackButton>
-        {page && <Translations data={page} />}
       </Flex>
 
       <SettingNav
@@ -25,11 +20,11 @@ export default async function EditPageLayout({
         nav={[
           {
             name: 'General',
-            path: `/${params.id}`,
+            path: '/new',
           },
           {
             name: 'Advanced',
-            path: `/${params.id}/advanced`,
+            path: null,
           },
         ]}
       />

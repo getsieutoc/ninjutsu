@@ -7,7 +7,7 @@ export type SettingNavProps = {
   baseUrl: string;
   nav: {
     name: string;
-    path: string;
+    path: string | null;
   }[];
 };
 
@@ -21,15 +21,16 @@ export const SettingNav = ({ baseUrl, nav }: SettingNavProps) => {
           <Button
             key={name}
             variant="ghost"
+            isDisabled={!path}
             as={NextLink}
-            href={`${baseUrl}${path}`}
+            href={path ? `${baseUrl}${path}` : ''}
             borderBottomWidth="2px"
             borderBottomStyle="solid"
             borderBottomColor={
-              pathname.endsWith(path) ? 'green' : 'transparent'
+              path && pathname.endsWith(path) ? 'green' : 'transparent'
             }
             borderRadius={0}
-            color={pathname.endsWith(path) ? 'green' : 'gray'}
+            color={path && pathname.endsWith(path) ? 'green' : 'gray'}
           >
             {name}
           </Button>

@@ -6,10 +6,6 @@ import {
   Heading,
   IconButton,
   Input,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Stack,
 } from '@/components/chakra';
 import {
@@ -30,18 +26,13 @@ import {
   AddIcon,
   ArrowUpIcon,
   CheckCircleIcon,
-  ChevronDownIcon,
-  GlobeIcon,
   LockIcon,
   RepeatIcon,
 } from '@/icons';
 import { Page, PageWithPayload, Locale, HttpMethod } from '@/types';
-import { i18n } from '@/configs/i18n.config';
 import { isEqual } from '@/utils/compare';
 import { fetcher } from '@/utils/fetcher';
 import slugify from 'slugify';
-
-import { DeleteSection } from './DeleteSection';
 
 export type PageFormProps = {
   title?: string;
@@ -93,43 +84,6 @@ export const PageForm = ({
   }, [inputData.title, isCustomEdited]);
 
   const isFormDirty = isEqual(inputData, initialData);
-
-  const getTranslationIcon = (locale: string) => {
-    const foundTranslated = translatedPages?.find((p) => p.locale === locale);
-
-    if (defaultLocale === locale) {
-      return <LockIcon />;
-    }
-
-    if (
-      (foundTranslated && foundTranslated.locale === locale) ||
-      inputData.locale === locale
-    ) {
-      return <CheckCircleIcon />;
-    }
-
-    return <AddIcon />;
-  };
-
-  const handleNewTranslatedPage = (locale: string) => {
-    if (!propsData) return;
-
-    const foundTranslated = translatedPages?.find((p) => p.locale === locale);
-
-    if (foundTranslated) {
-      // Go to edit translated page version
-      const newPath = `/dashboard/pages/${foundTranslated.id}`;
-      router.push(newPath);
-    } else if (inputData.originalId) {
-      // Go to edit original page version
-      const newPath = `/dashboard/pages/${inputData.originalId}`;
-      router.push(newPath);
-    } else {
-      // Or else go to create new page
-      const newPath = `/dashboard/pages/new?translateTo=${locale}&originalId=${propsData.id}`;
-      router.push(newPath);
-    }
-  };
 
   const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
@@ -188,32 +142,7 @@ export const PageForm = ({
     <FormWrapper action={handleSubmit}>
       <Stack spacing={4} flex={1}>
         <Flex align="center" justify="space-between">
-          <Stack direction="row" align="center">
-            <Menu>
-              <MenuButton
-                as={Button}
-                rightIcon={<ChevronDownIcon />}
-                variant="outline"
-                isDisabled={!propsData}
-              >
-                <GlobeIcon /> Translations
-              </MenuButton>
-              <MenuList>
-                {i18n.locales.map(({ label, value }) => {
-                  return (
-                    <MenuItem
-                      key={value}
-                      isDisabled={inputData.locale === value}
-                      icon={getTranslationIcon(value)}
-                      onClick={() => handleNewTranslatedPage(value)}
-                    >
-                      {label} {defaultLocale === value ? '(default)' : ''}
-                    </MenuItem>
-                  );
-                })}
-              </MenuList>
-            </Menu>
-          </Stack>
+          <Stack direction="row" align="center"></Stack>
         </Flex>
 
         <Input type="hidden" name="locale" value={inputData.locale} />
