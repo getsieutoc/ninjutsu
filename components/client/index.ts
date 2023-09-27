@@ -6,6 +6,7 @@ export * from './CustomEditable';
 export * from './FormWrapper';
 export * from './GoBackButton';
 export * from './HTMLParser';
+export * from './Loading';
 export * from './LocaleSwitcher';
 export * from './Navbar';
 export * from './NextImage';
