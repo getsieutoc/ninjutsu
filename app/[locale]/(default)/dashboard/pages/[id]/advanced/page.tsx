@@ -1,7 +1,8 @@
 import { getPage } from '@/services/pages';
 
+import { Box, Flex, Skeleton, Stack } from '@/components/chakra';
 import { DeleteSection } from '../../components/PageForm/DeleteSection';
-import { Skeleton } from '@/components/chakra';
+import { BasicSEO } from '../../components/BasicSEO';
 
 type AdvancedSettingsProps = {
   params: { id: string };
@@ -16,5 +17,14 @@ export default async function AdvancedSettings({
     return <Skeleton height="40px" />;
   }
 
-  return <DeleteSection page={data} />;
+  return (
+    <Flex direction="column" gap={4}>
+      <Box>
+        <BasicSEO data={data} />
+      </Box>
+      <Box>
+        <DeleteSection page={data} />
+      </Box>
+    </Flex>
+  );
 }

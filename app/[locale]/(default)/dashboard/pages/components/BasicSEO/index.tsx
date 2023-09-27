@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Button,
   Card,
@@ -5,38 +7,82 @@ import {
   CardFooter,
   CardHeader,
   Divider,
-  Flex,
   FormControl,
   FormLabel,
   Heading,
   Input,
   Stack,
+  Textarea,
 } from '@/components/chakra';
-import { useColorModeValue, useState } from '@/hooks';
-import { JsonObject, PageWithPayload } from '@/types';
-import { htmlSanitizer } from '@/utils/parsers';
+import {
+  useColorModeValue,
+  useEffect,
+  useMemo,
+  useSWR,
+  useState,
+} from '@/hooks';
+import { HttpMethod, JsonObject, PageWithPayload } from '@/types';
+import { isEqual } from '@/utils/compare';
+import { fetcher } from '@/utils/fetcher';
 
+type MetaData = {
+  title: string;
+  description: string;
+  keywords: string[];
+};
+const initialValues: MetaData = {
+  title: '',
+  description: '',
+  keywords: [],
+};
 export type BasicSEOProps = {
   data: Partial<PageWithPayload> | undefined;
 };
 
 export const BasicSEO = ({ data: propsData }: BasicSEOProps) => {
-  const metaData = propsData?.meta as JsonObject;
+  const { data, mutate } = useSWR(
+    propsData ? `/api/pages/${propsData.id}` : null
+  );
 
-  const initialData = {
-    title: (metaData?.title as string) ?? propsData?.title,
-    description:
-      (metaData?.description as string) ??
-      htmlSanitizer(propsData?.content).slice(0, 200),
-    keywords:
-      (metaData?.keywords as string[]) ??
-      propsData?.tags?.map(({ value }) => value) ??
-      [],
-  };
+  const metaData = data?.meta as JsonObject;
 
-  const [inputData, setInputData] = useState(initialData);
+  const initialData = useMemo(
+    () => ({
+      title: (metaData?.title as string) ?? '',
+      description: (metaData?.description as string) ?? '',
+      keywords: (metaData?.keywords as string[]) ?? [],
+    }),
+    [metaData]
+  );
+
+  const [inputData, setInputData] = useState(initialValues);
+
+  useEffect(() => {
+    if (data && isEqual(inputData, initialValues)) {
+      setInputData(initialData);
+    }
+  }, [data, initialData, inputData]);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const isDirty = !isEqual(inputData, initialData);
 
   const footerBorder = useColorModeValue('gray.200', 'gray.600');
+
+  const handleSave = async () => {
+    if (!propsData) return;
+
+    setIsLoading(true);
+    await fetcher(`/api/pages/${propsData.id}`, {
+      method: HttpMethod.PATCH,
+      body: JSON.stringify({
+        meta: inputData,
+      }),
+    });
+
+    mutate();
+    setIsLoading(false);
+  };
 
   return (
     <Card direction="column" width="100%">
@@ -46,7 +92,7 @@ export const BasicSEO = ({ data: propsData }: BasicSEOProps) => {
 
       <CardBody>
         <Stack spacing={6} maxW="480px" minW="240px">
-          <FormControl isRequired>
+          <FormControl isRequired isDisabled={isLoading}>
             <FormLabel>Title</FormLabel>
             <Input
               name="meta.title"
@@ -57,9 +103,10 @@ export const BasicSEO = ({ data: propsData }: BasicSEOProps) => {
             />
           </FormControl>
 
-          <FormControl isRequired>
+          <FormControl isRequired isDisabled={isLoading}>
             <FormLabel>Description</FormLabel>
-            <Input
+            <Textarea
+              rows={3}
               name="meta.description"
               value={inputData.description}
               onChange={(e) =>
@@ -72,12 +119,20 @@ export const BasicSEO = ({ data: propsData }: BasicSEOProps) => {
 
       <Divider color={footerBorder} />
 
-      <CardFooter>
-        <Flex width="100%" direction="row" justify="end">
-          <Button type="submit" colorScheme="blue">
+      <CardFooter justify="end">
+        <Stack direction="row" spacing={2}>
+          {isDirty && (
+            <Button onClick={() => setInputData(initialData)}>Reset</Button>
+          )}
+          <Button
+            isDisabled={!isDirty || isLoading}
+            isLoading={isLoading}
+            colorScheme={isDirty ? 'blue' : 'gray'}
+            onClick={handleSave}
+          >
             Save
           </Button>
-        </Flex>
+        </Stack>
       </CardFooter>
     </Card>
   );
