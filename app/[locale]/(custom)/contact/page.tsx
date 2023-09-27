@@ -15,6 +15,7 @@ import {
   FormErrorMessage,
 } from '@/components/chakra';
 import { type ChangeEvent } from '@/types';
+import { fetcher } from '@/utils/fetcher';
 
 const initValues = { name: '', email: '', phone: '', message: '' };
 const initState = { isLoading: false, error: '', values: initValues };
@@ -63,33 +64,39 @@ export default function Home() {
       },
     }));
 
-  const onSubmit = async () => {
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!values) return;
+    if (!values.email?.trim()) return alert('Email must be filled in');
+    if (!values.name?.trim()) return alert('Name must be filled in');
+    if (!values.message?.trim()) return alert('Message must be filled in');
     setState((prev) => ({
       ...prev,
       isLoading: true,
     }));
 
-    try {
-      await sendContactForm(values);
-      setTouched({});
-      setState(initState);
-      toast({
-        title: 'Message sent.',
-        status: 'success',
-        duration: 2000,
-        position: 'top',
-      });
-    } catch (err) {
-      setState((prev) => ({
-        ...prev,
-        isLoading: false,
-        error: JSON.stringify(err),
-      }));
-    }
+    await sendContactForm(values, (res) => {
+      if (res.status !== 200) {
+        setState((prev) => ({
+          ...prev,
+          isLoading: false,
+          error: res.message,
+        }));
+      } else {
+        setTouched({});
+        setState(initState);
+        toast({
+          title: 'Message sent.',
+          status: 'success',
+          duration: 2000,
+          position: 'top',
+        });
+      }
+    });
   };
 
   return (
-    <Container maxW="450px" mt={12}>
+    <Container maxW="450px" mt={12} as="form" onSubmit={onSubmit}>
       <Heading mb={3}>Contact</Heading>
       {error && (
         <Text color="red.300" my={4} fontSize="xl">
@@ -160,11 +167,11 @@ export default function Home() {
 
       <Box textAlign="center">
         <Button
+          type="submit"
           variant="outline"
           colorScheme="blue"
           isLoading={isLoading}
           disabled={!values.name || !values.email || !values.message}
-          onClick={onSubmit}
         >
           Submit
         </Button>
@@ -173,14 +180,38 @@ export default function Home() {
   );
 }
 
-async function sendContactForm(data: ValueType) {
-  const res = await fetch('/api/mailer', {
+type ResponseType = {
+  message: string;
+  status: number;
+};
+async function sendContactForm(
+  data: ValueType,
+  callBack?: (response: ResponseType) => void
+) {
+  const mailOption = {
+    from: 'Sieu Toc Web',
+    to: data.email,
+    subject: 'Welcome to Sieu Toc Web',
+    text: 'SieuTocWeb v0.1',
+    html: `<H3>Thank you for contacting us. We will contact you soon</H3>`,
+    attachments: [
+      {
+        raw:
+          'Content-Type: text/plain\r\n' +
+          'Content-Disposition: attachment;\r\n' +
+          '\r\n' +
+          `Your content:\nName: ${data.name} \nPhone: ${data.phone} \nMessage: ${data.message}`,
+      },
+    ],
+  };
+
+  const res = await fetcher<ResponseType>('/api/mailer', {
     method: 'POST',
-    body: JSON.stringify(data),
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify(mailOption),
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
   });
-  if (res.status !== 200) {
-    throw new Error('Failed to send message');
-  }
-  // const data_ = await res.json();
+  callBack && callBack(res);
 }
