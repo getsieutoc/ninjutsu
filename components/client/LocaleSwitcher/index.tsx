@@ -1,5 +1,3 @@
-'use client';
-
 import {
   useAuth,
   useCookies,
@@ -22,11 +20,12 @@ export function LocaleSwitcher() {
   const { session } = useAuth();
   const { currentLocale } = useLocale();
 
-  // const currentLocale = currentLocale ?? cookies.get(NEXT_LOCALE) ?? i18n.defaultLocale;
-
-  // useEffect(() => {
-
-  // }, []);
+  useEffect(() => {
+    const cookieLocale = cookies.get(NEXT_LOCALE);
+    if (currentLocale !== cookieLocale) {
+      cookies.set(NEXT_LOCALE, currentLocale);
+    }
+  }, [cookies, currentLocale]);
 
   const handleChangeLocale = async (localeSelected: Locale) => {
     const userID = session?.user.id;
