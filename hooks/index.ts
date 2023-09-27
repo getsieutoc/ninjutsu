@@ -6,7 +6,7 @@ export {
   useColorModeValue,
   useDisclosure,
   useToast,
-} from '@/components/chakra';
+} from '@chakra-ui/react';
 export {
   useId,
   useCallback,
@@ -24,6 +24,7 @@ export {
   useSelectedLayoutSegment,
   useSelectedLayoutSegments,
 } from 'next/navigation';
+export { useInterval, useTimeoutFn, useDebounce } from 'react-use';
 export { default as useSWRInfinite } from 'swr/infinite';
 export { default as useSWR } from 'swr';
 export { useCookies } from 'next-client-cookies';
