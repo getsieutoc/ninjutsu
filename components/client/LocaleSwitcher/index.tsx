@@ -1,6 +1,13 @@
 'use client';
 
-import { useAuth, useCookies, usePathname, useRouter } from '@/hooks';
+import {
+  useAuth,
+  useCookies,
+  useEffect,
+  useLocale,
+  usePathname,
+  useRouter,
+} from '@/hooks';
 import { redirectedPathName } from '@/utils/redirectedPathLocale';
 import { NEXT_LOCALE } from '@/utils/constants';
 import { i18n } from '@/configs/i18n.config';
@@ -8,13 +15,18 @@ import { Select } from '@/components/chakra';
 import { HttpMethod, Locale } from '@/types';
 
 export function LocaleSwitcher() {
+  const cookies = useCookies();
   const router = useRouter();
   const pathName = usePathname();
 
   const { session } = useAuth();
+  const { currentLocale } = useLocale();
 
-  const cookies = useCookies();
-  const cookieLocale = cookies.get(NEXT_LOCALE) ?? i18n.defaultLocale;
+  // const currentLocale = currentLocale ?? cookies.get(NEXT_LOCALE) ?? i18n.defaultLocale;
+
+  // useEffect(() => {
+
+  // }, []);
 
   const handleChangeLocale = async (localeSelected: Locale) => {
     const userID = session?.user.id;
@@ -43,7 +55,7 @@ export function LocaleSwitcher() {
       width="65px"
       size="xs"
       rounded={5}
-      value={cookieLocale}
+      value={currentLocale}
     >
       {i18n.locales.map((locale, index) => {
         return (

@@ -1,12 +1,21 @@
 import { paramParser, queryParser } from '@/utils/parsers';
 import { NextRequest, NextResponse } from 'next/server';
-import { createPage, queryPages } from '@/services/pages';
+import { createPage, getPage, queryPages } from '@/services/pages';
 import { Prisma } from '@/types';
 
 export async function GET(req: NextRequest) {
   try {
     // We lost the type here, need to find a way to fix it, trpc might help
     const { searchParams } = req.nextUrl;
+
+    const slug = searchParams.get('slug');
+
+    if (slug) {
+      const page = await getPage({ where: { slug } });
+
+      return NextResponse.json(page);
+    }
+
     const entries = queryParser(searchParams.toString());
     const where =
       'where' in entries ? (entries['where'] as Prisma.PageWhereInput) : {};

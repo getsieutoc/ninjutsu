@@ -16,9 +16,7 @@ export default async function EditPage({ params }: EditPageProps) {
     return redirect('/login');
   }
 
-  const originalPage = await getPage({
-    where: { id },
-  });
+  const originalPage = await getPage({ where: { id } });
 
   if (!originalPage) {
     return null;
