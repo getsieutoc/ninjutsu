@@ -1,12 +1,12 @@
 'use client';
 
 import {
+  Stack,
+  Flex,
   Input,
   Button,
   FormLabel,
   FormControl,
-  Stack,
-  Flex,
 } from '@/components/chakra';
 import { useState } from '@/hooks';
 import { signIn } from 'next-auth/react';
@@ -28,7 +28,7 @@ export default function LoginForm() {
   const colorScheme = validEmail && hasPassword ? 'brand' : 'gray';
 
   return (
-    <Stack spacing={4}>
+    <Stack spacing={3}>
       <FormControl
         isRequired
         isInvalid={credentials.email.length > 0 && !validEmail}
@@ -52,6 +52,12 @@ export default function LoginForm() {
           }
         />
       </FormControl>
+      <NextLink
+        href="/forgot-password"
+        _hover={{ textShadow: '0px 0px 1px black' }}
+      >
+        Forgot password?
+      </NextLink>
 
       <Flex direction="column" gap={2}>
         <Button
