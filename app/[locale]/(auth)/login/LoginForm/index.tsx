@@ -52,12 +52,7 @@ export default function LoginForm() {
           }
         />
       </FormControl>
-      <NextLink
-        href="/forgot-password"
-        _hover={{ textShadow: '0px 0px 1px black' }}
-      >
-        Forgot password?
-      </NextLink>
+      <NextLink href="/forgot-password">Forgot password?</NextLink>
 
       <Flex direction="column" gap={2}>
         <Button
