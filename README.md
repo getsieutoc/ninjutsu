@@ -11,7 +11,7 @@ This template includes the following:
 - Chakra UI
 - Prisma
 - Next-Auth
-- Docker compose with:
+- Docker Compose with:
     - PostgresQL
     - Redis
     - Mailpit
@@ -23,6 +23,14 @@ https://nextjs-template-demo.vercel.app
 
 ## Getting Started
 
+#### For Development
+
+- We use `pnpm` package manager. Get it [here](https://pnpm.io/installation).
+- Make sure Docker up and running.
+- If your Docker account has 2FA enabled, you have to create a Personal Access Token and login before:
+    - Follow [this guide](https://docs.docker.com/docker-hub/access-tokens/).
+    - Login with `docker login --username <your-username>`
+
 #### Clone the project
 
 You can either use this template by:
@@ -31,7 +39,7 @@ You can either use this template by:
 - Or using the script below:
 
 ```bash
-npx tiged sangdth/nextjs-template your-project
+npx tiged websitesieutoc/nextjs-template your-project
 ```
 
 Then, search and replace `nextjs-template` with your project slug.
@@ -40,7 +48,7 @@ Then, search and replace `nextjs-template` with your project slug.
 
 ```bash
 cd your-project
-npm install
+pnpm install
 ```
 
 #### Setup environment variables
@@ -54,15 +62,21 @@ cp .env.example .env
 Then, run the development server:
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser and start developing.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Good to know
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- This project uses `App Router` feature.
+- We try to take adventage of Next.js's ecosystem, thus most of the features here are built on top of Next.js best practices.
+- We use Chakra UI as our primary library. For ready-made themes, please find it at our [themes](https://github.com/websitesieutoc/themes) repo.
+- In the future we will launch a tool for customising your own themes soon!
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+#### Why do not use <headless-cms-name> here?
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- We're fully aware of the headless CMS system. 
+- But there are ton of boilerplats out there, which already do a great jobs, so we do not want to re-invent them.
+- Most of them are really tightly coupled with the headless CMS API, so customers always end up to hack around a lot.
+- We need only a lite version of CMS, nothing else.
