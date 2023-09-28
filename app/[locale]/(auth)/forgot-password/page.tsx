@@ -4,7 +4,7 @@ import { Text, Stack, Heading, Container } from '@/components/chakra';
 import { getSession } from '@/configs/auth';
 import ForgotPasswordForm from './ForgotPasswordForm';
 
-export default async function Login() {
+export default async function ForgotPassword() {
   const session = await getSession();
 
   if (session?.user.id) {
