@@ -21,10 +21,10 @@ const initValues = { name: '', email: '', phone: '', message: '' };
 const initState = { isLoading: false, error: '', values: initValues };
 
 type TouchedType = {
-  email?: string;
-  name?: string;
-  phone?: string;
-  message?: string;
+  email?: string | boolean;
+  name?: string | boolean;
+  phone?: string | boolean;
+  message?: string | boolean;
 };
 type ValueType = {
   name?: string;
@@ -50,8 +50,9 @@ export default function Home() {
   const { values, isLoading, error } = state;
   const onBlur = ({
     target,
-  }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+  }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setTouched((prev) => ({ ...prev, [target.name]: true }));
+  };
 
   const handleChange = ({
     target,
