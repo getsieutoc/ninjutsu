@@ -1,18 +1,14 @@
-// import aws from '@aws-sdk/client-ses';
 import nodemailer from 'nodemailer';
-// import { defaultProvider } from '@aws-sdk/credential-provider-node';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
-// const ses = new aws.SES({
-//   apiVersion: "2012-10-17",
-//   region: "us-east-1",
-//   defaultProvider,
-// });
-
 export const transporterList = {
-  SES: {
-    ses: '',
-    aws: '',
+  SendGrid: {
+    host: 'smtp.sendgrid.net',
+    port: Number(process.env?.EMAIL_SERVER_PORT ?? 587),
+    auth: {
+      user: process.env.EMAIL_SERVER_USER ?? 'apikey',
+      pass: process.env.EMAIL_SERVER_PASSWORD ?? '', //SENDGRID_API_KEY
+    },
   },
   Mailtrap: {
     host: 'smtp.mailtrap.io',
