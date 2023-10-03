@@ -7,7 +7,7 @@ export const transporterList = {
     port: Number(process.env?.EMAIL_SERVER_PORT ?? 587),
     auth: {
       user: process.env.EMAIL_SERVER_USER ?? 'apikey',
-      pass: process.env.EMAIL_SERVER_PASSWORD ?? '', //SENDGRID_API_KEY
+      pass: process.env.SENDGRID_API_KEY ?? '', //SENDGRID_API_KEY
     },
   },
   Mailtrap: {
