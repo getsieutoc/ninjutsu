@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description: 'This is the home page of Nextjs Template',
 };
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <Box>
       <HStack width="100%" spacing={30}>
