@@ -75,8 +75,8 @@ dependencies:
     specifier: 4.23.2
     version: 4.23.2(next@13.5.4)(nodemailer@6.9.5)(react-dom@18.2.0)(react@18.2.0)
   next-client-cookies:
-    specifier: 1.0.4
-    version: 1.0.4(next@13.5.4)(react@18.2.0)
+    specifier: 1.0.5
+    version: 1.0.5(next@13.5.4)(react@18.2.0)
   nodemailer:
     specifier: 6.9.5
     version: 6.9.5
@@ -3819,8 +3819,8 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /next-client-cookies@1.0.4(next@13.5.4)(react@18.2.0):
-    resolution: {integrity: sha512-WFSFMbAkAbE9I7PAMTJ2VOb9Y1DNUD0BYgqG90K6ZctK120xsAMnH6j+d02QgdaQAUTAr/U623vrXeuAezjDCQ==}
+  /next-client-cookies@1.0.5(next@13.5.4)(react@18.2.0):
+    resolution: {integrity: sha512-PqmJyJCZotR/Vg8meaqHKT2RjHoNuDkaew6JBj0gA1tlY7+6aK0Zb00KLnZSQnbGYg9OEQquk5UyWp1QACvXjQ==}
     peerDependencies:
       next: ^13.0.0
       react: '>= 16.8.0'
