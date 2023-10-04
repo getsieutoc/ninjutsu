@@ -52,7 +52,8 @@
     "sanitize-html": "2.11.0",
     "slugify": "1.6.6",
     "swr": "2.2.4",
-    "tinymce": "6.7.0"
+    "tinymce": "6.7.0",
+    "uuid": "9.0.1"
   },
   "devDependencies": {
     "@tanstack/react-table": "8.10.3",
@@ -63,6 +64,7 @@
     "@types/react": "18.2.25",
     "@types/react-dom": "18.2.10",
     "@types/sanitize-html": "2.9.1",
+    "@types/uuid": "9.0.4",
     "eslint": "8.50.0",
     "eslint-config-next": "13.5.4",
     "eslint-config-prettier": "9.0.0",

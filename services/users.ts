@@ -7,6 +7,7 @@ import { exclude } from '@/utils/parsers';
 import { prisma } from '@/configs/prisma';
 import { hash } from '@/utils/password';
 import deepmerge from 'deepmerge';
+import { v5 as uuidv5, v4 as uudv4 } from 'uuid';
 
 const richInclude = {
   pages: true,
@@ -153,7 +154,9 @@ export const deleteUser = async (id: string): Promise<CleanUser | void> => {
   }
 };
 export const getConfirmCode = async () => {
-  return await hash(
-    process.env.NEXTAUTH_SECRET ?? '' + new Date().toISOString()
+  const code = await hash(
+    uuidv5(process.env.NEXTAUTH_SECRET ?? '', uudv4()) +
+      new Date().toISOString()
   );
+  return Date.now() + ':' + code;
 };
