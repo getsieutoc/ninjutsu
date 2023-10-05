@@ -1,10 +1,16 @@
 'use client';
 
+import { useSearchParams } from '@/hooks';
 import { Input, Button, Stack } from '@/components/chakra';
 import { FormWrapper } from '@/components/client';
+import { fetcher } from '@/utils/fetcher';
+import { HttpMethod } from '@/types';
 
 export default function UpdatePasswordForm() {
-  const handleSubmit = (formData: FormData) => {
+  const searchParams = useSearchParams();
+  const email = searchParams.get('email');
+
+  const handleSubmit = async (formData: FormData) => {
     const { newPassword, confirmPassword } = Object.fromEntries(
       formData.entries()
     ) as {
@@ -19,7 +25,24 @@ export default function UpdatePasswordForm() {
       return alert('Password must be greater than 8 characters');
     if (pass !== confirmPass)
       return alert('Password and confirm password do not match!');
-    console.log('pass :>> ', pass);
+
+    const request = await fetcher<{
+      data?: { email: string };
+      status: number;
+      message: string;
+    }>(`/api/users/password`, {
+      method: HttpMethod.PUT,
+      body: JSON.stringify({
+        email: email,
+        password: pass,
+      }),
+    });
+
+    // if (request?.data?.email) {
+    //   router.push(
+    //     `/forgot-password/update-password?email=${request.data.email}`
+    //   );
+    // }
   };
   return (
     <FormWrapper action={handleSubmit}>
