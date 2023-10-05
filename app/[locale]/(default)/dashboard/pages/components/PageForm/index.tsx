@@ -8,12 +8,7 @@ import {
   Input,
   Stack,
 } from '@/components/chakra';
-import {
-  CustomEditable,
-  FormWrapper,
-  GoBackButton,
-  TextEditor,
-} from '@/components/client';
+import { CustomEditable, FormWrapper, TextEditor } from '@/components/client';
 import {
   useAuth,
   useEffect,
@@ -22,13 +17,7 @@ import {
   useState,
   useToast,
 } from '@/hooks';
-import {
-  AddIcon,
-  ArrowUpIcon,
-  CheckCircleIcon,
-  LockIcon,
-  RepeatIcon,
-} from '@/icons';
+import { ArrowUpIcon, RepeatIcon } from '@/icons';
 import { Page, PageWithPayload, Locale, HttpMethod } from '@/types';
 import { isEqual } from '@/utils/compare';
 import { fetcher } from '@/utils/fetcher';

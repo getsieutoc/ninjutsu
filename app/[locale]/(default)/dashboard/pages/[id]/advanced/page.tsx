@@ -1,6 +1,6 @@
 import { getPage } from '@/services/pages';
 
-import { Box, Flex, Skeleton, Stack } from '@/components/chakra';
+import { Box, Flex, Skeleton } from '@/components/chakra';
 import { DeleteSection } from '../../components/PageForm/DeleteSection';
 import { BasicSEO } from '../../components/BasicSEO';
 
