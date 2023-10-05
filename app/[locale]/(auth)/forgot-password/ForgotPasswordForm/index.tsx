@@ -1,16 +1,17 @@
 'use client';
 
-import { useRouter } from '@/hooks';
-import { Input, Button } from '@/components/chakra';
+import { useRouter, useState } from '@/hooks';
+import { Input, Button, Box, Code } from '@/components/chakra';
 import { FormWrapper } from '@/components/client';
 import { HttpMethod } from '@/types';
 import { fetcher } from '@/utils/fetcher';
 
 export const ForgotPasswordForm = () => {
-  // const [isApprove, setIsApprove] = useState(false);
+  const [error, setError] = useState('');
   const router = useRouter();
 
   const handleAction = async (formData: FormData) => {
+    setError('');
     const { email } = Object.fromEntries(formData.entries()) as {
       email: string;
     };
@@ -31,6 +32,8 @@ export const ForgotPasswordForm = () => {
       router.push(
         `/forgot-password/update-password?email=${request.data.email}`
       );
+    } else {
+      setError(request.message);
     }
   };
 
@@ -38,6 +41,7 @@ export const ForgotPasswordForm = () => {
     <>
       <FormWrapper action={handleAction}>
         <Input autoFocus name="email" type="email" isRequired />
+        {error && <Code color="red">{error}</Code>}
         <Button width="100%" marginTop={3} type="submit" size="lg">
           Continue
         </Button>
