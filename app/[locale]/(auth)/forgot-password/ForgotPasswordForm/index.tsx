@@ -38,14 +38,12 @@ export const ForgotPasswordForm = () => {
   };
 
   return (
-    <>
-      <FormWrapper action={handleAction}>
-        <Input autoFocus name="email" type="email" isRequired />
-        {error && <Code color="red">{error}</Code>}
-        <Button width="100%" marginTop={3} type="submit" size="lg">
-          Continue
-        </Button>
-      </FormWrapper>
-    </>
+    <FormWrapper action={handleAction}>
+      <Input autoFocus name="email" type="email" isRequired />
+      {error && <Code color="red">{error}</Code>}
+      <Button width="100%" marginTop={3} type="submit" size="lg">
+        Continue
+      </Button>
+    </FormWrapper>
   );
 };
