@@ -30,8 +30,6 @@ export async function PATCH(req: NextRequest) {
   try {
     const data = await req.json();
     const { password, email } = data;
-    console.log('password :>> ', password);
-    console.log('email :>> ', email);
 
     if (password && email) {
       // handle send mail
