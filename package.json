@@ -65,7 +65,7 @@
     "@types/react-dom": "18.2.10",
     "@types/sanitize-html": "2.9.1",
     "@types/uuid": "9.0.4",
-    "eslint": "8.50.0",
+    "eslint": "8.51.0",
     "eslint-config-next": "13.5.4",
     "eslint-config-prettier": "9.0.0",
     "prettier": "3.0.3",
