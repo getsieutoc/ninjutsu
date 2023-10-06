@@ -31,7 +31,7 @@ export default function UpdatePasswordForm() {
       status: number;
       message: string;
     }>(`/api/users/password`, {
-      method: HttpMethod.PUT,
+      method: HttpMethod.PATCH,
       body: JSON.stringify({
         email: email,
         password: pass,
@@ -40,7 +40,7 @@ export default function UpdatePasswordForm() {
 
     // if (request?.data?.email) {
     //   router.push(
-    //     `/forgot-password/update-password?email=${request.data.email}`
+    //     `/login`
     //   );
     // }
   };
