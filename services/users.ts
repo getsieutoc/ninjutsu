@@ -154,9 +154,6 @@ export const deleteUser = async (id: string): Promise<CleanUser | void> => {
   }
 };
 export const getConfirmCode = async () => {
-  const code = await hash(
-    uuidv5(process.env.NEXTAUTH_SECRET ?? '', uudv4()) +
-      new Date().toISOString()
-  );
+  const code = await hash(uuidv5(process.env.NEXTAUTH_SECRET ?? '', uudv4()));
   return Date.now() + ':' + code;
 };
