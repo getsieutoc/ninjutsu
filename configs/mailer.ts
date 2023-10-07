@@ -8,7 +8,7 @@ const port = Number(process.env.EMAIL_SERVER_PORT) ?? 0;
 const transport: SMTPTransport.Options = {
   host,
   port,
-  secure: true,
+  // secure: true,
   // service: 'gmail',
   auth: {
     type: 'LOGIN',

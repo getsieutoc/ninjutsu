@@ -1,15 +1,16 @@
 'use client';
 
-import { useSearchParams } from '@/hooks';
-import { Input, Button, Stack } from '@/components/chakra';
+import { useSearchParams, useRouter } from '@/hooks';
+import { Input, Button, Stack, useToast } from '@/components/chakra';
 import { FormWrapper } from '@/components/client';
 import { fetcher } from '@/utils/fetcher';
 import { HttpMethod } from '@/types';
 
 export default function UpdatePasswordForm() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const email = searchParams.get('email');
-
+  const toast = useToast();
   const handleSubmit = async (formData: FormData) => {
     const { newPassword, confirmPassword } = Object.fromEntries(
       formData.entries()
@@ -38,11 +39,16 @@ export default function UpdatePasswordForm() {
       }),
     });
 
-    // if (request?.data?.email) {
-    //   router.push(
-    //     `/login`
-    //   );
-    // }
+    toast({
+      position: 'top',
+      status: request.status === 200 ? 'success' : 'error',
+      title: request.message,
+      duration: 3000,
+    });
+
+    if (request?.status === 200) {
+      setTimeout(() => router.push(`/login`), 3000);
+    }
   };
   return (
     <FormWrapper action={handleSubmit}>

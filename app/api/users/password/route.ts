@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/configs/prisma';
-// import { updateUser, getUser } from '@/services/users';
+import { differenceInHours } from 'date-fns';
+import { transporter } from '@/configs/mailer';
+import { getConfirmCode } from '@/services/users';
+import { HOUR_MAX_CONFIRM } from '@/utils/constants';
 
 export async function POST(req: NextRequest) {
   try {
@@ -32,8 +35,59 @@ export async function PATCH(req: NextRequest) {
     const { password, email } = data;
 
     if (password && email) {
+      // Check if the previous code exists or not
+      const prevCode = await prisma.user.findUnique({
+        where: { email },
+        select: { confirmCode: true },
+      });
+      if (prevCode?.confirmCode) {
+        const dateTimeSubmit = Number(prevCode.confirmCode.split(':')[0]);
+        const now = Date.now();
+        const subD = differenceInHours(now, dateTimeSubmit);
+        if (subD < HOUR_MAX_CONFIRM) {
+          return NextResponse.json({
+            message: 'You have already sent the request before',
+            status: 400,
+          });
+        }
+      }
+
       // handle send mail
-      //...
+      const codeGenerate = await getConfirmCode();
+      const storeConfirmCode = await prisma.user.update({
+        where: { email },
+        data: { confirmCode: codeGenerate },
+      });
+
+      if (storeConfirmCode) {
+        try {
+          await transporter.sendMail(
+            {
+              from: 'Sieu Toc Web',
+              to: email,
+              subject: 'Confirm reset password',
+              text: 'SieuTocWeb v0.1',
+              html: `<H3>To reset password, click on the button below:</H3> 
+              <button><a href='https://${process.env.SITE_DOMAIN}/forgot-password/confirm-email?c=${codeGenerate}:${password}:${email}'>reset</a></button>`,
+            },
+            function (err, res) {
+              if (err) {
+                return NextResponse.json({ message: err.message, status: 400 });
+              } else {
+                return NextResponse.json(
+                  { message: 'Mail sent success' },
+                  { status: 200 }
+                );
+              }
+            }
+          );
+        } catch (error) {
+          return NextResponse.json({
+            message: error,
+            status: 400,
+          });
+        }
+      }
 
       return NextResponse.json({
         message: 'Please check your email',
@@ -47,5 +101,19 @@ export async function PATCH(req: NextRequest) {
     }
   } catch (error) {
     return NextResponse.json({ message: 'Problem when update user', error });
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  const data = await req.json();
+  const { password, email, confirmCode } = data;
+  console.log(data);
+  try {
+  } catch (error) {
+    return NextResponse.json({
+      message: 'Problem when update user',
+      error,
+      status: 400,
+    });
   }
 }
