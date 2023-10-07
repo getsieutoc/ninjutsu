@@ -143,8 +143,8 @@ devDependencies:
     specifier: 2.9.1
     version: 2.9.1
   '@types/uuid':
-    specifier: 9.0.4
-    version: 9.0.4
+    specifier: 9.0.5
+    version: 9.0.5
   eslint:
     specifier: 8.51.0
     version: 8.51.0
@@ -1871,8 +1871,8 @@ packages:
   /@types/scheduler@0.16.3:
     resolution: {integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==}
 
-  /@types/uuid@9.0.4:
-    resolution: {integrity: sha512-zAuJWQflfx6dYJM62vna+Sn5aeSWhh3OB+wfUEACNcqUSc0AGc5JKl+ycL1vrH7frGTXhJchYjE1Hak8L819dA==}
+  /@types/uuid@9.0.5:
+    resolution: {integrity: sha512-xfHdwa1FMJ082prjSJpoEI57GZITiQz10r3vEJCHa2khEFQjKy91aWKz6+zybzssCvXUwE1LQWgWVwZ4nYUvHQ==}
     dev: true
 
   /@typescript-eslint/parser@6.6.0(eslint@8.51.0)(typescript@5.2.2):
