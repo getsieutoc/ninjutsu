@@ -1,6 +1,6 @@
 import { Container, Skeleton, Stack } from '@/components/chakra';
 
-export default function UpdatePasswordLoading() {
+export default function ConfirmEmailLoading() {
   return (
     <Stack spacing={8} maxWidth="md" marginX="auto" paddingTop="10vh">
       <Container shadow="base" rounded={10} paddingX={10} padding={10}>

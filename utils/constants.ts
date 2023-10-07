@@ -22,3 +22,5 @@ export function getSiteUrl() {
 
   return 'http://localhost:3000';
 }
+
+export const HOUR_MAX_CONFIRM = 24;

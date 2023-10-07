@@ -1,7 +1,4 @@
-// import { redirect } from 'next/navigation';
-
 import { Stack, Heading, Container } from '@/components/chakra';
-// import { getSession } from '@/configs/auth';
 import UpdatePasswordForm from './UpdatePasswordForm';
 
 export default async function UpdatePassword() {
