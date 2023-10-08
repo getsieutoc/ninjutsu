@@ -16,8 +16,8 @@ export const Status = ({ time, result }: StatusPropTypes) => {
   useEffect(() => {
     if (!result || isOverTime) {
       router.push('/forgot-password/confirm-email');
-      setTimeout(() => redirect('/'), 60000);
     }
+    setTimeout(() => redirect('/'), 60_000);
   }, [result, isOverTime, router]);
 
   if (isOverTime) {
