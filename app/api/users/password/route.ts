@@ -4,6 +4,7 @@ import { differenceInHours } from 'date-fns';
 import { transporter } from '@/configs/mailer';
 import { getConfirmCode } from '@/services/users';
 import { HOUR_MAX_CONFIRM } from '@/utils/constants';
+import { hash } from '@/utils/password';
 
 export async function POST(req: NextRequest) {
   try {
@@ -53,7 +54,7 @@ export async function PATCH(req: NextRequest) {
       }
 
       // handle send mail
-      const codeGenerate = await getConfirmCode();
+      const codeGenerate = encodeURI(await getConfirmCode());
       const storeConfirmCode = await prisma.user.update({
         where: { email },
         data: { confirmCode: codeGenerate },
@@ -61,6 +62,7 @@ export async function PATCH(req: NextRequest) {
 
       if (storeConfirmCode) {
         try {
+          const newPassword = await hash(password);
           await transporter.sendMail(
             {
               from: 'Sieu Toc Web',
@@ -68,7 +70,7 @@ export async function PATCH(req: NextRequest) {
               subject: 'Confirm reset password',
               text: 'SieuTocWeb v0.1',
               html: `<H3>To reset password, click on the button below:</H3> 
-              <button><a href='https://${process.env.SITE_DOMAIN}/forgot-password/confirm-email?c=${codeGenerate}:${password}:${email}'>reset</a></button>`,
+              <button><a href='https://${process.env.SITE_DOMAIN}/forgot-password/confirm-email?c=${codeGenerate}:${newPassword}:${email}'>reset</a></button>`,
             },
             function (err, res) {
               if (err) {
@@ -101,19 +103,5 @@ export async function PATCH(req: NextRequest) {
     }
   } catch (error) {
     return NextResponse.json({ message: 'Problem when update user', error });
-  }
-}
-
-export async function PUT(req: NextRequest) {
-  const data = await req.json();
-  const { password, email, confirmCode } = data;
-  console.log(data);
-  try {
-  } catch (error) {
-    return NextResponse.json({
-      message: 'Problem when update user',
-      error,
-      status: 400,
-    });
   }
 }
