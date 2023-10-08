@@ -157,3 +157,28 @@ export const getConfirmCode = async () => {
   const code = await hash(uuidv5(process.env.NEXTAUTH_SECRET ?? '', uudv4()));
   return Date.now() + ':' + code;
 };
+export const verifyResetPassword = async (
+  email: string = '',
+  newPassword: string = '',
+  confirmCode: string = ''
+) => {
+  if (email.trim() && newPassword.trim() && confirmCode.trim()) {
+    try {
+      const data = await prisma.user.update({
+        where: {
+          confirmCode,
+          email,
+        },
+        data: {
+          password: newPassword,
+          confirmCode: '',
+        },
+      });
+      if (data) return exclude(data, 'password');
+      return undefined;
+    } catch (error) {
+      return undefined;
+    }
+  }
+  return undefined;
+};
