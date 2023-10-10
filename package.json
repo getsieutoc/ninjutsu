@@ -64,7 +64,7 @@
     "@types/qs": "6.9.8",
     "@types/react": "18.2.27",
     "@types/react-dom": "18.2.12",
-    "@types/sanitize-html": "2.9.1",
+    "@types/sanitize-html": "2.9.2",
     "@types/uuid": "9.0.5",
     "eslint": "8.51.0",
     "eslint-config-next": "13.5.4",
