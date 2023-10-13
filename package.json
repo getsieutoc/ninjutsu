@@ -57,7 +57,7 @@
     "uuid": "9.0.1"
   },
   "devDependencies": {
-    "@tanstack/react-table": "8.10.6",
+    "@tanstack/react-table": "8.10.7",
     "@types/lodash": "4.14.199",
     "@types/node": "20.8.5",
     "@types/nodemailer": "6.4.11",
