@@ -157,6 +157,7 @@ export const getConfirmCode = async () => {
   const code = await hash(uuidv5(process.env.NEXTAUTH_SECRET ?? '', uudv4()));
   return Date.now() + ':' + code;
 };
+
 export const verifyResetPassword = async (
   email: string = '',
   newPassword: string = '',
@@ -174,11 +175,25 @@ export const verifyResetPassword = async (
           confirmCode: '',
         },
       });
-      if (data) return exclude(data, 'password');
-      return undefined;
+      if (data) {
+        return {
+          data: exclude(data, 'password'),
+          status: 200,
+          description: 'Successfully',
+        };
+      }
     } catch (error) {
-      return undefined;
+      return {
+        data: undefined,
+        status: 500,
+        description: JSON.stringify(error),
+      };
     }
   }
-  return undefined;
+  return {
+    data: undefined,
+    status: 404,
+    description:
+      'User Not Found! Please check your email, new password and confirmCode',
+  };
 };
