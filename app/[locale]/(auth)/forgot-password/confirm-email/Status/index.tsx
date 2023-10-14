@@ -1,17 +1,20 @@
 'use client';
+
 import { redirect } from 'next/navigation';
 import { Box, Icon, Stack } from '@/components/chakra';
-import { HOUR_MAX_CONFIRM } from '@/utils/constants';
-import { CheckCircleIcon, WarningTwoIcon } from '@chakra-ui/icons';
-import { User } from '@prisma/client';
+import { CheckCircleIcon, WarningTwoIcon } from '@/icons';
+import { User } from '@/types';
 import { useEffect, useRouter } from '@/hooks';
 
 type StatusPropTypes = {
-  time: number;
-  result?: Omit<User, 'password'>;
+  isOverTime: boolean;
+  result: {
+    data?: Omit<User, 'password'>;
+    status: number;
+    description: string;
+  };
 };
-export const Status = ({ time, result }: StatusPropTypes) => {
-  const isOverTime = time >= HOUR_MAX_CONFIRM;
+export const Status = ({ result, isOverTime }: StatusPropTypes) => {
   const router = useRouter();
   useEffect(() => {
     if (!result || isOverTime) {
@@ -20,18 +23,17 @@ export const Status = ({ time, result }: StatusPropTypes) => {
     setTimeout(() => redirect('/'), 60_000);
   }, [result, isOverTime, router]);
 
-  if (isOverTime) {
-    return <Box>Time limit expired</Box>;
-  }
-
   return (
     <Stack
-      color={result?.id ? 'green.400' : 'red.400'}
+      color={result?.status === 200 ? 'green.400' : 'red.400'}
       direction="row"
       spacing={1}
     >
-      <Icon as={result?.id ? CheckCircleIcon : WarningTwoIcon} boxSize={6} />
-      <Box>{result?.id ? `Successfully` : `Failed`}</Box>
+      <Icon
+        as={result?.status === 200 ? CheckCircleIcon : WarningTwoIcon}
+        boxSize={6}
+      />
+      <Box>{result?.description}</Box>
     </Stack>
   );
 };
