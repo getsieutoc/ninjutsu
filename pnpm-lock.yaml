@@ -99,8 +99,8 @@ dependencies:
     specifier: 17.4.0
     version: 17.4.0(react-dom@18.2.0)(react@18.2.0)
   react-virtuoso:
-    specifier: 4.6.1
-    version: 4.6.1(react-dom@18.2.0)(react@18.2.0)
+    specifier: 4.6.2
+    version: 4.6.2(react-dom@18.2.0)(react@18.2.0)
   sanitize-html:
     specifier: 2.11.0
     version: 2.11.0
@@ -4315,8 +4315,8 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /react-virtuoso@4.6.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-dQq0yOdRjdWIYaiTvUbudqmTodGSdWGt5lVYz3mM07TTEV91yv7eL5Fn3FPEJOA36whScxPWg0GiYBIOZYEIEA==}
+  /react-virtuoso@4.6.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-vvlqvzPif+MvBrJ09+hJJrVY0xJK9yran+A+/1iwY78k0YCVKsyoNPqoLxOxzYPggspNBNXqUXEcvckN29OxyQ==}
     engines: {node: '>=10'}
     peerDependencies:
       react: '>=16 || >=17 || >= 18'
