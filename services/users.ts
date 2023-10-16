@@ -155,7 +155,7 @@ export const deleteUser = async (id: string): Promise<CleanUser | void> => {
 };
 export const getConfirmCode = async () => {
   const code = await hash(uuidv5(process.env.NEXTAUTH_SECRET ?? '', uudv4()));
-  return Date.now() + ':' + code;
+  return Date.now() + ':' + code.replace(/\+/g, '');
 };
 
 export const verifyResetPassword = async (
@@ -175,6 +175,7 @@ export const verifyResetPassword = async (
           confirmCode: '',
         },
       });
+
       if (data) {
         return {
           data: exclude(data, 'password'),
@@ -183,11 +184,7 @@ export const verifyResetPassword = async (
         };
       }
     } catch (error) {
-      return {
-        data: undefined,
-        status: 500,
-        description: JSON.stringify(error),
-      };
+      throw error;
     }
   }
   return {

@@ -7,21 +7,21 @@ import { User } from '@/types';
 import { useEffect, useRouter } from '@/hooks';
 
 type StatusPropTypes = {
-  isOverTime: boolean;
+  isTimeOver: boolean;
   result: {
     data?: Omit<User, 'password'>;
     status: number;
     description: string;
   };
 };
-export const Status = ({ result, isOverTime }: StatusPropTypes) => {
+export const Status = ({ result, isTimeOver }: StatusPropTypes) => {
   const router = useRouter();
   useEffect(() => {
-    if (!result || isOverTime) {
-      router.push('/forgot-password/confirm-email');
+    if (!result || isTimeOver) {
+      setTimeout(() => router.push('/forgot-password/confirm-email'), 3000);
     }
-    setTimeout(() => redirect('/'), 60_000);
-  }, [result, isOverTime, router]);
+    setTimeout(() => redirect('/'), 5_000);
+  }, [result, isTimeOver, router]);
 
   return (
     <Stack

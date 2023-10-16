@@ -70,7 +70,7 @@ export async function PATCH(req: NextRequest) {
               subject: 'Confirm reset password',
               text: 'SieuTocWeb v0.1',
               html: `<H3>To reset password, click on the button below:</H3> 
-              <button><a href='https://${process.env.SITE_DOMAIN}/forgot-password/confirm-email?c=${codeGenerate}:${newPassword}:${email}'>reset</a></button>`,
+              <button><a href='https://${process.env.SITE_DOMAIN}/forgot-password/confirm-email?code=${codeGenerate}:${newPassword}:${email}'>reset</a></button>`,
             },
             function (err, res) {
               if (err) {
