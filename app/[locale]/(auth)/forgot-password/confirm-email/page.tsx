@@ -16,6 +16,7 @@ export default async function ConfirmResetPassFromEmail(
 ) {
   const { code } = props.searchParams;
   const items = code?.split(':');
+
   if (items?.length !== 4) {
     redirect('/');
   }

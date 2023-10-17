@@ -11,6 +11,7 @@ export default function UpdatePasswordForm() {
   const router = useRouter();
   const email = searchParams.get('email');
   const toast = useToast();
+
   const handleSubmit = async (formData: FormData) => {
     const { newPassword, confirmPassword } = Object.fromEntries(
       formData.entries()
