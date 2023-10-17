@@ -23,16 +23,12 @@ export async function getPage({
 }: {
   where: Prisma.PageWhereUniqueInput;
 }) {
-  try {
-    const response = await prisma.page.findUniqueOrThrow({
-      where,
-      include: richInclude,
-    });
+  const response = await prisma.page.findUniqueOrThrow({
+    where,
+    include: richInclude,
+  });
 
-    return response;
-  } catch (error) {
-    console.error({ error });
-  }
+  return response;
 }
 
 export const queryPages = async ({
@@ -44,89 +40,73 @@ export const queryPages = async ({
   take?: number;
   where: Prisma.PageWhereInput;
 }) => {
-  try {
-    const response = await prisma.page.findMany({
-      skip,
-      take,
-      where,
-      include: richInclude,
-    });
+  const response = await prisma.page.findMany({
+    skip,
+    take,
+    where,
+    include: richInclude,
+  });
 
-    return response;
-  } catch (error) {
-    console.error({ error });
-  }
+  return response;
 };
 
 export const createPage = async (
   inputData: Prisma.PageUncheckedCreateInput
 ) => {
-  try {
-    const session = await getSession();
+  const session = await getSession();
 
-    if (!session) {
-      throw new Error('Unauthorized request');
-    }
-
-    const response = await prisma.page.create({
-      data: inputData,
-    });
-
-    return response;
-  } catch (error) {
-    console.error({ error });
+  if (!session) {
+    throw new Error('Unauthorized request');
   }
+
+  const response = await prisma.page.create({
+    data: inputData,
+  });
+
+  return response;
 };
 
 export const updatePage = async (
   id: string,
   data: Prisma.PageUncheckedUpdateInput
 ) => {
-  try {
-    const session = await getSession();
+  const session = await getSession();
 
-    if (!session) {
-      throw new Error('Unauthorized request');
-    }
-
-    const response = await prisma.page.update({
-      where: {
-        id,
-        // Only ADMIN can update every page
-        ...(session.user.role !== UserRole.ADMIN
-          ? { authorId: session.user.id }
-          : {}),
-      },
-      include: richInclude,
-      data,
-    });
-
-    return response;
-  } catch (error) {
-    console.error({ error });
+  if (!session) {
+    throw new Error('Unauthorized request');
   }
+
+  const response = await prisma.page.update({
+    where: {
+      id,
+      // Only ADMIN can update every page
+      ...(session.user.role !== UserRole.ADMIN
+        ? { authorId: session.user.id }
+        : {}),
+    },
+    include: richInclude,
+    data,
+  });
+
+  return response;
 };
 
 export const deletePage = async (id: string) => {
-  try {
-    const session = await getSession();
+  const session = await getSession();
 
-    if (!session) {
-      throw new Error('Unauthorized request');
-    }
-
-    const response = await prisma.page.delete({
-      where: {
-        id,
-        // Only ADMIN can delete every page
-        ...(session.user.role !== UserRole.ADMIN
-          ? { authorId: session.user.id }
-          : {}),
-      },
-    });
-
-    return response;
-  } catch (error) {
-    console.error({ error });
+  if (!session) {
+    throw new Error('Unauthorized request');
   }
+
+  const response = await prisma.page.delete({
+    where: {
+      id,
+      // Only ADMIN can delete every page
+      ...(session.user.role !== UserRole.ADMIN
+        ? { authorId: session.user.id }
+        : {}),
+    },
+  });
+
+  return response;
 };
