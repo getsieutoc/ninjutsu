@@ -18,7 +18,7 @@ export const Status = ({ result, isTimeOver }: StatusPropTypes) => {
   const router = useRouter();
   useEffect(() => {
     if (!result || isTimeOver) {
-      setTimeout(() => router.push('/forgot-password/confirm-email'), 3000);
+      router.push('/forgot-password/confirm-email');
     }
     setTimeout(() => redirect('/'), 5_000);
   }, [result, isTimeOver, router]);
