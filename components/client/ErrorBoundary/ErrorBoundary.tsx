@@ -4,12 +4,13 @@ import {
   Box,
   Alert,
   Button,
+  useToast,
   AlertIcon,
   AlertTitle,
   AlertDescription,
 } from '@/components/chakra';
+import { useEffect } from '@/hooks';
 import { RepeatIcon } from '@/icons';
-import { useEffect } from 'react';
 
 export function ErrorBoundary({
   error,
@@ -18,11 +19,15 @@ export function ErrorBoundary({
   error: Error;
   reset: () => void;
 }) {
-  useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error);
-  }, [error]);
+  const toast = useToast();
 
+  useEffect(() => {
+    toast({
+      status: 'error',
+      title: error.name,
+      description: error.message,
+    });
+  }, [error, toast]);
   return (
     <Box>
       <Alert
