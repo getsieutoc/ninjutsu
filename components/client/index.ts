@@ -21,3 +21,4 @@ export * from './TextEditor';
 export * from './VirtualTable';
 export * from './CookiesProvider';
 export * from './ErrorBoundary';
+export * from './ThreeJS';
