@@ -1,17 +1,17 @@
 'use client';
 import { THREE } from '@/components/client';
-import { useRef, useState, useMemo } from '@/hooks';
-import { useFrame } from '@react-three/fiber';
+import { useRef, useState } from '@/hooks';
+import { MeshProps, useFrame } from '@react-three/fiber';
 
-type ThreeBoxType = {
-  wireframe?: boolean;
-  position?: THREE.Vector3;
+type ThreeBoxType = MeshProps & {
+  color: string;
   polyhedron: (THREE.BoxGeometry | THREE.SphereGeometry | THREE.DodecahedronGeometry)[];
 };
 export function Polyhedron({
-  wireframe = true,
+  color,
   polyhedron,
   position = new THREE.Vector3(0, 0, 0),
+  ...rest
 }: ThreeBoxType) {
   const instanceRef = useRef<THREE.Mesh>(null!);
   const materialRef = useRef(null);
@@ -23,12 +23,13 @@ export function Polyhedron({
   });
   return (
     <mesh
+      {...rest}
       ref={instanceRef}
       position={position}
       geometry={polyhedron[count]}
       onPointerDown={() => setCount((count + 1) % 3)}
     >
-      <meshBasicMaterial ref={materialRef} color="lime" wireframe={wireframe} />
+      <meshBasicMaterial ref={materialRef} color={color} wireframe />
     </mesh>
   );
 }
