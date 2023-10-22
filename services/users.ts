@@ -111,6 +111,7 @@ export const createUser = async (
       ...inputData,
       password: await hash(inputData.password),
       role: totalUser === 0 ? UserRole.ADMIN : UserRole.USER,
+      siteId: process.env.SITE_ID as string,
     },
   });
 
