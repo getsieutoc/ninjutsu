@@ -57,8 +57,8 @@ dependencies:
     specifier: 10.16.4
     version: 10.16.4(react-dom@18.2.0)(react@18.2.0)
   html-react-parser:
-    specifier: 4.2.8
-    version: 4.2.8(react@18.2.0)
+    specifier: 4.2.9
+    version: 4.2.9(react@18.2.0)
   jotai:
     specifier: 2.4.3
     version: 2.4.3(@types/react@18.2.31)(react@18.2.0)
@@ -3269,15 +3269,15 @@ packages:
       htmlparser2: 9.0.0
     dev: false
 
-  /html-react-parser@4.2.8(react@18.2.0):
-    resolution: {integrity: sha512-IUIU4f8Yf1rm4fT6HazoiO/TC9ZbqvTHJKJB5Klm20mlFyYb2fKfz4EP8UpkHnFZ26hlS5uz7QzZhbxABf0w1Q==}
+  /html-react-parser@4.2.9(react@18.2.0):
+    resolution: {integrity: sha512-LgF0h+hM//79kePyGMWqgAGdvLCyV52GS96fYeQ5UhJJm+jccjZ8G5SQlprJTMj3v3XR2cBxNF2JhyC1R6gieA==}
     peerDependencies:
       react: 0.14 || 15 || 16 || 17 || 18
     dependencies:
       domhandler: 5.0.3
       html-dom-parser: 5.0.2
       react: 18.2.0
-      react-property: 2.0.0
+      react-property: 2.0.2
       style-to-js: 1.1.8
     dev: false
 
@@ -4230,8 +4230,8 @@ packages:
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
-  /react-property@2.0.0:
-    resolution: {integrity: sha512-kzmNjIgU32mO4mmH5+iUyrqlpFQhF8K2k7eZ4fdLSOPFrD1XgEuSBv9LDEgxRXTMBqMd8ppT0x6TIzqE5pdGdw==}
+  /react-property@2.0.2:
+    resolution: {integrity: sha512-+PbtI3VuDV0l6CleQMsx2gtK0JZbZKbpdu5ynr+lbsuvtmgbNcS3VM0tuY2QjFNOcWxvXeHjDpy42RO+4U2rug==}
     dev: false
 
   /react-remove-scroll-bar@2.3.4(@types/react@18.2.31)(react@18.2.0):
