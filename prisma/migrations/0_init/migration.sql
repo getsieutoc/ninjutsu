@@ -1,6 +1,9 @@
 -- CreateEnum
 CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN', 'AUTHOR', 'MANAGER');
 
+-- CreateEnum
+CREATE TYPE "PostType" AS ENUM ('DEFAULT', 'AUDIO', 'VIDEO', 'YOUTUBE');
+
 -- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
@@ -14,6 +17,7 @@ CREATE TABLE "Account" (
     "scope" TEXT,
     "id_token" TEXT,
     "session_state" TEXT,
+    "siteId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
 
     CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
@@ -38,6 +42,9 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "image" TEXT,
     "role" "UserRole" NOT NULL DEFAULT 'USER',
+    "preferences" JSONB NOT NULL DEFAULT '{}',
+    "confirmCode" TEXT,
+    "siteId" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -62,7 +69,9 @@ CREATE TABLE "Page" (
     "locale" TEXT NOT NULL,
     "isBlog" BOOLEAN,
     "meta" JSONB DEFAULT '[{}]',
+    "siteId" TEXT NOT NULL,
     "authorId" TEXT NOT NULL,
+    "originalId" TEXT,
 
     CONSTRAINT "Page_pkey" PRIMARY KEY ("id")
 );
@@ -76,9 +85,12 @@ CREATE TABLE "Post" (
     "title" VARCHAR(255) NOT NULL,
     "slug" VARCHAR(255) NOT NULL,
     "content" TEXT NOT NULL,
-    "originalId" TEXT NOT NULL,
     "locale" TEXT NOT NULL,
+    "type" "PostType" DEFAULT 'DEFAULT',
+    "featuredImage" TEXT,
+    "siteId" TEXT NOT NULL,
     "authorId" TEXT NOT NULL,
+    "originalId" TEXT,
 
     CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
 );
@@ -89,6 +101,7 @@ CREATE TABLE "Tag" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "value" VARCHAR(128) NOT NULL,
+    "siteId" TEXT NOT NULL,
 
     CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
 );
@@ -121,6 +134,12 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Page_slug_key" ON "Page"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Post_slug_key" ON "Post"("slug");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_PageToTag_AB_unique" ON "_PageToTag"("A", "B");
 
 -- CreateIndex
@@ -142,10 +161,13 @@ ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Page" ADD CONSTRAINT "Page_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Post" ADD CONSTRAINT "Post_originalId_fkey" FOREIGN KEY ("originalId") REFERENCES "Post"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Page" ADD CONSTRAINT "Page_originalId_fkey" FOREIGN KEY ("originalId") REFERENCES "Page"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "Post_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Post" ADD CONSTRAINT "Post_originalId_fkey" FOREIGN KEY ("originalId") REFERENCES "Post"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_PageToTag" ADD CONSTRAINT "_PageToTag_A_fkey" FOREIGN KEY ("A") REFERENCES "Page"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -19,6 +19,7 @@ export const createPost = async (formData: FormData) => {
     data: {
       ...entries,
       authorId: session.user.id,
+      siteId: process.env.SITE_ID as string,
     },
   });
 
