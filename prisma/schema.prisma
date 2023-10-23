@@ -4,14 +4,14 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("POSTGRES_PRISMA_URL")
-  directUrl         = env("POSTGRES_URL_NON_POOLING")
-  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model Account {
   id                String  @id @default(uuid())
+  userId            String
   type              String
   provider          String
   providerAccountId String
@@ -22,8 +22,6 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  siteId            String
-  userId            String
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
@@ -42,12 +40,11 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime?
-  password      String
   image         String?
+  password      String
   role          UserRole  @default(USER)
   preferences   Json      @default("{}")
   confirmCode   String?
-  siteId        String
   accounts      Account[]
   pages         Page[]
   posts         Post[]
@@ -72,10 +69,9 @@ model Page {
   content         String
   components      Json      @default("{}")
   locale          String
+  authorId        String
   isBlog          Boolean?
   meta            Json?     @default("[{}]")
-  siteId          String
-  authorId        String
   originalId      String?
   author          User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   originalPage    Page?     @relation("OriginalTranslated", fields: [originalId], references: [id])
@@ -85,18 +81,17 @@ model Page {
 
 model Post {
   id              String    @id @default(uuid())
+  title           String    @db.VarChar(255)
+  content         String
+  slug            String    @unique @db.VarChar(255)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  publishedAt     DateTime?
-  title           String    @db.VarChar(255)
-  slug            String    @unique @db.VarChar(255)
-  content         String
-  locale          String
-  type            PostType? @default(DEFAULT)
-  featuredImage   String?
-  siteId          String
   authorId        String
+  locale          String
+  publishedAt     DateTime?
   originalId      String?
+  featuredImage   String?
+  type            PostType? @default(DEFAULT)
   author          User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   originalPost    Post?     @relation("OriginalTranslated", fields: [originalId], references: [id])
   translatedPosts Post[]    @relation("OriginalTranslated")
@@ -108,7 +103,6 @@ model Tag {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   value     String   @db.VarChar(128)
-  siteId    String
   pages     Page[]   @relation("PageToTag")
   posts     Post[]   @relation("PostToTag")
 }
