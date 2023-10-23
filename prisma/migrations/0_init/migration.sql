@@ -7,6 +7,7 @@ CREATE TYPE "PostType" AS ENUM ('DEFAULT', 'AUDIO', 'VIDEO', 'YOUTUBE');
 -- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "provider" TEXT NOT NULL,
     "providerAccountId" TEXT NOT NULL,
@@ -17,8 +18,6 @@ CREATE TABLE "Account" (
     "scope" TEXT,
     "id_token" TEXT,
     "session_state" TEXT,
-    "siteId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
 
     CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
 );
@@ -39,12 +38,11 @@ CREATE TABLE "User" (
     "name" TEXT,
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
-    "password" TEXT NOT NULL,
     "image" TEXT,
+    "password" TEXT NOT NULL,
     "role" "UserRole" NOT NULL DEFAULT 'USER',
     "preferences" JSONB NOT NULL DEFAULT '{}',
     "confirmCode" TEXT,
-    "siteId" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -67,10 +65,9 @@ CREATE TABLE "Page" (
     "content" TEXT NOT NULL,
     "components" JSONB NOT NULL DEFAULT '{}',
     "locale" TEXT NOT NULL,
+    "authorId" TEXT NOT NULL,
     "isBlog" BOOLEAN,
     "meta" JSONB DEFAULT '[{}]',
-    "siteId" TEXT NOT NULL,
-    "authorId" TEXT NOT NULL,
     "originalId" TEXT,
 
     CONSTRAINT "Page_pkey" PRIMARY KEY ("id")
@@ -79,18 +76,17 @@ CREATE TABLE "Page" (
 -- CreateTable
 CREATE TABLE "Post" (
     "id" TEXT NOT NULL,
+    "title" VARCHAR(255) NOT NULL,
+    "content" TEXT NOT NULL,
+    "slug" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "publishedAt" TIMESTAMP(3),
-    "title" VARCHAR(255) NOT NULL,
-    "slug" VARCHAR(255) NOT NULL,
-    "content" TEXT NOT NULL,
-    "locale" TEXT NOT NULL,
-    "type" "PostType" DEFAULT 'DEFAULT',
-    "featuredImage" TEXT,
-    "siteId" TEXT NOT NULL,
     "authorId" TEXT NOT NULL,
+    "locale" TEXT NOT NULL,
+    "publishedAt" TIMESTAMP(3),
     "originalId" TEXT,
+    "featuredImage" TEXT,
+    "type" "PostType" DEFAULT 'DEFAULT',
 
     CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
 );
@@ -101,7 +97,6 @@ CREATE TABLE "Tag" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "value" VARCHAR(128) NOT NULL,
-    "siteId" TEXT NOT NULL,
 
     CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
 );
