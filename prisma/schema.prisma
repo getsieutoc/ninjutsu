@@ -5,23 +5,9 @@ generator client {
 
 datasource db {
   provider          = "postgresql"
-  url               = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
-  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
-}
-
-enum UserRole {
-  USER
-  ADMIN
-  AUTHOR
-  MANAGER
-}
-
-enum PostType {
-  DEFAULT
-  AUDIO
-  VIDEO
-  YOUTUBE
+  url               = env("POSTGRES_PRISMA_URL")
+  directUrl         = env("POSTGRES_URL_NON_POOLING")
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model Account {
@@ -29,12 +15,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
   siteId            String
   userId            String
@@ -60,12 +46,12 @@ model User {
   image         String?
   role          UserRole  @default(USER)
   preferences   Json      @default("{}")
-  accounts      Account[]
-  sessions      Session[]
-  pages         Page[]
-  posts         Post[]
   confirmCode   String?
   siteId        String
+  accounts      Account[]
+  pages         Page[]
+  posts         Post[]
+  sessions      Session[]
 }
 
 model VerificationToken {
@@ -77,48 +63,44 @@ model VerificationToken {
 }
 
 model Page {
-  id          String    @id @default(uuid())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  publishedAt DateTime?
-  title       String    @db.VarChar(255)
-  slug        String    @unique @db.VarChar(255)
-  content     String
-  components  Json      @default("{}")
-  locale      String
-  isBlog      Boolean?
-  meta        Json?     @default("[{}]")
-  tags        Tag[]
-  siteId      String
-
-  authorId String
-  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
-
+  id              String    @id @default(uuid())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  publishedAt     DateTime?
+  title           String    @db.VarChar(255)
+  slug            String    @unique @db.VarChar(255)
+  content         String
+  components      Json      @default("{}")
+  locale          String
+  isBlog          Boolean?
+  meta            Json?     @default("[{}]")
+  siteId          String
+  authorId        String
   originalId      String?
-  originalPage    Page?   @relation("OriginalTranslated", fields: [originalId], references: [id])
-  translatedPages Page[]  @relation("OriginalTranslated")
+  author          User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  originalPage    Page?     @relation("OriginalTranslated", fields: [originalId], references: [id])
+  translatedPages Page[]    @relation("OriginalTranslated")
+  tags            Tag[]     @relation("PageToTag")
 }
 
 model Post {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  publishedAt   DateTime?
-  title         String    @db.VarChar(255)
-  slug          String    @unique @db.VarChar(255)
-  content       String
-  locale        String
-  tags          Tag[]
-  type          PostType? @default(DEFAULT)
-  featuredImage String?
-  siteId        String
-
-  authorId String
-  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
-
+  id              String    @id @default(uuid())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  publishedAt     DateTime?
+  title           String    @db.VarChar(255)
+  slug            String    @unique @db.VarChar(255)
+  content         String
+  locale          String
+  type            PostType? @default(DEFAULT)
+  featuredImage   String?
+  siteId          String
+  authorId        String
   originalId      String?
-  originalPost    Post?   @relation("OriginalTranslated", fields: [originalId], references: [id])
-  translatedPosts Post[]  @relation("OriginalTranslated")
+  author          User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  originalPost    Post?     @relation("OriginalTranslated", fields: [originalId], references: [id])
+  translatedPosts Post[]    @relation("OriginalTranslated")
+  tags            Tag[]     @relation("PostToTag")
 }
 
 model Tag {
@@ -126,7 +108,21 @@ model Tag {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   value     String   @db.VarChar(128)
-  posts     Post[]
-  pages     Page[]
   siteId    String
+  pages     Page[]   @relation("PageToTag")
+  posts     Post[]   @relation("PostToTag")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  AUTHOR
+  MANAGER
+}
+
+enum PostType {
+  DEFAULT
+  AUDIO
+  VIDEO
+  YOUTUBE
 }
