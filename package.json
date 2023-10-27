@@ -39,7 +39,7 @@
     "lodash": "4.17.21",
     "negotiator": "0.6.3",
     "next": "13.5.6",
-    "next-auth": "4.24.3",
+    "next-auth": "4.24.4",
     "next-client-cookies": "1.0.5",
     "nodemailer": "6.9.5",
     "qs": "6.11.2",
