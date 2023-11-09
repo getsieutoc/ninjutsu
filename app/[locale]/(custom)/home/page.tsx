@@ -12,8 +12,8 @@ import { Business, DataExploration, OutlineDesignServices } from '@/icons';
 import { Metadata } from '@/types';
 
 export const metadata: Metadata = {
-  title: 'Home | Nextjs Template',
-  description: 'This is the home page of Nextjs Template',
+  title: 'Home | Ninjutsu Stack',
+  description: 'This is the home page of Ninjutsu Stack',
 };
 
 export default function HomePage() {
