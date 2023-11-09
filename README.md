@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ninjutsu Stack
+
+The stack that use Chakra
 
 ## Features
 
@@ -18,7 +20,7 @@ This template includes the following:
 
 ## Demo
 
-https://nextjs-template-demo.vercel.app
+https://ninjutsu-demo.vercel.app
 
 
 ## Getting Started
@@ -39,10 +41,10 @@ You can either use this template by:
 - Or using the script below:
 
 ```bash
-npx tiged websitesieutoc/nextjs-template your-project
+npx tiged websitesieutoc/ninjutsu your-project
 ```
 
-Then, search and replace `nextjs-template` with your project slug.
+Then, search and replace `ninjutsu` with your project slug.
 
 #### Install dependencies
 

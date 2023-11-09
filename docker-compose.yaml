@@ -1,9 +1,9 @@
 version: "3.8"
-name: nextjs-template
+name: ninjutsu
 
 services:
   postgres:
-    container_name: nextjs-template-postgres
+    container_name: ninjutsu-postgres
     image: postgres:16-alpine
     restart: always
     ports:
@@ -23,13 +23,13 @@ services:
       retries: 3
 
   redis:
-    container_name: nextjs-template-redis
+    container_name: ninjutsu-redis
     image: redis:7-alpine
     ports:
       - "6379:6379"
 
   mailpit:
-    container_name: nextjs-template-mailpit
+    container_name: ninjutsu-mailpit
     image: axllent/mailpit:latest
     restart: always
     ports:
