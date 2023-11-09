@@ -16,6 +16,9 @@
     "start": "next start",
     "typecheck": "tsc --noEmit"
   },
+  "engines": {
+    "node": "18.x"
+  },
   "dependencies": {
     "@chakra-ui/icons": "2.1.1",
     "@chakra-ui/next-js": "2.1.5",
