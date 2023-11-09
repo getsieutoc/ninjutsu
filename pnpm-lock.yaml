@@ -33,8 +33,8 @@ dependencies:
     specifier: 4.3.0
     version: 4.3.0(react-dom@18.2.0)(react@18.2.0)
   '@types/negotiator':
-    specifier: 0.6.2
-    version: 0.6.2
+    specifier: 0.6.3
+    version: 0.6.3
   '@upstash/ratelimit':
     specifier: 0.4.4
     version: 0.4.4
@@ -1824,8 +1824,8 @@ packages:
   /@types/lodash@4.14.201:
     resolution: {integrity: sha512-y9euML0cim1JrykNxADLfaG0FgD1g/yTHwUs/Jg9ZIU7WKj2/4IW9Lbb1WZbvck78W/lfGXFfe+u2EGfIJXdLQ==}
 
-  /@types/negotiator@0.6.2:
-    resolution: {integrity: sha512-VDLot2SCTUA8snP/tY9piNotcRhxnv/ujim+9Ec6NfoSS2+AZ8CoUaLmKokTaQJ1Tw7qsPcVQApfDogh3SclnQ==}
+  /@types/negotiator@0.6.3:
+    resolution: {integrity: sha512-JkXTOdKs5MF086b/pt8C3+yVp3iDUwG635L7oCH6HvJvvr6lSUU5oe/gLXnPEfYRROHjJIPgCV6cuAg8gGkntQ==}
     dev: false
 
   /@types/node@20.9.0:
