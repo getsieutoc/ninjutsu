@@ -111,8 +111,8 @@ dependencies:
     specifier: 2.2.4
     version: 2.2.4(react@18.2.0)
   tinymce:
-    specifier: 6.7.2
-    version: 6.7.2
+    specifier: 6.7.3
+    version: 6.7.3
   uuid:
     specifier: 9.0.1
     version: 9.0.1
@@ -1788,7 +1788,7 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      tinymce: 6.7.2
+      tinymce: 6.7.3
     dev: false
 
   /@tsconfig/node10@1.0.9:
@@ -4752,8 +4752,8 @@ packages:
     resolution: {integrity: sha512-AD5ih2NlSssTCwsMznbvwMZpJ1cbhkGd2uueNxzv2jDlEeZdU04JQfRnggJQ8DrcVBGjAsCKwFBbDlVNtEMlzw==}
     dev: false
 
-  /tinymce@6.7.2:
-    resolution: {integrity: sha512-6h/02jHmXyghekFzmzccZxUUEFtlPEKHxOd+gd49bjno3ybavZInPIaDd/pp2GeEwsFm20oGgJCL7UiebXm9dw==}
+  /tinymce@6.7.3:
+    resolution: {integrity: sha512-J7WmYIi/gt1RvZ6Ap2oQiUjzAoiS9pfV+d4GnKuZuPu8agmlAEAInNmMvMjfCNBzHv4JnZXY7qlHUAI0IuYQVA==}
     dev: false
 
   /to-fast-properties@2.0.0:
