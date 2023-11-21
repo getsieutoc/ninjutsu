@@ -140,8 +140,8 @@ devDependencies:
     specifier: 18.2.15
     version: 18.2.15
   '@types/sanitize-html':
-    specifier: 2.9.4
-    version: 2.9.4
+    specifier: 2.9.5
+    version: 2.9.5
   '@types/uuid':
     specifier: 9.0.7
     version: 9.0.7
@@ -1864,8 +1864,8 @@ packages:
       '@types/scheduler': 0.16.3
       csstype: 3.1.2
 
-  /@types/sanitize-html@2.9.4:
-    resolution: {integrity: sha512-Ym4hjmAFxF/eux7nW2yDPAj2o9RYh0vP/9V5ECoHtgJ/O9nPGslUd20CMn6WatRMlFVfjMTg3lMcWq8YyO6QnA==}
+  /@types/sanitize-html@2.9.5:
+    resolution: {integrity: sha512-2Sr1vd8Dw+ypsg/oDDfZ57OMSG2Befs+l2CMyCC5bVSK3CpE7lTB2aNlbbWzazgVA+Qqfuholwom6x/mWd1qmw==}
     dependencies:
       htmlparser2: 8.0.2
     dev: true
