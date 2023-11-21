@@ -61,7 +61,7 @@
   },
   "devDependencies": {
     "@tanstack/react-table": "8.10.7",
-    "@types/lodash": "4.14.201",
+    "@types/lodash": "4.14.202",
     "@types/node": "20.9.0",
     "@types/nodemailer": "6.4.14",
     "@types/qs": "6.9.10",
