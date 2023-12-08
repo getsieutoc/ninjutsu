@@ -4,7 +4,7 @@ import { prisma } from '@/configs/prisma';
 import { getSession } from '@/configs/auth';
 import type { Post } from '@/types';
 
-type CreatePostDto = Pick<Post, 'title' | 'content' | 'slug' | 'locale'>;
+type CreatePostDto = Pick<Post, 'title' | 'content' | 'slug'>;
 
 export const createPost = async (formData: FormData) => {
   const session = await getSession();

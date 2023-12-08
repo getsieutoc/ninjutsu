@@ -39,7 +39,6 @@ jobs:
         run: pnpm i --frozen-lockfile
 
       - name: Deploy Migrations
-        run: pnpm run migrate:deploy
+        run: pnpm migrate deploy
         env:
-          POSTGRES_PRISMA_URL: ${{ secrets.POSTGRES_PRISMA_URL_PREVIEW }}
-          POSTGRES_URL_NON_POOLING: ${{ secrets.POSTGRES_URL_NON_POOLING_PREVIEW }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL_PREVIEW }}

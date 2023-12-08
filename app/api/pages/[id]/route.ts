@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { updatePage, getPage } from '@/services/pages';
-import { i18n } from '@/configs/i18n.config';
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { id: string; locale: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id, locale = i18n.defaultLocale } = params;
+    const { id } = params;
 
-    const page = await getPage({ where: { id, locale } });
+    const page = await getPage({ where: { id } });
 
     return NextResponse.json(page);
   } catch (error) {

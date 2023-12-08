@@ -38,7 +38,7 @@ export const queryPages = async ({
 }: {
   skip?: number;
   take?: number;
-  where: Prisma.PageWhereInput;
+  where?: Prisma.PageWhereInput;
 }) => {
   const response = await prisma.page.findMany({
     skip,
