@@ -16,6 +16,8 @@ import { isEqual } from '@/utils/compare';
 import { fetcher } from '@/utils/fetcher';
 import slugify from 'slugify';
 
+export * from './DeleteSection';
+
 export type PageFormProps = {
   title?: string;
   backPath?: string;

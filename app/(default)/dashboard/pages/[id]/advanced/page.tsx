@@ -1,8 +1,7 @@
+import { Box, Flex, Skeleton } from '@/components/chakra';
 import { getPage } from '@/services/pages';
 
-import { Box, Flex, Skeleton } from '@/components/chakra';
-import { DeleteSection } from '../../components/PageForm/DeleteSection';
-import { BasicSEO } from '../../components/BasicSEO';
+import { BasicSEO, DeleteSection } from '../../components';
 
 type AdvancedSettingsProps = {
   params: { id: string };

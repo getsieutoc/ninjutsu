@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import NextAuth, { DefaultSession } from 'next-auth';
-import type { Prisma, User as PrismaUser, UserRole } from '@prisma/client';
+import { Prisma, User as PrismaUser, UserRole } from '@prisma/client';
 
 declare module 'next-auth/adapters' {
   interface AdapterUser extends PrismaUser {}
