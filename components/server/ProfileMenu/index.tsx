@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Button,
   HStack,
@@ -11,13 +13,13 @@ import {
 } from '@/components/chakra';
 import { NextImage, NextLink } from '@/components/client';
 import { ChevronDownIcon } from '@/icons';
-import { getSession } from '@/configs/auth';
+import { useSession } from '@/hooks';
 
 import { LogoutButton } from './LogoutButton';
 import { SetColorMode } from './SetColorMode';
 
-export const ProfileMenu = async () => {
-  const session = await getSession();
+export const ProfileMenu = () => {
+  const { data: session } = useSession();
 
   if (!session) {
     return (

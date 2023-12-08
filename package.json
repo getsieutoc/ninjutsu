@@ -5,10 +5,9 @@
   "scripts": {
     "prisma": "prisma",
     "postinstall": "prisma generate",
-    "clean": "rimraf node_modules .next dist .react-email && pnpm install",
+    "clean": "rimraf node_modules .next dist && pnpm install",
     "dev": "docker-compose up -d && pnpm watch && docker-compose down",
-    "dev-servers": "next dev & email dev --port 3002 --dir lib/emails",
-    "watch": "trap 'exit 0' SIGINT; prisma generate && prisma db push && pnpm dev-servers",
+    "watch": "trap 'exit 0' SIGINT; prisma generate && prisma db push && next dev",
     "build": "prisma generate && next build",
     "format": "prettier --write \"**/*.{css,js,json,jsx,ts,tsx}\"",
     "start": "next start",

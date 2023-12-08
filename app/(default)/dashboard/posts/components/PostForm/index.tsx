@@ -31,18 +31,13 @@ import { DeleteSection } from './DeleteSection';
 export type PostFormProps = {
   title?: string;
   backPath?: string;
-  data?: Post;
-  translatedPosts?: Post[];
-  originalId?: string;
-  translateTo?: string;
+  data?: Post | null;
 };
 
 export const PostForm = ({
   backPath,
   title,
   data: propsData,
-  originalId,
-  translateTo,
 }: PostFormProps) => {
   const toast = useToast();
   const router = useRouter();
@@ -53,7 +48,6 @@ export const PostForm = ({
     title: propsData?.title ?? '',
     slug: propsData?.slug ?? '',
     content: propsData?.content ?? '',
-    originalId: propsData?.originalId ?? originalId,
   };
 
   const [data, setInputData] = useState(initialData);
@@ -82,10 +76,6 @@ export const PostForm = ({
         router.refresh();
       }
     } else {
-      if (originalId && translateTo) {
-        formData.append('originalId', originalId);
-      }
-
       const response = await createPost(formData);
 
       if (response) {

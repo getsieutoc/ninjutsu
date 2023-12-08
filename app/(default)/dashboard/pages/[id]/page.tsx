@@ -1,6 +1,6 @@
 import { getSession } from '@/configs/auth';
-import { getPage } from '@/services/pages';
 import { redirect } from 'next/navigation';
+import { getPage } from '@/services/pages';
 
 import { PageForm } from '../components';
 
@@ -27,7 +27,6 @@ export default async function EditPage({ params }: EditPageProps) {
       backPath="/dashboard/pages"
       title="Edit Page"
       data={originalPage}
-      translatedPages={originalPage.translatedPages}
     />
   );
 }

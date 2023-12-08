@@ -2,6 +2,7 @@
 
 export * from './AccessDenied';
 export * from './AddNewButton';
+export * from './ClientProviders';
 export * from './CustomEditable';
 export * from './FormWrapper';
 export * from './GoBackButton';
