@@ -1,8 +1,6 @@
-import { getDictionary } from '@/utils/dictionary';
-import { i18n } from '@/configs/i18n.config';
-
 import { Prisma } from '@prisma/client';
-export * from '@prisma/client';
+
+export type * from '@prisma/client';
 
 export type JsonObject = Prisma.JsonObject;
 export type JsonValue = Prisma.JsonValue;
@@ -25,14 +23,16 @@ export enum HttpMethod {
   TRACE = 'TRACE',
 }
 
-export type Locale = (typeof i18n)['locales'][number]['value'];
-
-export type Dictionary = Awaited<ReturnType<typeof getDictionary>>;
-
 export type RecursivePartial<T> = {
   [P in keyof T]?: T[P] extends (infer U)[]
     ? RecursivePartial<U>[]
     : T[P] extends Record<string, unknown>
-    ? RecursivePartial<T[P]>
-    : T[P];
+      ? RecursivePartial<T[P]>
+      : T[P];
 };
+
+export type NestedKeyOf<T extends object> = {
+  [K in keyof T & (string | number)]: T[K] extends object
+    ? `${K}` | `${K}.${NestedKeyOf<T[K]>}`
+    : `${K}`;
+}[keyof T & (string | number)];

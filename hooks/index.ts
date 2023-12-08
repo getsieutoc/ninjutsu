@@ -31,4 +31,3 @@ export { default as useSWR } from 'swr';
 export { useCookies } from 'next-client-cookies';
 
 export * from './use-auth';
-export * from './use-locale';

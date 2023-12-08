@@ -20,7 +20,7 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
-        with: 
+        with:
           version: 8
 
       - name: Setup Node.js environment
@@ -33,7 +33,7 @@ jobs:
         run: pnpm i --frozen-lockfile
 
       - name: Linting
-        run: pnpm run lint
+        run: pnpm lint
 
       - name: Checking TypeScript
-        run: pnpm run typecheck
+        run: pnpm typecheck

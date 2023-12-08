@@ -4,9 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  provider = "postgresql"
+  url      = env("DATA_URL")
 }
 
 model Account {
@@ -62,44 +61,36 @@ model VerificationToken {
 }
 
 model Page {
-  id              String    @id @default(uuid())
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  publishedAt     DateTime?
-  title           String    @db.VarChar(255)
-  slug            String    @unique @db.VarChar(255)
-  content         String
-  components      Json      @default("{}")
-  locale          String
-  authorId        String
-  isBlog          Boolean?
-  meta            Json?     @default("[{}]")
-  originalId      String?
-  siteId          String?
-  author          User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  originalPage    Page?     @relation("OriginalTranslated", fields: [originalId], references: [id])
-  translatedPages Page[]    @relation("OriginalTranslated")
-  tags            Tag[]     @relation("PageToTag")
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+  title       String    @db.VarChar(255)
+  slug        String    @unique @db.VarChar(255)
+  content     String
+  components  Json      @default("{}")
+  authorId    String
+  isBlog      Boolean?
+  meta        Json?     @default("[{}]")
+  siteId      String?
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  tags        Tag[]     @relation("PageToTag")
 }
 
 model Post {
-  id              String    @id @default(uuid())
-  title           String    @db.VarChar(255)
-  content         String
-  slug            String    @unique @db.VarChar(255)
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  authorId        String
-  locale          String
-  publishedAt     DateTime?
-  originalId      String?
-  featuredImage   String?
-  siteId          String?
-  type            PostType? @default(DEFAULT)
-  author          User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  originalPost    Post?     @relation("OriginalTranslated", fields: [originalId], references: [id])
-  translatedPosts Post[]    @relation("OriginalTranslated")
-  tags            Tag[]     @relation("PostToTag")
+  id            String    @id @default(uuid())
+  title         String    @db.VarChar(255)
+  content       String
+  slug          String    @unique @db.VarChar(255)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  authorId      String
+  publishedAt   DateTime?
+  featuredImage String?
+  siteId        String?
+  type          PostType? @default(DEFAULT)
+  author        User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  tags          Tag[]     @relation("PostToTag")
 }
 
 model Tag {

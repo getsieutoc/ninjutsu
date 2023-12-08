@@ -1,4 +1,3 @@
-export const NEXT_LOCALE = 'NEXT_LOCALE';
 export const MIN_PASSWORD_LENGTH = 8;
 export const ROW_HEIGHT = 53;
 export const JWT_MAX_AGE = 60 * 60 * 24 * 7;

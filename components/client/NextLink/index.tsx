@@ -12,7 +12,6 @@ export const NextLink = chakra<typeof OriginalNextLink, LinkProps>(
         'children',
         'href',
         'legacyBehavior',
-        'locale',
         'passHref',
         'prefetch',
         'replace',
