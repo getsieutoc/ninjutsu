@@ -1,6 +1,10 @@
-# Ninjutsu Stack
+<h1 align="center">Ninjutsu Stack</h1>
 
-The stack that use Chakra
+<p align="center">Made by ⚡Sieutoc</p>
+
+<p align="center" width="100%">
+    <img src="https://i.imgflip.com/88o6pz.jpg" />
+</p>
 
 ## Features
 
@@ -20,7 +24,7 @@ This template includes the following:
 
 ## Demo
 
-https://ninjutsu-demo.vercel.app
+https://ninjutsu.sieutoc.website
 
 
 ## Getting Started
