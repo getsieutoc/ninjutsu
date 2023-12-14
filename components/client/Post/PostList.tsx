@@ -9,9 +9,8 @@ import {
   Icon,
   Spacer,
   Spinner,
-  useToast,
 } from '@/components/chakra';
-import { useSWR } from '@/hooks';
+import { useSWR, useToast } from '@/hooks';
 import _ from 'lodash';
 import { VirtualTable } from '../VirtualTable';
 import { useRouter } from 'next/navigation';
@@ -22,7 +21,7 @@ import { DeleteIcon, ViewIcon } from '@chakra-ui/icons';
 import { BiEdit } from 'react-icons/bi';
 
 export const PostList = () => {
-  const toast = useToast();
+  const { toast } = useToast();
   const router = useRouter();
   const [pageIndex, setPageIndex] = useState(1);
   const [take, setTake] = useState(25);

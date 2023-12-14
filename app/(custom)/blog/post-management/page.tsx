@@ -30,8 +30,8 @@ export default function BlogEditor() {
   const searchParams = useSearchParams();
   const postId = searchParams.get('postId');
   const router = useRouter();
-  const toast = useToast();
-  const { session, isAuthenticated } = useAuth();
+  const { toast } = useToast();
+  const { session } = useAuth();
 
   const { data } = useSWR<Post>('/api/pages/' + postId?.toString() ?? null);
   const [title, setTitle] = useState('');
@@ -154,7 +154,7 @@ export default function BlogEditor() {
     return pass;
   };
 
-  if (!isAuthenticated) {
+  if (!session) {
     router.push('/login');
   }
 

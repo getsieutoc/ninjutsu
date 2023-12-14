@@ -1,8 +1,9 @@
 'use client'; // Error components must be Client Components
 
-import { Box, useToast } from '@/components/chakra';
 import { ErrorBoundary } from '@/components/client';
-import { useEffect } from 'react';
+import { Box } from '@/components/chakra';
+
+import { useEffect, useToast } from '@/hooks';
 
 export default function Error({
   error,
@@ -11,7 +12,7 @@ export default function Error({
   error: Error;
   reset: () => void;
 }) {
-  const toast = useToast();
+  const { toast } = useToast();
   useEffect(() => {
     toast({
       status: 'error',

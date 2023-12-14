@@ -29,7 +29,7 @@ type BlogEditFormProps = {
 
 export default function BlogEditForm({ data }: BlogEditFormProps) {
   const route = useRouter();
-  const toast = useToast();
+  const { toast } = useToast();
   const { session } = useAuth();
   const [title, setTitle] = useState('');
   const [publishedAt, setPublishedAt] = useState<Date | null>(new Date());

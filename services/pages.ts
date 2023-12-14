@@ -60,10 +60,7 @@ export const createPage = async (
   }
 
   const response = await prisma.page.create({
-    data: {
-      ...inputData,
-      siteId: process.env.SITE_ID as string,
-    },
+    data: inputData,
   });
 
   return response;

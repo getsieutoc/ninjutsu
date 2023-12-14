@@ -93,31 +93,6 @@ export const updateUser = async (
   return exclude(response, 'password');
 };
 
-export const createUser = async (
-  inputData: Prisma.UserCreateInput
-): Promise<CleanUser | void> => {
-  const totalUser = await prisma.user.count();
-
-  const found = await prisma.user.findFirst({
-    where: { email: inputData.email },
-  });
-
-  if (found) {
-    throw new Error('User already exists');
-  }
-
-  const result = await prisma.user.create({
-    data: {
-      ...inputData,
-      password: await hash(inputData.password),
-      role: totalUser === 0 ? UserRole.ADMIN : UserRole.USER,
-      siteId: process.env.SITE_ID as string,
-    },
-  });
-
-  return exclude(result, 'password');
-};
-
 export const deleteUser = async (id: string): Promise<CleanUser | void> => {
   const session = await getSession();
 

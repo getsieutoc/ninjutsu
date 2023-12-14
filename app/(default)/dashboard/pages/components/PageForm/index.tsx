@@ -25,7 +25,7 @@ export type PageFormProps = {
 };
 
 export const PageForm = ({ data: propsData }: PageFormProps) => {
-  const toast = useToast();
+  const { toast } = useToast();
   const router = useRouter();
   const { session } = useAuth();
 

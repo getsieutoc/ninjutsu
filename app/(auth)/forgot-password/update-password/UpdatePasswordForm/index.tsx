@@ -1,7 +1,7 @@
 'use client';
 
-import { useSearchParams, useRouter } from '@/hooks';
-import { Input, Button, Stack, useToast } from '@/components/chakra';
+import { useSearchParams, useRouter, useToast } from '@/hooks';
+import { Input, Button, Stack } from '@/components/chakra';
 import { FormWrapper } from '@/components/client';
 import { fetcher } from '@/utils/fetcher';
 import { HttpMethod } from '@/types';
@@ -10,7 +10,7 @@ export default function UpdatePasswordForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const email = searchParams.get('email');
-  const toast = useToast();
+  const { toast } = useToast();
 
   const handleSubmit = async (formData: FormData) => {
     const { newPassword, confirmPassword } = Object.fromEntries(

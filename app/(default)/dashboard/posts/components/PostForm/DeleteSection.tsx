@@ -41,7 +41,7 @@ export type PostDeleteSectionProps = {
 export const DeleteSection = ({ post }: PostDeleteSectionProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const toast = useToast();
+  const { toast } = useToast();
   const cancelRef = useRef(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();

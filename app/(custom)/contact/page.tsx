@@ -1,23 +1,27 @@
 'use client';
 
-import { useState } from '@/hooks';
 import {
   Box,
   Text,
   Button,
   Input,
   Textarea,
-  useToast,
   Heading,
   FormLabel,
   Container,
   FormControl,
   FormErrorMessage,
 } from '@/components/chakra';
-import { type ChangeEvent } from '@/types';
+import { useState, useToast } from '@/hooks';
 import { fetcher } from '@/utils/fetcher';
+import { ChangeEvent } from '@/types';
 
-const initValues = { name: '', email: '', phone: '', message: '' };
+const initValues = {
+  name: '',
+  email: '',
+  phone: '',
+  message: '',
+};
 
 type ValueType = {
   name?: string;
@@ -26,7 +30,7 @@ type ValueType = {
   message?: string;
 };
 export default function Contact() {
-  const toast = useToast();
+  const { toast } = useToast();
   const [state, setState] = useState<ValueType>(initValues);
   const [isLoading, setIsloading] = useState(false);
   const [error, setError] = useState('');
@@ -137,10 +141,10 @@ type ResponseType = {
 };
 async function sendContactForm(data: ValueType) {
   const mailOption = {
-    from: 'Sieu Toc Web',
+    from: 'Sieutoc',
     to: data.email,
-    subject: 'Welcome to Sieu Toc Web',
-    text: 'SieuTocWeb v0.1',
+    subject: 'Welcome to Sieutoc',
+    text: 'Sieutoc v0.1',
     html: `<H3>Thank you for contacting us. We will contact you soon</H3>`,
     attachments: [
       {

@@ -8,6 +8,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum PostType {
+  DEFAULT
+  AUDIO
+  VIDEO
+  YOUTUBE
+}
+
 model Account {
   id                String  @id @default(uuid())
   userId            String
@@ -21,7 +33,6 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  siteId            String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
@@ -38,18 +49,17 @@ model Session {
 model User {
   id            String    @id @default(uuid())
   name          String?
-  email         String?   @unique
+  email         String    @unique
   emailVerified DateTime?
   image         String?
   password      String
   role          UserRole  @default(USER)
   preferences   Json      @default("{}")
   confirmCode   String?
-  siteId        String?
   accounts      Account[]
+  sessions      Session[]
   pages         Page[]
   posts         Post[]
-  sessions      Session[]
 }
 
 model VerificationToken {
@@ -68,28 +78,26 @@ model Page {
   title       String    @db.VarChar(255)
   slug        String    @unique @db.VarChar(255)
   content     String
-  components  Json      @default("{}")
   authorId    String
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  components  Json      @default("{}")
   isBlog      Boolean?
   meta        Json?     @default("[{}]")
-  siteId      String?
-  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   tags        Tag[]     @relation("PageToTag")
 }
 
 model Post {
   id            String    @id @default(uuid())
-  title         String    @db.VarChar(255)
-  content       String
-  slug          String    @unique @db.VarChar(255)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  authorId      String
   publishedAt   DateTime?
-  featuredImage String?
-  siteId        String?
-  type          PostType? @default(DEFAULT)
+  title         String    @db.VarChar(255)
+  slug          String    @unique @db.VarChar(255)
+  content       String
+  authorId      String
   author        User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  featuredImage String?
+  type          PostType? @default(DEFAULT)
   tags          Tag[]     @relation("PostToTag")
 }
 
@@ -98,21 +106,6 @@ model Tag {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   value     String   @db.VarChar(128)
-  siteId    String?
   pages     Page[]   @relation("PageToTag")
   posts     Post[]   @relation("PostToTag")
-}
-
-enum UserRole {
-  USER
-  ADMIN
-  AUTHOR
-  MANAGER
-}
-
-enum PostType {
-  DEFAULT
-  AUDIO
-  VIDEO
-  YOUTUBE
 }

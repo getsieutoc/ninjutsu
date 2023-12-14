@@ -5,6 +5,9 @@ export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 export const IS_VERCEL = !!process.env.VERCEL;
 
+export const EMAIL_REGEX =
+  /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+
 export const SITE_URL = IS_VERCEL
   ? `https://${process.env.VERCEL_URL}`
   : process.env.NEXTAUTH_URL;

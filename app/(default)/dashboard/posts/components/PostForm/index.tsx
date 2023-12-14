@@ -39,7 +39,7 @@ export const PostForm = ({
   title,
   data: propsData,
 }: PostFormProps) => {
-  const toast = useToast();
+  const { toast } = useToast();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);

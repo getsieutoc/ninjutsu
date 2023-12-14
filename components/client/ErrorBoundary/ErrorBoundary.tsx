@@ -4,12 +4,11 @@ import {
   Box,
   Alert,
   Button,
-  useToast,
   AlertIcon,
   AlertTitle,
   AlertDescription,
 } from '@/components/chakra';
-import { useEffect } from '@/hooks';
+import { useEffect, useToast } from '@/hooks';
 import { RepeatIcon } from '@/icons';
 
 export function ErrorBoundary({
@@ -19,7 +18,7 @@ export function ErrorBoundary({
   error: Error;
   reset: () => void;
 }) {
-  const toast = useToast();
+  const { toast } = useToast();
 
   useEffect(() => {
     toast({
@@ -28,6 +27,7 @@ export function ErrorBoundary({
       description: error.message,
     });
   }, [error, toast]);
+
   return (
     <Box>
       <Alert

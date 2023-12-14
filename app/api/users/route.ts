@@ -1,8 +1,10 @@
-import { paramParser, queryParser } from '@/utils/parsers';
-import { createUser, queryUsers } from '@/services/users';
+import { exclude, paramParser, queryParser } from '@/utils/parsers';
 import { NextRequest, NextResponse } from 'next/server';
+import { queryUsers } from '@/services/users';
 import { getSession } from '@/configs/auth';
-import { Prisma } from '@/types';
+import { Prisma, UserRole } from '@/types';
+import { prisma } from '@/configs/prisma';
+import { hash } from '@/utils/password';
 
 export async function GET(req: NextRequest) {
   try {
@@ -38,9 +40,25 @@ export async function POST(req: NextRequest) {
     // We lost the type here, need to find a way to fix it, trpc might help
     const createInput = await req.json();
 
-    const user = await createUser(createInput);
+    const totalUser = await prisma.user.count();
 
-    return NextResponse.json(user);
+    const found = await prisma.user.findFirst({
+      where: { email: createInput.email },
+    });
+
+    if (found) {
+      throw new Error('User already exists');
+    }
+
+    const result = await prisma.user.create({
+      data: {
+        ...createInput,
+        password: await hash(createInput.password),
+        role: totalUser === 0 ? UserRole.ADMIN : UserRole.USER,
+      },
+    });
+
+    return NextResponse.json(exclude(result, 'password'));
   } catch (error) {
     return NextResponse.json({ message: 'Problem when posting user', error });
   }
