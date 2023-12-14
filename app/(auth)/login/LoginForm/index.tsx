@@ -8,11 +8,14 @@ import {
   FormLabel,
   FormControl,
 } from '@/components/chakra';
-import { useState } from '@/hooks';
-import { signIn } from 'next-auth/react';
+import { EMAIL_REGEX, MIN_PASSWORD_LENGTH } from '@/utils/constants';
+import { useState, useKeyPressEvent } from '@/hooks';
 import { NextLink } from '@/components/client';
+import { signIn } from 'next-auth/react';
 
 export default function LoginForm() {
+  const [isLoading, setLoading] = useState(false);
+
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
@@ -22,19 +25,42 @@ export default function LoginForm() {
     return '/';
   };
 
-  const validEmail = credentials.email.length > 3;
-  const hasPassword = credentials.password.length > 8;
+  const validEmail = EMAIL_REGEX.test(credentials.email);
+  const isPasswordLong = credentials.password.length >= MIN_PASSWORD_LENGTH;
 
-  const colorScheme = validEmail && hasPassword ? 'brand' : 'gray';
+  const isValidForm = validEmail && isPasswordLong;
+
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    await signIn('credentials', {
+      ...credentials,
+      redirect: true,
+      callbackUrl: getCallbackUrl(),
+    });
+
+    setLoading(false);
+  };
+
+  useKeyPressEvent('Enter', (e) => {
+    if (!isLoading && isValidForm) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  });
+
+  const colorScheme = isValidForm ? 'brand' : 'gray';
 
   return (
     <Stack spacing={3}>
       <FormControl
         isRequired
+        isDisabled={isLoading}
         isInvalid={credentials.email.length > 0 && !validEmail}
       >
         <FormLabel>Email</FormLabel>
         <Input
+          autoFocus
           value={credentials.email}
           onChange={(e) =>
             setCredentials({ ...credentials, email: e.target.value })
@@ -42,7 +68,7 @@ export default function LoginForm() {
         />
       </FormControl>
 
-      <FormControl isRequired>
+      <FormControl isDisabled={isLoading} isRequired>
         <FormLabel>Password</FormLabel>
         <Input
           type="password"
@@ -56,23 +82,24 @@ export default function LoginForm() {
 
       <Flex direction="column" gap={2}>
         <Button
+          isDisabled={isLoading || !isValidForm}
+          colorScheme={colorScheme}
+          onClick={handleSubmit}
+          isLoading={isLoading}
+          marginTop={2}
           width="100%"
           size="lg"
-          marginTop={2}
-          colorScheme={colorScheme}
-          // isLoading={!!router.query.callback}
-          onClick={() => {
-            signIn('credentials', {
-              ...credentials,
-              redirect: true,
-              callbackUrl: getCallbackUrl(),
-            });
-          }}
         >
           Login
         </Button>
 
-        <Button size="lg" variant="ghost" as={NextLink} href="/signup">
+        <Button
+          isDisabled={isLoading}
+          size="lg"
+          variant="ghost"
+          as={NextLink}
+          href="/signup"
+        >
           Sign up
         </Button>
       </Flex>

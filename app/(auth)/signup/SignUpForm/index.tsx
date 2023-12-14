@@ -13,6 +13,7 @@ import { useRouter, useState, useKeyPressEvent, useToast } from '@/hooks';
 import { EMAIL_REGEX, MIN_PASSWORD_LENGTH } from '@/utils/constants';
 import { NextLink } from '@/components/client';
 import { HttpMethod } from '@/types';
+import { fetcher } from '@/utils/fetcher';
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -44,7 +45,7 @@ export default function SignUpForm() {
 
     setLoading(true);
 
-    await fetch('/api/users', {
+    await fetcher('/api/users', {
       method: HttpMethod.POST,
       body: JSON.stringify(credentials),
     });
@@ -71,6 +72,7 @@ export default function SignUpForm() {
       <FormControl>
         <FormLabel>Name</FormLabel>
         <Input
+          autoFocus
           placeholder="Enter your name"
           value={credentials.name}
           onChange={(e) =>

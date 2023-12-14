@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
     }
 
     const checkEmail = await prisma.user.findUnique({ where: { email } });
+
     if (!checkEmail) {
       return NextResponse.json({ message: 'Email not found', status: 400 });
     }
