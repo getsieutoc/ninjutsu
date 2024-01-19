@@ -10,7 +10,7 @@
 
 This template includes the following:
 
-- Next.js 13
+- Next.js 14
 - TypeScript
 - ESLint
 - Prettier
@@ -45,7 +45,7 @@ You can either use this template by:
 - Or using the script below:
 
 ```bash
-npx tiged websitesieutoc/ninjutsu your-project
+pnpm dlx tiged websitesieutoc/ninjutsu your-project
 ```
 
 Then, search and replace `ninjutsu` with your project slug.
