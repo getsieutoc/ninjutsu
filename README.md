@@ -24,7 +24,7 @@ This template includes the following:
 
 ## Demo
 
-https://ninjutsu.sieutoc.website
+[https://platform.sieutoc.website](https://platform.sieutoc.website/)
 
 
 ## Getting Started
